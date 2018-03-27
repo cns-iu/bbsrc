@@ -23,8 +23,8 @@ module.exports = {
     "src/read-raw-data": [
       './src/read-raw-data.ts'
     ],
-    "src/map-journals": [
-      './src/map-journals.ts'
+    "src/science-mapper": [
+      './src/science-mapper.ts'
     ]
   },
 
