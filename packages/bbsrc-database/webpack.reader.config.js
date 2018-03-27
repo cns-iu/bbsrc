@@ -22,6 +22,9 @@ module.exports = {
   "entry": {
     "src/read-raw-data": [
       './src/read-raw-data.ts'
+    ],
+    "src/map-journals": [
+      './src/map-journals.ts'
     ]
   },
 
