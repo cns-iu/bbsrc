@@ -39,8 +39,8 @@ function a(field: string): Operator<any, any> {
   return Operator.access(field).map((val) => val === '-' ? undefined : val);
 }
 function NumberOrUndefined(value: string): number {
-  const n = Number(value);
-  return isNaN(n) ? undefined : n;
+  const numberValue = Number(value);
+  return isNaN(numberValue) ? undefined : numberValue;
 }
 function n(field: string): Operator<any, number> {
   return a(field).map(NumberOrUndefined);
@@ -59,7 +59,7 @@ const grantsProcessor = Operator.combine({
   'department': a('AwardDepartment'),
   'session_year': a('Session'),
   'group_member': a('GroupMember'),
-  'total_award_value': a('TotalAwardValue'),
+  'total_award_value': n('TotalAwardValue'),
   'pi': {
     'title': a('PI Title'),
     'first_name': a('PI FirstName'),
@@ -102,14 +102,14 @@ let journal2journ_id: any = {};
 pubs.forEach((pub) => {
   const journal = pub.journal_name;
   if (!journal2journ_id.hasOwnProperty(journal)) {
-    pub.journ_id = journal2journ_id[journal] = (journalLookup.get(journal) || {})['id'];
+    pub.journ_id = journal2journ_id[journal] = journalLookup.get(journal);
     if (pub.journ_id) {
       journal2weights[pub.journ_id] = disciplineLookup.get(pub.journ_id);
     }
   } else {
     pub.journ_id = journal2journ_id[journal];
     if (pub.journ_id) {
-      pub.subdisciplines = journal2weights;
+      pub.subdisciplines = journal2weights[pub.journ_id];
     }
   }
 });
@@ -124,11 +124,11 @@ const pubsDBProcessor = Operator.combine({
   'author': a('author'),
   'grantId': a('grant_id'),
   'grantTitle': a('grant.title'),
-  'grantAbstract': a('grant.abstract'),
+  'grantAbstract': a('grant.technical_summary'),
   'researchClassification': a('grant.research_classification'),
   'sessionYear': a('grant.session_year'),
   'institution': a('grant.institution'),
-  'mechanism': a('mechanism'),
+  'mechanism': a('grant.mechanism'),
   'journalName': a('journal_name'),
   'pmid': a('pmid'),
   'doi': a('doi'),

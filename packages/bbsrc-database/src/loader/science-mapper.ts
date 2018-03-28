@@ -6,6 +6,5 @@ import '@ngx-dino/core/src/operators/add/method/lookup';
 import { getNameTable, getIdTable, normalizeName } from './science-mapper-data';
 
 
-export const journalLookup = Operator.map(normalizeName)
-  .lookup(getNameTable());
+export const journalLookup = Operator.map(normalizeName).lookup(getNameTable());
 export const disciplineLookup = Operator.lookup(getIdTable());

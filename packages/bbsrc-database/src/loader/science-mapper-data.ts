@@ -88,6 +88,7 @@ function parse2<K, V>(
 ): Map<K, V[]> {
   const range = sheet['!ref'].replace('A1', start);
   const jsonData = libXLSX.utils.sheet_to_json(sheet, {range});
+
   const map: any = {};
   for (const data of jsonData) {
     const [k, v] = extractor.get(data);
