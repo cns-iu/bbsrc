@@ -77,9 +77,7 @@ function loadIdTable(): void {
     loadRawTables();
   }
 
-  console.log('parsing map');
   idTable = parse2(rawIdTable, idTableStart, idTableExtractor);
-  console.log('finished parsing map');
   rawIdTable = undefined;
 }
 

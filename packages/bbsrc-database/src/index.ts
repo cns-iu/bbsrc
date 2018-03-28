@@ -1,1 +1,1 @@
-export const VERSION = '0.0.0';
+export { Publication } from './shared/publication';
