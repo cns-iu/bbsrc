@@ -20,11 +20,8 @@ module.exports = {
     ]
   },
   "entry": {
-    "src/read-raw-data": [
-      './src/read-raw-data.ts'
-    ],
-    "src/science-mapper": [
-      './src/science-mapper.ts'
+    "build/read-raw-data": [
+      './src/loader/read-raw-data.ts'
     ]
   },
 
@@ -33,7 +30,7 @@ module.exports = {
     "filename": "[name].js"
   },
 
-  "watch": true,
+  "watch": false,
 
   "module": {
     "rules": [
@@ -53,12 +50,12 @@ module.exports = {
   "plugins": [
     new NoEmitOnErrorsPlugin(),
     new ProgressPlugin(),
-    new AotPlugin({
-      "mainPath": "index.ts",
-      "exclude": [],
-      "tsConfigPath": "src/tsconfig.app.json",
-      "skipCodeGeneration": true
-    })
+    // new AotPlugin({
+    //   "mainPath": "index.ts",
+    //   "exclude": [],
+    //   "tsConfigPath": "src/tsconfig.app.json",
+    //   "skipCodeGeneration": true
+    // })
   ],
   "node": {
     "fs": true,

@@ -1,4 +1,4 @@
-import { Operator } from '@ngx-dino/core';
+import { Operator } from '@ngx-dino/core/operators';
 import '@ngx-dino/core/src/operators/add/static/lookup';
 import '@ngx-dino/core/src/operators/add/static/map';
 import '@ngx-dino/core/src/operators/add/method/lookup';

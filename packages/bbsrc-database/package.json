@@ -8,7 +8,7 @@
   "scripts": {
     "build": "ng-packagr -p package.json",
     "worker": "webpack --config webpack.worker.config.js",
-    "reader": "webpack --config webpack.reader.config.js"
+    "read-raw-data": "webpack --config webpack.reader.config.js && node --max_old_space_size=10240 build/read-raw-data.js"
   },
   "private": true,
   "ngPackage": {
@@ -34,6 +34,7 @@
     "graphql-subscriptions": "^0.5.6",
     "graphql-tag": "^2.6.1",
     "graphql-tools": "^2.18.0",
+    "mkdirp": "^0.5.1",
     "moment": "^2.20.0",
     "pouchdb-adapter-http": "^6.4.1",
     "pouchdb-adapter-idb": "^6.4.1",
