@@ -83,25 +83,6 @@ function loadIdTable(): void {
   rawIdTable = undefined;
 }
 
-function parse2<K, V>(
-  sheet: libXLSX.WorkSheet, start: string, extractor: Operator<any, [K, V]>
-): Map<K, V[]> {
-  const range = sheet['!ref'].replace('A1', start);
-  const jsonData = libXLSX.utils.sheet_to_json(sheet, {range});
-
-  const map: any = {};
-  for (const data of jsonData) {
-    const [k, v] = extractor.get(data);
-    if (!map.hasOwnProperty(k)) {
-      map[k] = [v];
-    } else {
-      map[k].push(v);
-    }
-  }
-
-  return Map(map);
-}
-
 function parse<K, V>(
   sheet: libXLSX.WorkSheet, start: string, extractor: Operator<any, [K, V]>
 ): Map<K, V> {
@@ -111,11 +92,27 @@ function parse<K, V>(
   return Map(jsonData.map(extractor.getter));
 }
 
+function parse2<K, V>(
+  sheet: libXLSX.WorkSheet, start: string, extractor: Operator<any, [K, V]>
+): Map<K, V[]> {
+  const range = sheet['!ref'].replace('A1', start);
+  const jsonData = libXLSX.utils.sheet_to_json(sheet, {range});
+
+  return Map<K, V[]>().withMutations((map) => {
+    jsonData.map(extractor.getter).forEach(([key, value]) => {
+      map.update(key, (values = []) => {
+        values.push(value);
+        return values;
+      });
+    });
+  });
+}
+
 
 // Exported api
 export function normalizeName(name: string): string {
   return String(name).replace(/[^\w\s]/g, '').replace(/\s+/g, ' ')
-    .split(/\s/).filter((str) => str.length !== 0).join(' ');
+    .split(/\s/).filter((str) => str.length !== 0).join(' ').toLowerCase();
 }
 
 export function getNameTable(): Map<string, NameTableValue> {

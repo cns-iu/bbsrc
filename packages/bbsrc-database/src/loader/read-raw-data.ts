@@ -36,7 +36,7 @@ function writeJSONArray(outputFile: string, data: any[], operator: Operator<any,
   file.end();
 }
 function a(field: string): Operator<any, any> {
-  return Operator.access(field).map((val) => val === '-' ? undefined : val);
+  return Operator.access(field, '-').map((val) => val === '-' ? null : val);
 }
 function NumberOrUndefined(value: string): number {
   const numberValue = Number(value);
@@ -102,7 +102,7 @@ let journal2journ_id: any = {};
 pubs.forEach((pub) => {
   const journal = pub.journal_name;
   if (!journal2journ_id.hasOwnProperty(journal)) {
-    pub.journ_id = journal2journ_id[journal] = journalLookup.get(journal);
+    pub.journ_id = journal2journ_id[journal] = journalLookup.access('id').get(journal);
     if (pub.journ_id) {
       journal2weights[pub.journ_id] = disciplineLookup.get(pub.journ_id);
     }
