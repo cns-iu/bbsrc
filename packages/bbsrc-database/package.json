@@ -8,7 +8,10 @@
   "scripts": {
     "build": "ng-packagr -p package.json",
     "worker": "webpack --config webpack.worker.config.js",
-    "read-raw-data": "webpack --config webpack.reader.config.js && node --max_old_space_size=10240 build/read-raw-data.js"
+    "build-offline-tools": "webpack --config webpack.offline.config.js",
+    "read-raw-data": "node build/read-raw-data",
+    "create-database": "node build/create-database",
+    "import-database": "mkdir -p ../../raw-data/db && node build/import-database"
   },
   "private": true,
   "ngPackage": {
@@ -22,7 +25,6 @@
     }
   },
   "dependencies": {
-    "@angular/common": "^5.0.0",
     "@angular/compiler": "^5.0.0",
     "@angular/core": "^5.0.0",
     "@angular/platform-browser": "^5.0.0",
@@ -31,6 +33,7 @@
     "apollo-link": "^1.2.1",
     "apollo-link-webworker": "^0.1.3",
     "core-js": "^2.4.1",
+    "graphql": "^0.13.2",
     "graphql-subscriptions": "^0.5.6",
     "graphql-tag": "^2.6.1",
     "graphql-tools": "^2.18.0",
@@ -40,9 +43,11 @@
     "pouchdb-adapter-idb": "^6.4.1",
     "pouchdb-adapter-localstorage": "^6.4.1",
     "pouchdb-adapter-memory": "^6.4.1",
+    "pouchdb-adapter-node-websql": "^6.4.3",
     "pouchdb-adapter-websql": "^6.4.1",
     "rxdb": "^7.3.0",
     "rxjs": "^5.5.2",
+    "webpack-node-externals": "^1.6.0",
     "xlsx": "^0.12.6",
     "zone.js": "^0.8.14"
   },

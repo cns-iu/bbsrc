@@ -55,7 +55,10 @@ module.exports = {
         "loader": "@ngtools/webpack",
         options: {
           "tsConfigPath": "src/tsconfig.app.json"
-        }
+        },
+        "exclude": [
+          /\/loader\//
+        ]
       }
     ]
   },

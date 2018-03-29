@@ -1,14 +1,10 @@
 const fs = require('fs');
-import * as XLSX from 'xlsx';
 
+import * as XLSX from 'xlsx';
 import { Operator } from '@ngx-dino/core/operators';
 import { journalLookup, disciplineLookup } from './science-mapper';
 
-const GRANTS = '../../raw-data/grants.xlsx';
-const PUBS = '../../raw-data/publications.xlsx';
-const GRANTS_JSON = '../../raw-data/grants.json';
-const PUBS_JSON = '../../raw-data/publications.json';
-const DB_JSON = '../../raw-data/database.json';
+import { GRANTS, PUBS, DB_JSON } from './options';
 
 function readXLS(inputFile: string, sheetName?: string): any[] {
   const wb = XLSX.readFile(inputFile);
@@ -131,7 +127,7 @@ journal2journ_id = null;
 journal2weights = null;
 
 const pubsDBProcessor = Operator.combine({
-  'id': n('id'),
+  'id': a('id'),
   'title': a('title'),
   'author': a('author'),
   'pmid': a('pmid'),
@@ -150,7 +146,10 @@ const pubsDBProcessor = Operator.combine({
   'grantInstitution': a('grant.institution'),
   'grantMechanism': a('grant.mechanism'),
 });
-writeJSONArray(DB_JSON, pubs, pubsDBProcessor);
+
+const mappedPubs = pubs.filter((pub) => pub.subdisciplines && pub.subdisciplines.length > 0);
+writeJSON(DB_JSON, mappedPubs.map(pubsDBProcessor.getter));
+// writeJSONArray(DB_JSON, mappedPubs, pubsDBProcessor);
 
 // console.log(grants.length);
 // console.log(JSON.stringify(grants[0]));
