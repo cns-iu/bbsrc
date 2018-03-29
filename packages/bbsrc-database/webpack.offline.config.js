@@ -30,6 +30,9 @@ module.exports = {
     ],
     "build/import-database": [
       './src/loader/import-database.ts'
+    ],
+    "build/server": [
+      './src/server.ts'
     ]
   },
 

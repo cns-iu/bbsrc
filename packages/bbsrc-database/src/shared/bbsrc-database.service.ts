@@ -12,7 +12,12 @@ export const GET_PUBLICATIONS = gql`
   query (
     $filter: Filter!
   ) {
-    getPublications(filter: $filter);
+    getPublications(filter: $filter) {
+      id
+      title
+      grantTitle
+      pmid
+    }
   }
 `;
 
@@ -20,25 +25,28 @@ export const GET_SUBDISCIPLINES = gql`
   query (
     $filter: Filter!
   ) {
-    getSubdisciplines(filter: $filter);
+    getSubdisciplines(filter: $filter) {
+      subd_id
+      weight
+    }
   }
 `;
 
 @Injectable()
 export class BBSRCDatabaseService {
-  constructor(private apollo: Apollo) {}
+  constructor(private apollo: Apollo) { }
 
   getPublications(filter: Filter): Observable<Publication[]> {
     return this.apollo.query<Publication[]>({
       query: GET_PUBLICATIONS,
       variables: { filter }
-    }).map((result) => result.data);
+    }).map((result) => result.data['getPublications']);
   }
 
   getSubdisciplines(filter: Filter): Observable<SubdisciplineWeight[]> {
     return this.apollo.query<SubdisciplineWeight[]>({
       query: GET_SUBDISCIPLINES,
       variables: { filter }
-    }).map((result) => result.data);
+    }).map((result) => result.data['getSubdisciplines']);
   }
 }
