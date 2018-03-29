@@ -8,3 +8,5 @@ export class GraphQLContext {
     }
   }
 }
+
+export const clientdb_context = new GraphQLContext(new BBSRCDatabase(false, 'memory'));

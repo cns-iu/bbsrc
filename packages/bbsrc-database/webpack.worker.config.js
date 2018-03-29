@@ -42,10 +42,10 @@ module.exports = {
           /\/node_modules\//
         ]
       },
-      {
-        loader: 'worker-loader',
-        options: { inline: true, fallback: false }
-      },
+      // {
+      //   loader: 'worker-loader',
+      //   options: { inline: true, fallback: false }
+      // },
       {
         "test": /\.json$/,
         "loader": "json-loader"
@@ -55,10 +55,7 @@ module.exports = {
         "loader": "@ngtools/webpack",
         options: {
           "tsConfigPath": "src/tsconfig.app.json"
-        },
-        "exclude": [
-          /\/loader\//
-        ]
+        }
       }
     ]
   },

@@ -13,7 +13,5 @@ export const resolvers: any = {
     'getSubdisciplines': (obj, args, context: GraphQLContext, info) => {
       return getSubdisciplines(context.database, args.filter);
     }
-  },
-  Mutation: { },
-  Subscription: { }
+  }
 };

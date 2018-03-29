@@ -10,15 +10,7 @@ type Query {
   getSubdisciplines(filter: Filter): [SubdisciplineWeight!]
 }
 
-type Mutation {
-}
-
-type Subscription {
-}
-
 schema {
   query: Query
-  mutation: Mutation
-  subscription: Subscription
 }
 `;

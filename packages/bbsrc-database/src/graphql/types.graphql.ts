@@ -4,7 +4,7 @@ type SubdisciplineWeight {
   weight: Float
 }
 
-type Persona {
+type Publication {
   id: ID!
   title: String
   author: String
@@ -13,32 +13,21 @@ type Persona {
   pmcid: String
 
   journalName: String
-  journalId: Integer
-  subdisciplines: [SubdisciplineWeight];
+  journalId: Int
+  subdisciplines: [SubdisciplineWeight]
 
   grantId: String
   grantTitle: String
   grantSummary: String
   grantClasses: [String!]
-  grantYear: Integer
+  grantYear: Int
   grantInstitution: String
   grantMechanism: String
-
-  name: String
-  icon: String
-  color: String
-  gender: GENDER
-  age_group: String
-  handedness: HANDEDNESS
-  zipcode: String
-  state: String
-  latitude: Float
-  longitude: Float
 }
 
 input Filter {
-  limit: Integer
-  subd_id: Integer
+  limit: Int
+  subd_id: Int
 
   fulltext: String
   researchClassification: String

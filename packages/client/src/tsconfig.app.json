@@ -9,10 +9,12 @@
   "exclude": [
     "test.ts",
     "**/*.spec.ts",
-    "../../../ngx-dino/packages/dino-*/**/*.spec.ts"
+    "../../../ngx-dino/packages/dino-*/**/*.spec.ts",
+    "../../../ngx-dino/packages/dino-*/node_modules/**/*.ts"
   ],
   "include": [
     "**/*.ts",
+    "../../bbsrc-*/**/*.ts",
     "../../../ngx-dino/packages/dino-*/**/*.ts"
   ]
 }
