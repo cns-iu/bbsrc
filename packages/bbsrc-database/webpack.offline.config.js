@@ -1,4 +1,5 @@
 const path = require('path');
+const nodeExternals = require("webpack-node-externals");
 const ProgressPlugin = require('webpack/lib/ProgressPlugin');
 const { NoEmitOnErrorsPlugin } = require('webpack');
 const { AotPlugin } = require('@ngtools/webpack');
@@ -19,9 +20,19 @@ module.exports = {
       "./node_modules"
     ]
   },
+  "externals": [ nodeExternals({modulesDir: '../../node_modules', whitelist: [/@ngx-dino\/.*/]}) ],
   "entry": {
     "build/read-raw-data": [
       './src/loader/read-raw-data.ts'
+    ],
+    "build/create-database": [
+      './src/loader/create-database.ts'
+    ],
+    "build/import-database": [
+      './src/loader/import-database.ts'
+    ],
+    "build/server": [
+      './src/server.ts'
     ]
   },
 

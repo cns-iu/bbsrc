@@ -43,14 +43,6 @@ module.exports = {
         ]
       },
       {
-        loader: 'worker-loader',
-        options: { inline: true, fallback: false }
-      },
-      {
-        "test": /\.json$/,
-        "loader": "json-loader"
-      },
-      {
         "test": /\.ts$/,
         "loader": "@ngtools/webpack",
         options: {
@@ -62,12 +54,12 @@ module.exports = {
   "plugins": [
     new NoEmitOnErrorsPlugin(),
     new ProgressPlugin(),
-    new AotPlugin({
-      "mainPath": "index.ts",
-      "exclude": [],
-      "tsConfigPath": "src/tsconfig.app.json",
-      "skipCodeGeneration": true
-    })
+    // new AotPlugin({
+    //   "mainPath": "index.ts",
+    //   "exclude": [],
+    //   "tsConfigPath": "src/tsconfig.app.json",
+    //   "skipCodeGeneration": true
+    // })
   ],
   "node": {
     "fs": "empty",

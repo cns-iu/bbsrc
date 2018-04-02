@@ -8,11 +8,14 @@
   },
   "exclude": [
     "test.ts",
-    "**/*.spec.ts",
-    "../../../ngx-dino/packages/dino-*/**/*.spec.ts"
+    "../../**/*.spec.ts",
+    "../../../ngx-dino/packages/dino-*/**/*.spec.ts",
+    "../../../ngx-dino/packages/dino-*/node_modules/**/*.ts",
+    "../../bbsrc-database/src/server.ts"
   ],
   "include": [
     "**/*.ts",
+    "../../bbsrc-*/**/*.ts",
     "../../../ngx-dino/packages/dino-*/**/*.ts"
   ]
 }
