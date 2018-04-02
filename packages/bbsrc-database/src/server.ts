@@ -5,14 +5,14 @@ import {
   graphiqlExpress,
 } from 'graphql-server-express';
 import bodyParser from 'body-parser';
-import path from 'path';
+import * as path from 'path';
 import cors from 'cors';
 import { SubscriptionServer } from 'subscriptions-transport-ws';
 import { createServer } from 'http';
 import { GraphQLError, execute, subscribe } from 'graphql';
 import { formatError as apolloFormatError, createError } from 'apollo-errors';
 import { schema } from './graphql/schema';
-import { context } from './loader/server-database';
+import { context } from './graphql/server-context';
 
 process['env'] = {
   CLIENT_ORIGIN: 'http://localhost:4200'
@@ -62,8 +62,6 @@ const UnknownError = createError('UnknownError', {
 const formatError = (error) => {
   //
   // Log raw errors to the server console
-  // TODO: set up file logging for the raw logs.
-  // https://github.com/cns-iu/xmacroscope/issues/92
   //
   console.log(error);
   console.log('----^ ^ ^ ^ ^ error ^ ^ ^ ^ ^----');
@@ -101,7 +99,6 @@ app.use('/', express.static(path.join(__dirname, '../../../client/dist')));
 //
 // Load the schema and context for each GraphQL request.
 //
-// TODO - test removing unused param, response
 app.use('/graphql', bodyParser.json(), graphqlExpress((request, response) => ({
   schema,
   context,

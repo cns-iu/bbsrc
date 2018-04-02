@@ -1,8 +1,8 @@
 const fs = require('fs');
 import { BBSRCDatabase } from '../rxdb/bbsrc-database';
-import { GraphQLContext } from '../graphql/context';
+import { GraphQLContext } from './context';
 
-import { DB_DUMP, DB_SQLITE } from './options';
+import { DB_DUMP, DB_SQLITE } from '../loader/options';
 
 function readJSON(inputFile: string): any {
   return JSON.parse(fs.readFileSync(inputFile));

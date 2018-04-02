@@ -25,16 +25,20 @@ type Publication {
   grantMechanism: String
 }
 
-input Filter {
-  limit: Int
-  subd_id: Int
-
-  fulltext: String
-  researchClassification: String
-  sessionYear: String
-  institution: String
-  mechanism: String
-  journalName: String
+input YearRange {
+  start: Int!
+  end: Int!
 }
 
+input Filter {
+  limit: Int
+  subd_id: [Int!]
+
+  fulltext: [String!]
+  researchClassification: [String!]
+  sessionYear: YearRange
+  institution: [String!]
+  mechanism: [String!]
+  journalName: [String!]
+}
 `;

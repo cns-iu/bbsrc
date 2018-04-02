@@ -663,6 +663,16 @@ anymatch@^2.0.0:
     micromatch "^3.1.4"
     normalize-path "^2.1.1"
 
+apollo-angular-link-http-common@~1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/apollo-angular-link-http-common/-/apollo-angular-link-http-common-1.0.0.tgz#bb15ab9844335531572b44f259c360c36c4bb1e7"
+
+apollo-angular-link-http@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/apollo-angular-link-http/-/apollo-angular-link-http-1.0.2.tgz#191adc5576510cfa5764a97b690c190e7aa09793"
+  dependencies:
+    apollo-angular-link-http-common "~1.0.0"
+
 apollo-angular@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/apollo-angular/-/apollo-angular-1.0.1.tgz#2a48bd4c550be417d2902adcd859493282cd939a"

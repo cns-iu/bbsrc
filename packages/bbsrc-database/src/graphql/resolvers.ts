@@ -1,16 +1,18 @@
 import { pubsub } from './subscriptions';
 import * as moment from 'moment';
 
-import { context } from '../loader/server-database';
-import { getPublications, getSubdisciplines } from '../rxdb/queries';
+import { getPublications, getSubdisciplines, getDistinct } from '../rxdb/queries';
 
 export const resolvers: any = {
   Query: {
-    'getPublications': (obj, args, ctx, info) => {
+    'getPublications': (obj, args, context, info) => {
       return getPublications(context.database, args.filter);
     },
-    'getSubdisciplines': (obj, args, ctx, info) => {
+    'getSubdisciplines': (obj, args, context, info) => {
       return getSubdisciplines(context.database, args.filter);
+    },
+    'getDistinct': (obj, args, context, info) => {
+      return getDistinct(context.database, args.fieldName, args.filter);
     }
   }
 };

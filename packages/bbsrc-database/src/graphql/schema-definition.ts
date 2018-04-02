@@ -8,6 +8,7 @@ ${TypesSchema}
 type Query {
   getPublications(filter: Filter): [Publication!]
   getSubdisciplines(filter: Filter): [SubdisciplineWeight!]
+  getDistinct(fieldName: String, filter: Filter): [String]
 }
 
 schema {
