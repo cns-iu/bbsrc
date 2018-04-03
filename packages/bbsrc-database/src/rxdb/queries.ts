@@ -52,7 +52,7 @@ export async function getPublications(database: BBSRCDatabase, filter: Partial<F
     query = query.where('grantClasses').elemMatch({ '$in': filter.researchClassification });
   }
   if (filter.fulltext) {
-    const regexp = new RegExp('/' + (filter.fulltext.map((text) => escapeStringRegExp(text)).join('|')) + '/i');
+    const regexp = new RegExp(filter.fulltext.map((text) => escapeStringRegExp(text)).join('|'), 'i');
 		query = query.where('grantSummary').regex(regexp);
   }
 
