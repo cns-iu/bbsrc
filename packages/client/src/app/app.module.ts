@@ -1,8 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { CoreModule } from './core';
+import { BBSRCFilterUIModule } from 'bbsrc-filter-ui';
 
+import { CoreModule } from './core';
 import { AppComponent } from './app.component';
 
 
@@ -12,7 +13,8 @@ import { AppComponent } from './app.component';
   ],
   imports: [
     BrowserModule,
-    CoreModule
+    CoreModule,
+    BBSRCFilterUIModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,0 +1,26 @@
+<div class="form-container">
+  <mat-form-field>
+    <input matInput type="search" placeholder="Text Search" ngModel (ngModelChange)="onTextSearchChange($event)" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder="Research Classification" (selectionChange)="onResearchClassChange($event)">
+      <mat-option></mat-option>
+      <mat-option *ngFor="let cls of researchClasses" [value]="cls">{{cls}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input type="text" placeholder="Institution" matInput [formControl]="institutionControl" [matAutocomplete]="institutionAuto">
+    <mat-autocomplete #institutionAuto="matAutocomplete">
+      <mat-option *ngFor="let inst of filteredInstitutions | async" [value]="inst">{{inst}}</mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder="Mechanism" (selectionChange)="onMechanismChange($event)">
+      <mat-option></mat-option>
+      <mat-option *ngFor="let mec of mechanisms" [value]="mec">{{mec}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
