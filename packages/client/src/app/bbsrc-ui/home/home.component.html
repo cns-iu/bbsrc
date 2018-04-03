@@ -1,0 +1,14 @@
+<mat-toolbar class="toolbar z-depth-1-half">
+  <mat-icon class="hamburger" (click)="drawer.toggle()">menu</mat-icon>
+  <span>BBSRC Demo</span>
+</mat-toolbar>
+
+<mat-drawer-container class="container" autosize>
+  <mat-drawer #drawer class="sidenav" mode="side" [opened]="true">
+    <p>Filters</p>
+  </mat-drawer>
+
+  <div class="sidenav-content">
+    <bbsrc-science-map></bbsrc-science-map>
+  </div>
+</mat-drawer-container>

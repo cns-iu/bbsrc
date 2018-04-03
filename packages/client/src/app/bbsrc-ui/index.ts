@@ -1,0 +1,1 @@
+export { BbsrcUIModule } from './bbsrc-ui.module';

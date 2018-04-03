@@ -8,8 +8,9 @@
   },
   "exclude": [
     "test.ts",
-    "../../**/*.spec.ts",
-    "../../../ngx-dino/packages/dino-*/**/*.spec.ts",
+    "../../../**/*.spec.ts",
+    "../../../**/*.d.ts",
+    "../../../**/*-spec.ts",
     "../../../ngx-dino/packages/dino-*/node_modules/**/*.ts",
     "../../bbsrc-database/src/server.ts"
   ],
