@@ -7,10 +7,10 @@ import { RxPublicationDocument } from './rxdb-types';
 // FROM: https://github.com/sindresorhus/escape-string-regexp/
 const matchOperatorsRe = /[|\\{}()[\]^$+*?.]/g;
 function escapeStringRegExp(str: string): string {
-	if (typeof str !== 'string') {
-		throw new TypeError('Expected a string');
-	}
-	return str.replace(matchOperatorsRe, '\\$&');
+  if (typeof str !== 'string') {
+    throw new TypeError('Expected a string');
+  }
+  return str.replace(matchOperatorsRe, '\\$&');
 }
 
 function sumAgg<T>(items: T[][], keyField: string, valueField: string): {[key: string]: number} {
