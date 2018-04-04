@@ -10,6 +10,8 @@ import {
   MatOptionModule
 } from '@angular/material';
 
+import { NouisliderModule } from 'ng2-nouislider';
+
 import { FilterUiComponent } from './filter-ui/filter-ui.component';
 
 
@@ -17,13 +19,17 @@ import { FilterUiComponent } from './filter-ui/filter-ui.component';
   imports: [
     FormsModule,
     ReactiveFormsModule,
+
     BrowserModule,
     BrowserAnimationsModule,
+
     MatFormFieldModule,
     MatInputModule,
     MatAutocompleteModule,
     MatSelectModule,
-    MatOptionModule
+    MatOptionModule,
+
+    NouisliderModule
   ],
   exports: [
     FilterUiComponent

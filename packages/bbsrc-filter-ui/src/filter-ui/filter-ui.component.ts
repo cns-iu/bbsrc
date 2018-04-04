@@ -1,7 +1,8 @@
 import {
   Component, Output,
   OnInit, OnChanges,
-  EventEmitter, SimpleChanges
+  EventEmitter, SimpleChanges,
+  ViewEncapsulation
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
@@ -16,32 +17,68 @@ import { assign, clone, debounce } from 'lodash';
 import { Filter, BBSRCDatabaseService } from 'bbsrc-database';
 
 
+interface ResearchClass {
+  label: string;
+  acronym: string;
+}
+
+
 @Component({
   selector: 'bbsrc-filter-ui',
   templateUrl: './filter-ui.component.html',
-  styleUrls: ['./filter-ui.component.sass']
+  styleUrls: ['./filter-ui.component.sass'],
+  encapsulation: ViewEncapsulation.None
 })
 export class FilterUiComponent implements OnInit {
   static typingWaitTime = 400;
 
   private filter: Filter = {
     limit: 0,
+    sort: [],
     subd_id: [],
 
     fulltext: [],
     researchClassification: [],
-    sessionYear: {start: -1, end: -1},
+    year: {start: undefined, end: undefined},
+    sessionYear: {start: undefined, end: undefined},
     institution: [],
     mechanism: [],
     journalName: []
   };
 
-  researchClasses: string[] = [];
   institutions: string[] = [];
-  mechanisms: string[] = [];
-
   institutionControl = new FormControl();
   filteredInstitutions: Observable<string[]>;
+
+  mechanisms: string[] = [];
+  researchClasses: ResearchClass[] = [
+    {label: 'Agricultural and Food Security', acronym: 'AFS'},
+    {label: 'Ageing: LLHW', acronym: 'AGE'},
+    {label: 'Animal Health', acronym: 'AH'},
+    {label: 'Animal Welfare', acronym: 'AW'},
+    {label: 'Bioscience for Health', acronym: 'BH'},
+    {label: 'Crop Science', acronym: 'CS'},
+    {label: 'Diet and Health', acronym: 'DH'},
+    {label: 'Bioenergy', acronym: 'EG'},
+    {label: 'Industrial Biotechnology', acronym: 'IB'},
+    {label: 'Industrial Biotechnology and Bioenergy', acronym: 'IBBE'},
+    {label: 'Immunology', acronym: 'IMM'},
+    {label: 'Microbial Food Safety', acronym: 'MFS'},
+    {label: 'Microbiology', acronym: 'MIC'},
+    {label: 'Neuroscience and Behaviour', acronym: 'NS'},
+    {label: 'New Ways of Working', acronym: 'NWW'},
+    {label: 'Pharmaceuticals', acronym: 'PHM'},
+    {label: 'Plant Science', acronym: 'PS'},
+    {label: 'Regenerative Biology and Tissue Engineering', acronym: 'RE'},
+    {label: 'The 3 Rs (Replacement, Reduction & Refinement of Animals in Research)', acronym: 'RRR'},
+    {label: 'Systems Biology', acronym: 'SB'},
+    {label: 'Stem Cells', acronym: 'SC'},
+    {label: 'Soil Science', acronym: 'SS'},
+    {label: 'Structural Biology', acronym: 'STR'},
+    {label: 'Synthetic Biology', acronym: 'SYN'},
+    {label: 'Technology Development', acronym: 'TD'},
+    {label: 'World Class Underpinning Bioscience', acronym: 'WUB'}
+  ].sort(({label: a}, {label: b}) => (a < b ? -1 : (b < a ? 1 : 0)));
 
   @Output() filterChange = new EventEmitter<Filter>();
 
@@ -70,10 +107,6 @@ export class FilterUiComponent implements OnInit {
     this.updateFilter({fulltext: text !== '' ? [text] : []});
   }, FilterUiComponent.typingWaitTime);
 
-  onResearchClassChange({value}: {value: string | undefined}): void {
-    this.updateFilter({researchClassification: value ? [value] : []});
-  }
-
   onInstitutionChange = debounce(function (
     this: FilterUiComponent, inst: string
   ): void {
@@ -81,6 +114,10 @@ export class FilterUiComponent implements OnInit {
       this.updateFilter({institution: inst !== '' ? [inst] : []});
     }
   }, FilterUiComponent.typingWaitTime);
+
+  onResearchClassChange({value}: {value: ResearchClass | undefined}): void {
+    this.updateFilter({researchClassification: value ? [value.acronym] : []});
+  }
 
   onMechanismChange({value}: {value: string | undefined}): void {
     this.updateFilter({mechanism: value ? [value] : []});

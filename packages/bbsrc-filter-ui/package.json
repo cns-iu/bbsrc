@@ -49,6 +49,8 @@
     "http": "^0.0.0",
     "mkdirp": "^0.5.1",
     "moment": "^2.20.0",
+    "ng2-nouislider": "^1.7.7",
+    "nouislider": "^11.1.0",
     "path": "^0.12.7",
     "pouchdb-adapter-http": "^6.4.1",
     "pouchdb-adapter-idb": "^6.4.1",

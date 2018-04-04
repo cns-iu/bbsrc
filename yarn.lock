@@ -6551,6 +6551,10 @@ ng-packagr@^2.2.0:
     uglify-js "^3.0.7"
     update-notifier "^2.3.0"
 
+ng2-nouislider@^1.7.7:
+  version "1.7.7"
+  resolved "https://registry.yarnpkg.com/ng2-nouislider/-/ng2-nouislider-1.7.7.tgz#b841f4b313c8c9c8a763c80f3a59d5aa4c3a70c8"
+
 no-case@^2.2.0:
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/no-case/-/no-case-2.3.2.tgz#60b813396be39b3f1288a4c1ed5d1e7d28b464ac"
@@ -6753,6 +6757,10 @@ normalize-space-x@^3.0.0:
     cached-constructors-x "^1.0.0"
     trim-x "^3.0.0"
     white-space-x "^3.0.0"
+
+nouislider@^11.1.0:
+  version "11.1.0"
+  resolved "https://registry.yarnpkg.com/nouislider/-/nouislider-11.1.0.tgz#1768eb5b854917325d41b96f2dc4eb3757d73381"
 
 npm-run-path@^2.0.0:
   version "2.0.2"
