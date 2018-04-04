@@ -40,6 +40,14 @@ export async function getPublications(database: BBSRCDatabase, filter: Partial<F
   if (filter.institution) {
     query = query.where('grantInstitution').in(filter.institution);
   }
+  if (filter.year) {
+    if (filter.year.start === filter.year.end) {
+      query = query.where('year').eq(filter.year.start);
+    } else {
+      query = query.where('year').gte(filter.year.start)
+        .where('year').lte(filter.year.end);
+    }
+  }
   if (filter.sessionYear) {
     if (filter.sessionYear.start === filter.sessionYear.end) {
       query = query.where('grantYear').eq(filter.sessionYear.start);
@@ -53,7 +61,7 @@ export async function getPublications(database: BBSRCDatabase, filter: Partial<F
   }
   if (filter.fulltext) {
     const regexp = new RegExp(filter.fulltext.map((text) => escapeStringRegExp(text)).join('|'), 'i');
-		query = query.where('grantSummary').regex(regexp);
+    query = query.where('fulltext').regex(regexp);
   }
 
   if (filter.sort) {
@@ -79,13 +87,18 @@ export async function getDistinct(database: BBSRCDatabase, fieldName: string, fi
   // TODO: make this more efficient.
 
   const publications = await getPublications(database, filter);
-  const values = new Set();
+  const values: any = {};
   const distinct = [];
   publications.forEach((pub) => {
-    const val = pub.get(fieldName);
-    if (!values.has(val)) {
-      values.add(val);
+    let val = pub.get(fieldName);
+    if (!(typeof val === 'string' || val instanceof String)) {
+      val = JSON.stringify(val);
+    }
+    if (!values.hasOwnProperty(val)) {
+      values[val] = 1;
       distinct.push(val);
+    } else {
+      values[val]++;
     }
   });
   return distinct;

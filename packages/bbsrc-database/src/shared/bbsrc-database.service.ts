@@ -15,9 +15,12 @@ export const GET_PUBLICATIONS = gql`
   ) {
     getPublications(filter: $filter) {
       id
+      author
+      year
       title
-      grantTitle
       pmid
+      doi
+      pmcid
     }
   }
 `;

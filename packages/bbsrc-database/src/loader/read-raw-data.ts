@@ -41,6 +41,10 @@ function NumberOrUndefined(value: string): number {
 function n(field: string): Operator<any, number> {
   return a(field).map(NumberOrUndefined);
 }
+function fulltext(...fields: string[]): Operator<any, string> {
+  return Operator.combine(fields.map((f) => a(f)))
+    .map(v => v.filter(s => !!s).join(' ').replace(/\s+/g, ' ').toLowerCase());
+}
 
 const CLASS_FIELDS = [
   'AGE', 'AH', 'AW', 'CS', 'DH', 'EGX', 'IB', 'IMM', 'MFS', 'MIC', 'NS', 'PHM',
@@ -52,7 +56,7 @@ const getClassifications = Operator.map((item: any): string[] => {
   for (const c of CLASS_FIELDS) {
     const value = item[c] || null;
     if (value && value !== '-' && !value.endsWith('X')) {
-      classes.push(c);
+      classes.push(c === 'EGX' ? 'EG' : c);
     }
   }
   return classes;
@@ -97,7 +101,7 @@ const pubsProcessor = Operator.combine({
   'issue': a('Issue'),
   'pages': a('Pages'),
   'month': a('Month'),
-  'year': a('Year'),
+  'year': n('Year'),
   'pmcid': a('PMCID'),
   'doi': a('DOI')
 });
@@ -130,6 +134,7 @@ const pubsDBProcessor = Operator.combine({
   'id': a('id'),
   'title': a('title'),
   'author': a('author'),
+  'year': n('year'),
   'pmid': a('pmid'),
   'doi': a('doi'),
   'pmcid': a('pmcid'),
@@ -140,11 +145,11 @@ const pubsDBProcessor = Operator.combine({
 
   'grantId': a('grant_id'),
   'grantTitle': a('grant.title'),
-  'grantSummary': a('grant.technical_summary'),
   'grantClasses': a('grant.research_classification'),
   'grantYear': a('grant.session_year'),
   'grantInstitution': a('grant.institution'),
   'grantMechanism': a('grant.mechanism'),
+  'fulltext': fulltext('title', 'grant.title', 'grant.technical_summary')
 });
 
 const mappedPubs = pubs.filter((pub) => pub.subdisciplines && pub.subdisciplines.length > 0);

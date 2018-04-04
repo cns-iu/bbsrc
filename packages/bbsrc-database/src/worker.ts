@@ -6,7 +6,7 @@ import { pubsub } from './graphql/subscriptions';
 
 import { BBSRCDatabase } from './rxdb/bbsrc-database';
 
-const database = new BBSRCDatabase(false, 'idb');
+const database = new BBSRCDatabase(false, 'memory');
 const context = new GraphQLContext(database);
 
 fetch('/assets/db-dump.json', { method: 'get' }).then(async function(response) {

@@ -8,6 +8,7 @@ type Publication {
   id: ID!
   title: String
   author: String
+  year: Int
   pmid: String
   doi: String
   pmcid: String
@@ -18,11 +19,11 @@ type Publication {
 
   grantId: String
   grantTitle: String
-  grantSummary: String
   grantClasses: [String!]
   grantYear: Int
   grantInstitution: String
   grantMechanism: String
+  fulltext: String
 }
 
 input YearRange {
@@ -33,6 +34,7 @@ input YearRange {
 input Filter {
   limit: Int
   subd_id: [Int!]
+  year: YearRange
 
   fulltext: [String!]
   researchClassification: [String!]

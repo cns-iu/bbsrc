@@ -67,7 +67,11 @@ export class BBSRCDatabase {
       RxDB.plugin(RxDBSchemaCheckModule);
     }
     RxDB.plugin(RxDBValidateModule);
-    RxDB.plugin(this.adapters[this.adapter] || MemoryAdapter);
+    RxDB.plugin(this.adapters[this.adapter]);
+    // Always add the memory adapter
+    if (this.adapter !== 'memory') {
+      RxDB.plugin(MemoryAdapter);
+    }
 
     RxDB.QueryChangeDetector.enable(true);
     if (!this.production) {
