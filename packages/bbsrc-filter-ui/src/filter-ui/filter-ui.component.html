@@ -4,19 +4,17 @@
   </mat-form-field>
 
   <mat-form-field>
-    <mat-select placeholder="Research Classification" (selectionChange)="onResearchClassChange($event)">
-      <mat-option></mat-option>
-      <mat-option *ngFor="let cls of researchClasses" [value]="cls.acronym">{{cls.label}}</mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <nouislider [min]="0" [max]="15" [step]="1" [ngModel]="0"></nouislider>
-
-  <mat-form-field>
     <input type="text" placeholder="Institution" matInput [formControl]="institutionControl" [matAutocomplete]="institutionAuto" (ngModelChange)="onInstitutionChange($event)">
     <mat-autocomplete #institutionAuto="matAutocomplete">
       <mat-option *ngFor="let inst of filteredInstitutions | async" [value]="inst">{{inst}}</mat-option>
     </mat-autocomplete>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder="Research Classification" (selectionChange)="onResearchClassChange($event)">
+      <mat-option></mat-option>
+      <mat-option *ngFor="let cls of researchClasses" [value]="cls.acronym">{{cls.label}}</mat-option>
+    </mat-select>
   </mat-form-field>
 
   <mat-form-field>
@@ -25,4 +23,7 @@
       <mat-option *ngFor="let mec of mechanisms" [value]="mec">{{mec}}</mat-option>
     </mat-select>
   </mat-form-field>
+
+  <span class="session-year-label">Session Year</span>
+  <nouislider [config]="yearSliderConfig" (change)="onYearChange($event)"></nouislider>
 </div>

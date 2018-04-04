@@ -6,7 +6,7 @@
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {
-    "start": "webpack --config webpack.offline.config.js && node build/server",
+    "start": "webpack --config webpack.offline.config.js && node --max-old-space-size=8192 build/server",
     "build": "yarn build-offline-tools && yarn build-worker && yarn build-angular-package",
     "build-angular-package": "ng-packagr -p package.json",
     "build-worker": "webpack --config webpack.worker.config.js",

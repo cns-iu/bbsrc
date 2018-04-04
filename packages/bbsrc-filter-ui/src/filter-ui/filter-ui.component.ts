@@ -32,19 +32,7 @@ interface ResearchClass {
 export class FilterUiComponent implements OnInit {
   static typingWaitTime = 400;
 
-  private filter: Filter = {
-    limit: 0,
-    sort: [],
-    subd_id: [],
-
-    fulltext: [],
-    researchClassification: [],
-    year: {start: undefined, end: undefined},
-    sessionYear: {start: undefined, end: undefined},
-    institution: [],
-    mechanism: [],
-    journalName: []
-  } as any;
+  private filter: Partial<Filter> = {};
 
   institutions: string[] = [];
   institutionControl = new FormControl();
@@ -80,7 +68,24 @@ export class FilterUiComponent implements OnInit {
     {label: 'World Class Underpinning Bioscience', acronym: 'WUB'}
   ].sort(({label: a}, {label: b}) => (a < b ? -1 : (b < a ? 1 : 0)));
 
-  @Output() filterChange = new EventEmitter<Filter>();
+  yearSliderConfig: any = {
+    start: [1999, 2016],
+    margin: 1,
+    padding: [0, 0],
+    step: 1,
+    range: {
+      min: [1999],
+      max: [2016]
+    },
+    connect: [false, true, false],
+    tooltips: [true, true],
+    format: {
+      to: Number,
+      from: Number
+    }
+  };
+
+  @Output() filterChange = new EventEmitter<Partial<Filter>>();
 
 
   constructor(private service: BBSRCDatabaseService) {
@@ -121,6 +126,10 @@ export class FilterUiComponent implements OnInit {
 
   onMechanismChange({value}: {value: string | undefined}): void {
     this.updateFilter({mechanism: value ? [value] : []});
+  }
+
+  onYearChange([start, end]) {
+    this.updateFilter({sessionYear: {start, end}});
   }
 
   private filterOptions(value: string, options: string[]): string[] {
