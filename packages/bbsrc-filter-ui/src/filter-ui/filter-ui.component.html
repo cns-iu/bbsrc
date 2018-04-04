@@ -11,7 +11,7 @@
   </mat-form-field>
 
   <mat-form-field>
-    <input type="text" placeholder="Institution" matInput [formControl]="institutionControl" [matAutocomplete]="institutionAuto">
+    <input type="text" placeholder="Institution" matInput [formControl]="institutionControl" [matAutocomplete]="institutionAuto" (ngModelChange)="onInstitutionChange($event)">
     <mat-autocomplete #institutionAuto="matAutocomplete">
       <mat-option *ngFor="let inst of filteredInstitutions | async" [value]="inst">{{inst}}</mat-option>
     </mat-autocomplete>

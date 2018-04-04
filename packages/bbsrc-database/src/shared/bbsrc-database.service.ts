@@ -60,8 +60,8 @@ export class BBSRCDatabaseService {
     }).map((result) => result.data['getSubdisciplines']);
   }
 
-  getDistinct(fieldName: string, filter: Partial<Filter> = {}): Observable<SubdisciplineWeight[]> {
-    return this.apollo.query<SubdisciplineWeight[]>({
+  getDistinct(fieldName: string, filter: Partial<Filter> = {}): Observable<string[]> {
+    return this.apollo.query<string[]>({
       query: GET_DISTINCT,
       variables: { fieldName, filter }
     }).map((result) => result.data['getDistinct']);
