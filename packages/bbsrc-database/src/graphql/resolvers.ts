@@ -1,5 +1,4 @@
 import { pubsub } from './subscriptions';
-import * as moment from 'moment';
 
 import { getPublications, getSubdisciplines, getDistinct } from '../rxdb/queries';
 

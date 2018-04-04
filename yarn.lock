@@ -7384,7 +7384,7 @@ pouchdb-adapter-http@^6.4.1:
     pouchdb-promise "6.4.3"
     pouchdb-utils "6.4.3"
 
-pouchdb-adapter-idb@^6.4.1:
+pouchdb-adapter-idb@^6.4.3:
   version "6.4.3"
   resolved "https://registry.yarnpkg.com/pouchdb-adapter-idb/-/pouchdb-adapter-idb-6.4.3.tgz#5610ca073aedf75723371de6fd906b7eb5962d0c"
   dependencies:
@@ -7425,7 +7425,7 @@ pouchdb-adapter-localstorage@^6.4.1:
     pouchdb-adapter-leveldb-core "6.4.3"
     pouchdb-utils "6.4.3"
 
-pouchdb-adapter-memory@^6.4.1:
+pouchdb-adapter-memory@^6.4.3:
   version "6.4.3"
   resolved "https://registry.yarnpkg.com/pouchdb-adapter-memory/-/pouchdb-adapter-memory-6.4.3.tgz#06edb687be9d063b27e9b58ca30ea1a08a9b94f4"
   dependencies:

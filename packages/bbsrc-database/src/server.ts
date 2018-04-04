@@ -130,7 +130,5 @@ server.listen(PORT, () => {
     path: '/subscriptions',
   });
 
-  // Ensure DB tables are created
-
   console.log('Server started.');
 });

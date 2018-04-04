@@ -26,6 +26,6 @@ async function createDBDump(): Promise<any> {
 }
 
 createDBDump().then((dump) => {
-  writeJSON('../../raw-data/db-dump.json', dump);
+  writeJSON(DB_DUMP, dump);
   process.exit();
 });
