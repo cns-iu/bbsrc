@@ -5,6 +5,7 @@ export interface Filter {
 
   fulltext: string[];
   researchClassification: string[];
+  year: {start: number, end: number};
   sessionYear: {start: number, end: number};
   institution: string[];
   mechanism: string[];

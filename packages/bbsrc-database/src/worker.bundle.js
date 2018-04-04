@@ -38564,84 +38564,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_apollo_link_webworker__ = __webpack_require__(262);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_apollo_link_webworker___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_apollo_link_webworker__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__graphql_schema__ = __webpack_require__(315);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__graphql_context__ = __webpack_require__(333);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__graphql_subscriptions__ = __webpack_require__(334);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__rxdb_bbsrc_database__ = __webpack_require__(339);
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__graphql_subscriptions__ = __webpack_require__(333);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__graphql_client_context__ = __webpack_require__(338);
 
 
 
 
-
-var database = new __WEBPACK_IMPORTED_MODULE_4__rxdb_bbsrc_database__["a" /* BBSRCDatabase */](false, 'idb');
-var context = new __WEBPACK_IMPORTED_MODULE_2__graphql_context__["a" /* GraphQLContext */](database);
-fetch('/assets/db-dump.json', { method: 'get' }).then(function (response) {
-    return __awaiter(this, void 0, void 0, function () {
-        var dump, db;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, response.json()];
-                case 1:
-                    dump = _a.sent();
-                    console.log('Importing Dump');
-                    return [4 /*yield*/, database.get()];
-                case 2:
-                    db = _a.sent();
-                    return [4 /*yield*/, db.importDump(dump)];
-                case 3:
-                    _a.sent();
-                    console.log('Dump Loaded');
-                    return [2 /*return*/];
-            }
-        });
-    });
-})["catch"](function (err) {
-    console.log(err);
-});
 Object(__WEBPACK_IMPORTED_MODULE_0_apollo_link_webworker__["createWorker"])({
     schema: __WEBPACK_IMPORTED_MODULE_1__graphql_schema__["a" /* schema */],
-    context: context
+    context: __WEBPACK_IMPORTED_MODULE_3__graphql_client_context__["a" /* context */]
 });
 self.onmessage = function (message) { return Object(__WEBPACK_IMPORTED_MODULE_0_apollo_link_webworker__["handleSubscriptions"])({
     self: self,
     message: message,
     schema: __WEBPACK_IMPORTED_MODULE_1__graphql_schema__["a" /* schema */],
-    context: context,
-    pubsub: __WEBPACK_IMPORTED_MODULE_3__graphql_subscriptions__["a" /* pubsub */]
+    context: __WEBPACK_IMPORTED_MODULE_3__graphql_client_context__["a" /* context */],
+    pubsub: __WEBPACK_IMPORTED_MODULE_2__graphql_subscriptions__["a" /* pubsub */]
 }); };
 
 
@@ -47626,7 +47564,7 @@ function isBlank(str) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return schemaDef; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__types_graphql__ = __webpack_require__(330);
 
-var schemaDef = "\nscalar Date\n\n" + __WEBPACK_IMPORTED_MODULE_0__types_graphql__["a" /* TypesSchema */] + "\n\ntype Query {\n  getPublications(filter: Filter): [Publication!]\n  getSubdisciplines(filter: Filter): [SubdisciplineWeight!]\n}\n\nschema {\n  query: Query\n}\n";
+var schemaDef = "\nscalar Date\n\n" + __WEBPACK_IMPORTED_MODULE_0__types_graphql__["a" /* TypesSchema */] + "\n\ntype Query {\n  getPublications(filter: Filter): [Publication!]\n  getSubdisciplines(filter: Filter): [SubdisciplineWeight!]\n  getDistinct(fieldName: String, filter: Filter): [String]\n}\n\nschema {\n  query: Query\n}\n";
 
 
 /***/ }),
@@ -47635,7 +47573,7 @@ var schemaDef = "\nscalar Date\n\n" + __WEBPACK_IMPORTED_MODULE_0__types_graphql
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TypesSchema; });
-var TypesSchema = "\ntype SubdisciplineWeight {\n  subd_id: ID!\n  weight: Float\n}\n\ntype Publication {\n  id: ID!\n  title: String\n  author: String\n  pmid: String\n  doi: String\n  pmcid: String\n\n  journalName: String\n  journalId: Int\n  subdisciplines: [SubdisciplineWeight]\n\n  grantId: String\n  grantTitle: String\n  grantSummary: String\n  grantClasses: [String!]\n  grantYear: Int\n  grantInstitution: String\n  grantMechanism: String\n}\n\ninput Filter {\n  limit: Int\n  subd_id: Int\n\n  fulltext: String\n  researchClassification: String\n  sessionYear: String\n  institution: String\n  mechanism: String\n  journalName: String\n}\n\n";
+var TypesSchema = "\ntype SubdisciplineWeight {\n  subd_id: ID!\n  weight: Float\n}\n\ntype Publication {\n  id: ID!\n  title: String\n  author: String\n  year: Int\n  pmid: String\n  doi: String\n  pmcid: String\n\n  journalName: String\n  journalId: Int\n  subdisciplines: [SubdisciplineWeight]\n\n  grantId: String\n  grantTitle: String\n  grantClasses: [String!]\n  grantYear: Int\n  grantInstitution: String\n  grantMechanism: String\n  fulltext: String\n}\n\ninput YearRange {\n  start: Int!\n  end: Int!\n}\n\ninput Filter {\n  limit: Int\n  subd_id: [Int!]\n  year: YearRange\n\n  fulltext: [String!]\n  researchClassification: [String!]\n  sessionYear: YearRange\n  institution: [String!]\n  mechanism: [String!]\n  journalName: [String!]\n}\n";
 
 
 /***/ }),
@@ -47649,10 +47587,13 @@ var TypesSchema = "\ntype SubdisciplineWeight {\n  subd_id: ID!\n  weight: Float
 var resolvers = {
     Query: {
         'getPublications': function (obj, args, context, info) {
-            return Object(__WEBPACK_IMPORTED_MODULE_0__rxdb_queries__["a" /* getPublications */])(context.database, args.filter);
+            return Object(__WEBPACK_IMPORTED_MODULE_0__rxdb_queries__["b" /* getPublications */])(context.database, args.filter);
         },
         'getSubdisciplines': function (obj, args, context, info) {
-            return Object(__WEBPACK_IMPORTED_MODULE_0__rxdb_queries__["b" /* getSubdisciplines */])(context.database, args.filter);
+            return Object(__WEBPACK_IMPORTED_MODULE_0__rxdb_queries__["c" /* getSubdisciplines */])(context.database, args.filter);
+        },
+        'getDistinct': function (obj, args, context, info) {
+            return Object(__WEBPACK_IMPORTED_MODULE_0__rxdb_queries__["a" /* getDistinct */])(context.database, args.fieldName, args.filter);
         }
     }
 };
@@ -47663,8 +47604,9 @@ var resolvers = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = getPublications;
-/* harmony export (immutable) */ __webpack_exports__["b"] = getSubdisciplines;
+/* harmony export (immutable) */ __webpack_exports__["b"] = getPublications;
+/* harmony export (immutable) */ __webpack_exports__["c"] = getSubdisciplines;
+/* harmony export (immutable) */ __webpack_exports__["a"] = getDistinct;
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -47700,6 +47642,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+// FROM: https://github.com/sindresorhus/escape-string-regexp/
+var matchOperatorsRe = /[|\\{}()[\]^$+*?.]/g;
+function escapeStringRegExp(str) {
+    if (typeof str !== 'string') {
+        throw new TypeError('Expected a string');
+    }
+    return str.replace(matchOperatorsRe, '\\$&');
+}
 function sumAgg(items, keyField, valueField) {
     return items.reduce(function (acc, itemsInner) {
         itemsInner.forEach(function (item) {
@@ -47713,13 +47663,57 @@ function sumAgg(items, keyField, valueField) {
 function getPublications(database, filter) {
     if (filter === void 0) { filter = {}; }
     return __awaiter(this, void 0, void 0, function () {
-        var db, query, results;
+        var db, query, regexp, sort, results;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, database.get()];
                 case 1:
                     db = _a.sent();
                     query = db.publication.find();
+                    if (filter.subd_id) {
+                        query = query.where('subdisciplines').elemMatch({ 'subd_id': { '$in': filter.subd_id } });
+                    }
+                    if (filter.journalName) {
+                        query = query.where('journalName')["in"](filter.journalName);
+                    }
+                    if (filter.mechanism) {
+                        query = query.where('grantMechanism')["in"](filter.mechanism);
+                    }
+                    if (filter.institution) {
+                        query = query.where('grantInstitution')["in"](filter.institution);
+                    }
+                    if (filter.year) {
+                        if (filter.year.start === filter.year.end) {
+                            query = query.where('year').eq(filter.year.start);
+                        }
+                        else {
+                            query = query.where('year').gte(filter.year.start)
+                                .where('year').lte(filter.year.end);
+                        }
+                    }
+                    if (filter.sessionYear) {
+                        if (filter.sessionYear.start === filter.sessionYear.end) {
+                            query = query.where('grantYear').eq(filter.sessionYear.start);
+                        }
+                        else {
+                            query = query.where('grantYear').gte(filter.sessionYear.start)
+                                .where('grantYear').lte(filter.sessionYear.end);
+                        }
+                    }
+                    if (filter.researchClassification) {
+                        query = query.where('grantClasses').elemMatch({ '$in': filter.researchClassification });
+                    }
+                    if (filter.fulltext) {
+                        regexp = new RegExp(filter.fulltext.map(function (text) { return escapeStringRegExp(text); }).join('|'), 'i');
+                        query = query.where('fulltext').regex(regexp);
+                    }
+                    if (filter.sort) {
+                        sort = filter.sort.map(function (s) { return (s.ascending ? '' : '-') + s.field; }).join(' ');
+                        query = query.sort(sort);
+                    }
+                    if (filter.limit && filter.limit > 0) {
+                        query = query.limit(filter.limit);
+                    }
                     return [4 /*yield*/, query.exec()];
                 case 2:
                     results = _a.sent();
@@ -47746,6 +47740,35 @@ function getSubdisciplines(database, filter) {
         });
     });
 }
+function getDistinct(database, fieldName, filter) {
+    if (filter === void 0) { filter = {}; }
+    return __awaiter(this, void 0, void 0, function () {
+        var publications, values, distinct;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, getPublications(database, filter)];
+                case 1:
+                    publications = _a.sent();
+                    values = {};
+                    distinct = [];
+                    publications.forEach(function (pub) {
+                        var val = pub.get(fieldName);
+                        if (!(typeof val === 'string' || val instanceof String)) {
+                            val = JSON.stringify(val);
+                        }
+                        if (!values.hasOwnProperty(val)) {
+                            values[val] = 1;
+                            distinct.push(val);
+                        }
+                        else {
+                            values[val]++;
+                        }
+                    });
+                    return [2 /*return*/, distinct];
+            }
+        });
+    });
+}
 
 
 /***/ }),
@@ -47753,32 +47776,25 @@ function getSubdisciplines(database, filter) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GraphQLContext; });
-var GraphQLContext = (function () {
-    function GraphQLContext(database, db) {
-        var _this = this;
-        this.database = database;
-        this.db = db;
-        if (!db) {
-            database.get().then(function (dbInstance) { _this.db = dbInstance; });
-        }
-    }
-    return GraphQLContext;
-}());
-
-
-
-/***/ }),
-/* 334 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return pubsub; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_graphql_subscriptions__ = __webpack_require__(335);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_graphql_subscriptions__ = __webpack_require__(334);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_graphql_subscriptions___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_graphql_subscriptions__);
 
 var pubsub = new __WEBPACK_IMPORTED_MODULE_0_graphql_subscriptions__["PubSub"]();
 
+
+/***/ }),
+/* 334 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var pubsub_1 = __webpack_require__(335);
+exports.PubSub = pubsub_1.PubSub;
+var with_filter_1 = __webpack_require__(337);
+exports.withFilter = with_filter_1.withFilter;
+//# sourceMappingURL=index.js.map
 
 /***/ }),
 /* 335 */
@@ -47787,21 +47803,8 @@ var pubsub = new __WEBPACK_IMPORTED_MODULE_0_graphql_subscriptions__["PubSub"]()
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var pubsub_1 = __webpack_require__(336);
-exports.PubSub = pubsub_1.PubSub;
-var with_filter_1 = __webpack_require__(338);
-exports.withFilter = with_filter_1.withFilter;
-//# sourceMappingURL=index.js.map
-
-/***/ }),
-/* 336 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
 var events_1 = __webpack_require__(35);
-var event_emitter_to_async_iterator_1 = __webpack_require__(337);
+var event_emitter_to_async_iterator_1 = __webpack_require__(336);
 var PubSub = (function () {
     function PubSub(options) {
         if (options === void 0) { options = {}; }
@@ -47833,7 +47836,7 @@ exports.PubSub = PubSub;
 //# sourceMappingURL=pubsub.js.map
 
 /***/ }),
-/* 337 */
+/* 336 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47908,7 +47911,7 @@ exports.eventEmitterAsyncIterator = eventEmitterAsyncIterator;
 //# sourceMappingURL=event-emitter-to-async-iterator.js.map
 
 /***/ }),
-/* 338 */
+/* 337 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47952,6 +47955,98 @@ exports.withFilter = function (asyncIteratorFn, filterFn) {
     };
 };
 //# sourceMappingURL=with-filter.js.map
+
+/***/ }),
+/* 338 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export createClientContext */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return context; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__rxdb_bbsrc_database__ = __webpack_require__(339);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__context__ = __webpack_require__(526);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__loader_options__ = __webpack_require__(527);
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+
+
+
+function readJSON(uri) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, fetch(uri, { method: 'get' })];
+                case 1: return [2 /*return*/, (_a.sent()).json()];
+            }
+        });
+    });
+}
+function importDBDump(database) {
+    return __awaiter(this, void 0, void 0, function () {
+        var dump, db, hasResults;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, readJSON(__WEBPACK_IMPORTED_MODULE_2__loader_options__["a" /* DB_DUMP_URI */])];
+                case 1:
+                    dump = _a.sent();
+                    return [4 /*yield*/, database.get()];
+                case 2:
+                    db = _a.sent();
+                    return [4 /*yield*/, db.publication.findOne().exec()];
+                case 3:
+                    hasResults = !!(_a.sent());
+                    if (!!hasResults) return [3 /*break*/, 5];
+                    return [4 /*yield*/, db.importDump(dump)];
+                case 4:
+                    _a.sent();
+                    _a.label = 5;
+                case 5: return [2 /*return*/, db];
+            }
+        });
+    });
+}
+function createClientContext() {
+    var database = new __WEBPACK_IMPORTED_MODULE_0__rxdb_bbsrc_database__["a" /* BBSRCDatabase */](false, 'idb');
+    importDBDump(database).then(function () {
+        console.log('DB Loaded');
+    });
+    return new __WEBPACK_IMPORTED_MODULE_1__context__["a" /* GraphQLContext */](database);
+}
+var context = createClientContext();
+
 
 /***/ }),
 /* 339 */
@@ -48094,7 +48189,11 @@ var BBSRCDatabase = (function () {
             __WEBPACK_IMPORTED_MODULE_0_rxdb__["a" /* default */].plugin(__WEBPACK_IMPORTED_MODULE_2_rxdb_plugins_schema_check__["a" /* default */]);
         }
         __WEBPACK_IMPORTED_MODULE_0_rxdb__["a" /* default */].plugin(__WEBPACK_IMPORTED_MODULE_1_rxdb_plugins_validate__["a" /* default */]);
-        __WEBPACK_IMPORTED_MODULE_0_rxdb__["a" /* default */].plugin(this.adapters[this.adapter] || __WEBPACK_IMPORTED_MODULE_5_pouchdb_adapter_memory__);
+        __WEBPACK_IMPORTED_MODULE_0_rxdb__["a" /* default */].plugin(this.adapters[this.adapter]);
+        // Always add the memory adapter
+        if (this.adapter !== 'memory') {
+            __WEBPACK_IMPORTED_MODULE_0_rxdb__["a" /* default */].plugin(__WEBPACK_IMPORTED_MODULE_5_pouchdb_adapter_memory__);
+        }
         __WEBPACK_IMPORTED_MODULE_0_rxdb__["a" /* default */].QueryChangeDetector.enable(true);
         if (!this.production) {
             __WEBPACK_IMPORTED_MODULE_0_rxdb__["a" /* default */].QueryChangeDetector.enableDebugging();
@@ -79112,6 +79211,11 @@ var PublicationSchema = {
             'type': 'string',
             'default': ''
         },
+        'year': {
+            'type': 'number',
+            'default': 0,
+            'index': true
+        },
         'pmid': {
             'type': 'string',
             'default': ''
@@ -79157,10 +79261,6 @@ var PublicationSchema = {
             'type': 'string',
             'default': ''
         },
-        'grantSummary': {
-            'type': 'string',
-            'default': ''
-        },
         'grantClasses': {
             'type': 'array',
             'uniqueItems': true,
@@ -79170,7 +79270,7 @@ var PublicationSchema = {
         },
         'grantYear': {
             'type': 'number',
-            'default': 1970,
+            'default': 0,
             'index': true
         },
         'grantInstitution': {
@@ -79182,9 +79282,52 @@ var PublicationSchema = {
             'type': 'string',
             'default': '',
             'index': true
+        },
+        'fulltext': {
+            'type': 'string',
+            'default': ''
         }
     }
 };
+
+
+/***/ }),
+/* 526 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GraphQLContext; });
+var GraphQLContext = (function () {
+    function GraphQLContext(database, db) {
+        var _this = this;
+        this.database = database;
+        this.db = db;
+        if (!db) {
+            database.get().then(function (dbInstance) { _this.db = dbInstance; });
+        }
+    }
+    return GraphQLContext;
+}());
+
+
+
+/***/ }),
+/* 527 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export GRANTS */
+/* unused harmony export PUBS */
+/* unused harmony export DB_JSON */
+/* unused harmony export DB_DUMP */
+/* unused harmony export DB_SQLITE */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DB_DUMP_URI; });
+var GRANTS = '../../raw-data/grants.xlsx';
+var PUBS = '../../raw-data/publications.xlsx';
+var DB_JSON = '../../raw-data/database.json';
+var DB_DUMP = '../../raw-data/db-dump.json';
+var DB_SQLITE = '../../raw-data/db/bbsrc-sqlite.db';
+var DB_DUMP_URI = '/assets/db-dump.json';
 
 
 /***/ })
