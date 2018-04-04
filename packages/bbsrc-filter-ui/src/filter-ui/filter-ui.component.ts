@@ -44,7 +44,7 @@ export class FilterUiComponent implements OnInit {
     institution: [],
     mechanism: [],
     journalName: []
-  };
+  } as any;
 
   institutions: string[] = [];
   institutionControl = new FormControl();
@@ -115,8 +115,8 @@ export class FilterUiComponent implements OnInit {
     }
   }, FilterUiComponent.typingWaitTime);
 
-  onResearchClassChange({value}: {value: ResearchClass | undefined}): void {
-    this.updateFilter({researchClassification: value ? [value.acronym] : []});
+  onResearchClassChange({value}: {value: string | undefined}): void {
+    this.updateFilter({researchClassification: value ? [value] : []});
   }
 
   onMechanismChange({value}: {value: string | undefined}): void {
