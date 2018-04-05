@@ -38,7 +38,13 @@ export class FilterUiComponent implements OnInit {
   institutionControl = new FormControl();
   filteredInstitutions: Observable<string[]>;
 
-  mechanisms: string[] = [];
+  mechanisms: string[] = [
+    'Fellowship',
+    'Initiative',
+    'Responsive Mode',
+    'Small International',
+    'Strategic Institute'
+  ].sort();
   researchClasses: ResearchClass[] = [
     {label: 'Agricultural and Food Security', acronym: 'AFS'},
     {label: 'Ageing: LLHW', acronym: 'AGE'},
@@ -91,18 +97,15 @@ export class FilterUiComponent implements OnInit {
   @Output() filterChange = new EventEmitter<Partial<Filter>>();
 
 
-  constructor(private service: BBSRCDatabaseService) {
-    this.filteredInstitutions = service.getDistinct('grantInstitution')
+  constructor(private service: BBSRCDatabaseService) { }
+
+  ngOnInit() {
+    const institutions = this.service.getDistinct('grantInstitution')
       .map((insts) => insts.slice().sort())
       .do((insts) => (this.institutions = insts));
 
-    service.getDistinct('grantMechanism').map((mecs) => mecs.slice().sort())
-      .subscribe((mecs) => (this.mechanisms = mecs));
-  }
-
-  ngOnInit() {
     this.filteredInstitutions = Observable.concat(
-      this.filteredInstitutions,
+      institutions,
       this.institutionControl.valueChanges.map((inst) => {
         return this.filterOptions(inst, this.institutions);
       })
