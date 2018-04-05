@@ -1,35 +1,32 @@
 @import "~nouislider/distribute/nouislider"
 
-.form-container
+.bbsrc-filter-ui
   display: flex
   flex-direction: column
 
-.noUi-target
-  padding: 0 17px
+  .noUi-target
+    padding: 0 17px
 
-.noUi-base::before,
-.noUi-base::after
-  padding: 17px
-  content: ''
-  position: absolute
-  top: 0
-  height: 100%
-  display: block
-
-.noUi-base::before
-  left: -17px
-
-.noUi-base::after
-  left: 100%
-
-.noUi-connect
-  color: blue
-
-.noUi-tooltip
-    display: none
-
-.noUi-active .noUi-tooltip
+  .noUi-base::before,
+  .noUi-base::after
+    padding: 17px
+    content: ''
+    position: absolute
+    top: 0
+    height: 100%
     display: block
 
-.session-year-label
-  color: rgba(0,0,0,.54)
+  .noUi-base::before
+    left: -17px
+
+  .noUi-base::after
+    left: 100%
+
+  .noUi-connect
+    color: blue
+
+  .noUi-tooltip
+    bottom: -130%
+
+  .session-year-label
+    color: rgba(0,0,0,.54)
