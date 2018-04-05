@@ -32,4 +32,8 @@ export class HomeComponent implements OnInit {
     this.filterToggled.emit(this.toggleOpen);
     this.drawer.toggle();
   }
+
+  log(data) {
+    console.log(data);
+  }
 }
