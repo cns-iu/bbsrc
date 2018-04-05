@@ -1,5 +1,5 @@
 <mat-toolbar class="toolbar z-depth-1-half">
-  <mat-icon class="hamburger" (click)="drawer.toggle()">menu</mat-icon>
+  <mat-icon class="hamburger" (click)="toggle()">menu</mat-icon>
   <span>BBSRC Demo</span>
 </mat-toolbar>
 
@@ -9,6 +9,12 @@
   </mat-drawer>
 
   <div class="sidenav-content">
-    <bbsrc-science-map></bbsrc-science-map>
+    <div  *ngIf="(filterToggled); else widemap">
+      <bbsrc-science-map [width]="narrowWidth" [height]="height" ></bbsrc-science-map>
+    </div>
+    <div #widemap>
+      <bbsrc-science-map [width]="wideWidth" [height]="height" ></bbsrc-science-map>
+    </div>
+    <bbsrc-results-panel></bbsrc-results-panel>
   </div>
 </mat-drawer-container>

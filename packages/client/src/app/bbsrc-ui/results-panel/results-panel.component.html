@@ -1,0 +1,16 @@
+<button 
+  mat-raised-button id="resultsPanelButton" 
+  (click)="togglePanel()" 
+  [@buttonState]="buttonState">
+    <span>Results</span>
+  </button>
+<mat-card class="resultsCard" [@panelState]="panelState">
+  <mat-card-header>
+    <mat-card-title>
+    </mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content>
+    Hello
+  </mat-card-content>
+</mat-card>

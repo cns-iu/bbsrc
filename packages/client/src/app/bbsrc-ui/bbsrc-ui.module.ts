@@ -5,6 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from '../shared/';
 import { VisualizationModule } from '../visualization';
 import { HomeComponent } from './home/home.component';
+import { ResultsPanelComponent } from './results-panel/results-panel.component';
 
 @NgModule({
   imports: [
@@ -14,8 +15,9 @@ import { HomeComponent } from './home/home.component';
     VisualizationModule
   ],
   exports: [
-    HomeComponent
+    HomeComponent,
+    ResultsPanelComponent
   ],
-  declarations: [HomeComponent]
+  declarations: [HomeComponent, ResultsPanelComponent]
 })
 export class BbsrcUIModule { }

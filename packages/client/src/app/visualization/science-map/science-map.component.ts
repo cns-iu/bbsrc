@@ -1,21 +1,38 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges  } from '@angular/core';
+
 import { BoundField } from '@ngx-dino/core'
+import { Filter } from 'bbsrc-database';
+
 import { subdisciplineSizeField, subdisciplineIDField } from '../shared/science-map-fields';
+import { ScienceMapDataService } from '../shared/science-map-data.service';
 
 @Component({
   selector: 'bbsrc-science-map',
   templateUrl: './science-map.component.html',
-  styleUrls: ['./science-map.component.sass']
+  styleUrls: ['./science-map.component.sass'],
+  providers: [ ScienceMapDataService ]
 })
-export class ScienceMapComponent implements OnInit {
+export class ScienceMapComponent implements OnInit, OnChanges {
+  @Input() width: number;
+  @Input() height: number;
+  @Input() filter: Partial<Filter> = {};
+
   subdisciplineSize: BoundField<string>;
   subdisciplineID: BoundField<number|string>;
 
-  constructor() { }
+  constructor(private dataService: ScienceMapDataService) { }
 
   ngOnInit() {
     // not user facing
     this.subdisciplineSize = subdisciplineSizeField.getBoundField('size');
     this.subdisciplineID = subdisciplineIDField.getBoundField('id');
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    for (const propName in changes) {
+      if (propName === 'filter' && this[propName]) {
+        this.dataService.fetchData(this.filter);
+      }
+    }
   }
 }
