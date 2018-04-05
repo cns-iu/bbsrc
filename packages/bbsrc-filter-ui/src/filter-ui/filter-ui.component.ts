@@ -66,11 +66,14 @@ export class FilterUiComponent implements OnInit {
     {label: 'Synthetic Biology', acronym: 'SYN'},
     {label: 'Technology Development', acronym: 'TD'},
     {label: 'World Class Underpinning Bioscience', acronym: 'WUB'}
-  ].sort(({label: a}, {label: b}) => (a < b ? -1 : (b < a ? 1 : 0)));
+  ].map((c) => {
+    c.label = `${c.acronym} – ${c.label}`;
+    return c;
+  }).sort(({label: a}, {label: b}) => (a < b ? -1 : (b < a ? 1 : 0)));
 
   yearSliderConfig: any = {
     start: [1999, 2016],
-    margin: 1,
+    margin: 0,
     padding: [0, 0],
     step: 1,
     range: {
