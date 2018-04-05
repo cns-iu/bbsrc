@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges  } from '@angular/core';
 
-import { BoundField } from '@ngx-dino/core'
+import { BoundField } from '@ngx-dino/core';
 import { Filter } from 'bbsrc-database';
 
 import { subdisciplineSizeField, subdisciplineIDField } from '../shared/science-map-fields';
