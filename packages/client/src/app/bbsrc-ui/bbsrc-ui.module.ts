@@ -3,7 +3,9 @@ import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { SharedModule } from '../shared/';
+import { BBSRCFilterUIModule } from 'bbsrc-filter-ui';
 import { VisualizationModule } from '../visualization';
+
 import { HomeComponent } from './home/home.component';
 import { ResultsPanelComponent } from './results-panel/results-panel.component';
 
@@ -12,7 +14,8 @@ import { ResultsPanelComponent } from './results-panel/results-panel.component';
     CommonModule,
     SharedModule,
     BrowserAnimationsModule,
-    VisualizationModule
+    VisualizationModule,
+    BBSRCFilterUIModule
   ],
   exports: [
     HomeComponent,

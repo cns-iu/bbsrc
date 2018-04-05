@@ -4,6 +4,7 @@ export interface Publication {
   id: number;
   title: string;
   author: string;
+  year: number;
   pmid: string;
   doi: string;
   pmcid: string;
@@ -19,4 +20,6 @@ export interface Publication {
   grantYear: number;
   grantInstitution: string;
   grantMechanism: string;
+
+  fulltext: string;
 }

@@ -5,7 +5,7 @@
 
 <mat-drawer-container class="container" autosize>
   <mat-drawer #drawer class="sidenav" mode="side" [opened]="true">
-    <p>Filters</p>
+      <bbsrc-filter-ui (filterChange)="log($event)"></bbsrc-filter-ui>
   </mat-drawer>
 
   <div class="sidenav-content">

@@ -16,6 +16,11 @@ export const PublicationSchema: any = {
       'type': 'string',
       'default': ''
     },
+    'year': {
+      'type': 'number',
+      'default': 0,
+      'index': true
+    },
     'pmid': {
       'type': 'string',
       'default': ''
@@ -61,10 +66,6 @@ export const PublicationSchema: any = {
       'type': 'string',
       'default': ''
     },
-    'grantSummary': {
-      'type': 'string',
-      'default': ''
-    },
     'grantClasses': {
       'type': 'array',
       'uniqueItems': true,
@@ -74,7 +75,7 @@ export const PublicationSchema: any = {
     },
     'grantYear': {
       'type': 'number',
-      'default': 1970,
+      'default': 0,
       'index': true
     },
     'grantInstitution': {
@@ -86,6 +87,10 @@ export const PublicationSchema: any = {
       'type': 'string',
       'default': '',
       'index': true
+    },
+    'fulltext': {
+      'type': 'string',
+      'default': ''
     }
   }
 };

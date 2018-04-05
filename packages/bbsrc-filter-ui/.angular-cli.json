@@ -1,7 +1,7 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "project": {
-    "name": "client"
+    "name": "filter-ui"
   },
   "apps": [
     {
@@ -17,7 +17,7 @@
       "test": "test.ts",
       "tsconfig": "tsconfig.app.json",
       "testTsconfig": "tsconfig.spec.json",
-      "prefix": "app",
+      "prefix": "bbsrc",
       "styles": [
         "styles.sass"
       ],
@@ -25,8 +25,7 @@
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",
-        "prod": "environments/environment.prod.ts",
-        "clientdb": "environments/environment.clientdb.ts"
+        "prod": "environments/environment.prod.ts"
       }
     }
   ],
