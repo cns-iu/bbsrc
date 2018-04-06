@@ -1,0 +1,15 @@
+{
+  "name": "docker",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Node.js Hello world app using docker features for easy docker-compose local dev and solid production defaults",
+  "author": "Bret Fisher <bret@bretfisher.com>",
+  "scripts": {
+    "start": "node ../bbsrc-database/build/prod-server.js",
+    "dev-docker": "../node_modules/nodemon/bin/nodemon.js --debug=5858",
+    "dev-host": "nodemon --debug=5858"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  }
+}

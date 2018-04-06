@@ -8,8 +8,8 @@ function readJSON(inputFile: string): any {
   return JSON.parse(fs.readFileSync(inputFile));
 }
 
-async function importDBDump(database: BBSRCDatabase): Promise<any> {
-  const dump = readJSON(DB_DUMP);
+async function importDBDump(database: BBSRCDatabase, dumpFile: string): Promise<any> {
+  const dump = readJSON(dumpFile);
 
   const db = await database.get();
   const hasResults = !!(await db.publication.findOne().exec());
@@ -19,12 +19,16 @@ async function importDBDump(database: BBSRCDatabase): Promise<any> {
   return db;
 }
 
-export function createServerContext(): GraphQLContext {
-  const database = new BBSRCDatabase(false, 'websql', {name: DB_SQLITE});
-  importDBDump(database).then(() => {
+export function createServerContext(adapter = 'websql', dbDumpFile = DB_DUMP, sqliteFile = DB_SQLITE): GraphQLContext {
+  const rxdbOptions: any = {};
+  if (adapter === 'websql' && sqliteFile) {
+    rxdbOptions['name'] = sqliteFile;
+  }
+  const database = new BBSRCDatabase(false, adapter, rxdbOptions);
+  importDBDump(database, dbDumpFile).then(() => {
     console.log('DB Loaded');
   });
   return new GraphQLContext(database);
 }
 
-export const context = createServerContext();
+// export const context = createServerContext();

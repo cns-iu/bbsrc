@@ -1,5 +1,6 @@
 /* eslint-disable global-require,no-console,no-new */
 import express from 'express';
+import morgan from 'morgan';
 import {
   graphqlExpress,
   graphiqlExpress,
@@ -14,40 +15,22 @@ import { formatError as apolloFormatError, createError } from 'apollo-errors';
 import { schema } from './graphql/schema';
 import { createServerContext } from './graphql/server-context';
 
-process['env'] = {
-  CLIENT_ORIGIN: 'http://localhost:4200'
-};
+// Constants
+const PORT = process.env.PORT || 8080;
+// if you're not using docker-compose for local development, this will default to 8080
+// to prevent non-root permission problems with 80. Dockerfile is set to make this 80
+// because containers don't have that issue :)
 
-// GraphQL port
-const DEFAULT_PORT = 4000;
-const PORT = process.env.PORT || DEFAULT_PORT;
-
-// GraphQL endpoint
-//
-// Custom URL for the graphql endpoint once it's setup.
-// On the local system this would just be a path, which would
-// default to constructing the full URL as localhost/path
-// However, in production we want to serve the GraphQL server behind
-// our HTTPS connection, terminated at our AWS Load Balancer
-// before the front end Apache server.
 const DEFAULT_ENDPOINT_URL = '/graphql/';
 const ENDPOINT_URL = process.env.ENDPOINT_URL || DEFAULT_ENDPOINT_URL;
 
-//
-// Setup Express to server the GraphQL API
-//
+const ADAPTER = 'websql';
+const DB_DUMP = path.join(__dirname, 'db-dump.json');
+const DB_SQLITE = path.join(__dirname, 'db/bbsrc');
+
 const app = express();
 
-//
-// CORS
-//
-// Expect connections from our client application
-// We use CORS here since our client application is
-// hosted at a seperate origin. We need to explicitly allows
-// cross-origin requests otherwise the browser will throw
-// an error.
-//
-app.use('*', cors({ origin: process.env.CLIENT_ORIGIN }));
+app.use(morgan('common'));
 
 //
 // Top level error
@@ -89,9 +72,9 @@ const formatError = (error) => {
 //
 
 // Client compiled project path
-app.use('/', express.static(path.join(__dirname, '../../../client/dist')));
+app.use('/', express.static(path.join(__dirname, 'client')));
 
-const context = createServerContext();
+const context = createServerContext(ADAPTER, DB_DUMP, DB_SQLITE);
 
 //
 // Setup GraphQl endpoint
@@ -107,18 +90,12 @@ app.use('/graphql', bodyParser.json(), graphqlExpress((request, response) => ({
   formatError,
 })));
 
-//
-// Setup GraphiQl endpoint
-//
-// Use Express to host an instance of the GraphiQL web GUI
-// development tool.
-//
-// TODO: Only host this on development.
-//
-app.use('/graphiql', graphiqlExpress({
-  endpointURL: ENDPOINT_URL,
-  subscriptionsEndpoint: `ws://localhost:${PORT}/subscriptions`,
-}));
+app.get('/healthz', function (req, res) {
+	// do app logic here to determine if app is truly healthy
+	// you should return 200 if healthy, and anything else will fail
+	// if you want, you should be able to restrict this to localhost (include ipv4 and ipv6)
+  res.send('I am happy and healthy\n');
+});
 
 // Start the GraphQL server and populate DB with seed data if empty
 const server = createServer(app);
@@ -132,5 +109,41 @@ server.listen(PORT, () => {
     path: '/subscriptions',
   });
 
-  console.log('Server started.');
+  console.log('Webserver is ready');
 });
+
+//
+// need this in docker container to properly exit since node doesn't handle SIGINT/SIGTERM
+// this also won't work on using npm start since:
+// https://github.com/npm/npm/issues/4603
+// https://github.com/npm/npm/pull/10868
+// https://github.com/RisingStack/kubernetes-graceful-shutdown-example/blob/master/src/index.js
+// if you want to use npm then start with `docker run --init` to help, but I still don't think it's
+// a graceful shutdown of node process
+//
+
+// quit on ctrl-c when running docker in terminal
+process.on('SIGINT', function onSigint () {
+	console.info('Got SIGINT (aka ctrl-c in docker). Graceful shutdown ', new Date().toISOString());
+  shutdown();
+});
+
+// quit properly on docker stop
+process.on('SIGTERM', function onSigterm () {
+  console.info('Got SIGTERM (docker container stop). Graceful shutdown ', new Date().toISOString());
+  shutdown();
+})
+
+// shut down server
+function shutdown() {
+  server.close(function onServerClosed (err) {
+    if (err) {
+      console.error(err);
+      process.exitCode = 1;
+		}
+		process.exit();
+  })
+}
+//
+// need above in docker container to properly exit
+//
