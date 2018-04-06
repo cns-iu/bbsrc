@@ -1,19 +1,8 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  OnChanges,
-  SimpleChanges
-} from '@angular/core';
-import {
-  trigger,
-  state,
-  style,
-  animate,
-  transition
-} from '@angular/animations';
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { trigger, state, style, animate, transition } from '@angular/animations';
+import { Observable } from 'rxjs/Observable';
 
-import { Publication } from 'bbsrc-database';
+import { BBSRCDatabaseService, Filter, Publication } from 'bbsrc-database';
 
 @Component({
   selector: 'bbsrc-results-panel',
@@ -47,14 +36,22 @@ import { Publication } from 'bbsrc-database';
 export class ResultsPanelComponent implements OnInit, OnChanges {
   panelState = 'inactive';
   buttonState = 'inactive';
-  @Input() publications: Publication;
 
-  constructor() { }
+  @Input() filter: Filter;
 
-  ngOnInit() {
-  }
+  publications: Observable<any[]> = Observable.of([]);
+
+  constructor(private dataService: BBSRCDatabaseService) { }
+
+  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
+
+  }
+
+  showSubdiscipline(subd_id: number) {
+    this.panelState = 'active';
+    // this.subd_id = subd_id;
 
   }
 
@@ -62,5 +59,4 @@ export class ResultsPanelComponent implements OnInit, OnChanges {
     this.panelState = this.panelState === 'active' ? 'inactive' : 'active';
     this.buttonState = this.buttonState === 'active' ? 'inactive' : 'active';
   }
-
 }

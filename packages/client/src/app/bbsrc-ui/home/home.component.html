@@ -17,8 +17,8 @@
   </mat-drawer>
 
   <div class="sidenav-content">
-    <bbsrc-science-map *ngIf="!toggleOpen" [width]="narrowWidth" [height]="height" [filter]="filter"> </bbsrc-science-map>
-    <bbsrc-science-map *ngIf="toggleOpen" [width]="wideWidth" [height]="height" [filter]="filter"></bbsrc-science-map>
-    <bbsrc-results-panel [publications]="filteredPublications"></bbsrc-results-panel>
+    <bbsrc-science-map *ngIf="toggleOpen" [width]="narrowWidth" [height]="height" [filter]="filter"> </bbsrc-science-map>
+    <bbsrc-science-map *ngIf="!toggleOpen" [width]="wideWidth" [height]="height" [filter]="filter"></bbsrc-science-map>
+    <bbsrc-results-panel [filter]="filter"></bbsrc-results-panel>
   </div>
 </mat-drawer-container>
