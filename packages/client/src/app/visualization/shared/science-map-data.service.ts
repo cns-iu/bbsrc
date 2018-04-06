@@ -20,5 +20,7 @@ export class ScienceMapDataService {
 
     this.dataSubscription = this.databaseService.getSubdisciplines(filter).subscribe(
       (subdisciplines) => this.filteredSubdisciplines.next(subdisciplines));
+
+    return this;
   }
 }

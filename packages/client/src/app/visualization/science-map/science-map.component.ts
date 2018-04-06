@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges  } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { BoundField } from '@ngx-dino/core';
-import { Filter } from 'bbsrc-database';
+import { Filter, SubdisciplineWeight } from 'bbsrc-database';
 
 import { subdisciplineSizeField, subdisciplineIDField } from '../shared/science-map-fields';
 import { ScienceMapDataService } from '../shared/science-map-data.service';
@@ -16,6 +17,7 @@ export class ScienceMapComponent implements OnInit, OnChanges {
   @Input() width: number;
   @Input() height: number;
   @Input() filter: Partial<Filter> = {};
+  filteredData: SubdisciplineWeight[];
 
   subdisciplineSize: BoundField<string>;
   subdisciplineID: BoundField<number|string>;
@@ -34,5 +36,8 @@ export class ScienceMapComponent implements OnInit, OnChanges {
         this.dataService.fetchData(this.filter);
       }
     }
+    this.dataService.filteredSubdisciplines.subscribe((subdisciplines) => {
+      this.filteredData = subdisciplines;
+    });
   }
 }
