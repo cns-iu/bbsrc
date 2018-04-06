@@ -13,8 +13,6 @@ import {
   transition
 } from '@angular/animations';
 
-import { Publication } from 'bbsrc-database';
-
 @Component({
   selector: 'bbsrc-results-panel',
   templateUrl: './results-panel.component.html',
@@ -44,18 +42,13 @@ import { Publication } from 'bbsrc-database';
     ])
   ]
 })
-export class ResultsPanelComponent implements OnInit, OnChanges {
+export class ResultsPanelComponent implements OnInit{
   panelState = 'inactive';
   buttonState = 'inactive';
-  @Input() publications: Publication;
 
   constructor() { }
 
   ngOnInit() {
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-
   }
 
   togglePanel() {

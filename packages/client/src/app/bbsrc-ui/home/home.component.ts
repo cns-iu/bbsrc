@@ -2,26 +2,24 @@ import {
   Component,
   OnInit,
   ViewChild,
+  Input,
   Output,
   EventEmitter,
-  OnChanges,
-  SimpleChanges
+  OnChanges
 } from '@angular/core';
 
-import { Filter, Publication } from 'bbsrc-database';
-import { BBSRCDataService } from '../shared/bbsrc-data.service';
+import { Filter } from 'bbsrc-database';
 
 @Component({
   selector: 'bbsrc-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.sass'],
-  providers: [BBSRCDataService]
+  styleUrls: ['./home.component.sass']
 })
-export class HomeComponent implements OnInit, OnChanges {
+export class HomeComponent implements OnInit {
   @ViewChild('drawer') drawer: any;
   @Output() filterToggled = new EventEmitter<any>();
+
   filter: Partial<Filter> = {};
-  filteredPublications: Publication[];
 
   toggleOpen = true;
   narrowWidth = 1000;
@@ -29,20 +27,9 @@ export class HomeComponent implements OnInit, OnChanges {
   width = window.innerWidth;
   height = 730;
 
-  constructor(private dataService: BBSRCDataService) { }
+  constructor() { }
 
   ngOnInit() {
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    for (const propName in changes) {
-      if (propName === 'filter' && this[propName]) {
-        this.dataService.fetchData(this.filter);
-      }
-    }
-    this.dataService.filteredPublications.subscribe((publications) => {
-      this.filteredPublications = publications;
-    });
   }
 
   toggle() {
