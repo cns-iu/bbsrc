@@ -1,6 +1,6 @@
-<button 
-  mat-raised-button id="resultsPanelButton" 
-  (click)="togglePanel()" 
+<button
+  mat-raised-button id="resultsPanelButton"
+  (click)="togglePanel()"
   [@buttonState]="buttonState">
     <span>Results</span>
   </button>
@@ -9,8 +9,8 @@
     <mat-card-title>
     </mat-card-title>
   </mat-card-header>
-  
+
   <mat-card-content>
-    {{publications}}
+    <dino-datatable [fields]="[]" [data]="[]"></dino-datatable>
   </mat-card-content>
 </mat-card>

@@ -19,15 +19,15 @@ import { BBSRCDataService } from '../shared/bbsrc-data.service';
 })
 export class HomeComponent implements OnInit, OnChanges {
   @ViewChild('drawer') drawer: any;
-  @Output() filterToggled = new EventEmitter<any>();
   filter: Partial<Filter> = {};
   filteredPublications: Publication[];
 
-  toggleOpen = true;
-  narrowWidth = 1000;
-  wideWidth = 1380;
-  width = window.innerWidth;
+  toggleOpen = false;
+  narrowWidth = window.innerWidth - 380;
+  wideWidth = window.innerWidth - 180;
+  // height = window.innerHeight - 150;
   height = 730;
+  containerHeight = window.innerHeight - 150;
 
   constructor(private dataService: BBSRCDataService) { }
 
@@ -47,8 +47,6 @@ export class HomeComponent implements OnInit, OnChanges {
 
   toggle() {
     this.toggleOpen = !this.toggleOpen;
-    this.width = this.toggleOpen ? this.narrowWidth : this.wideWidth;
-    this.filterToggled.emit(this.toggleOpen);
     this.drawer.toggle();
   }
 

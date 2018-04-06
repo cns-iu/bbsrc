@@ -7,6 +7,7 @@ import { BBSRCFilterUIModule } from 'bbsrc-filter-ui';
 import { VisualizationModule } from '../visualization';
 
 import { DinoScienceMapLegendModule } from '@ngx-dino/science-map-legend';
+import { DinoDatatableModule } from '@ngx-dino/datatable';
 
 import { HomeComponent } from './home/home.component';
 import { ResultsPanelComponent } from './results-panel/results-panel.component';
@@ -18,7 +19,8 @@ import { ResultsPanelComponent } from './results-panel/results-panel.component';
     BrowserAnimationsModule,
     VisualizationModule,
     BBSRCFilterUIModule,
-    DinoScienceMapLegendModule
+    DinoScienceMapLegendModule,
+    DinoDatatableModule
   ],
   exports: [
     HomeComponent,
