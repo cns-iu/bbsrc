@@ -33,6 +33,9 @@ module.exports = {
     ],
     "build/server": [
       './src/server.ts'
+    ],
+    "build/prod-server": [
+      './src/prod-server.ts'
     ]
   },
 
