@@ -43,7 +43,7 @@ function simpleField(fieldName: string, label: string): BoundField<string> {
     ])
   ]
 })
-export class ResultsPanelComponent implements OnInit, OnChanges {
+export class ResultsPanelComponent implements OnInit{
   panelState = 'inactive';
   buttonState = 'inactive';
 
