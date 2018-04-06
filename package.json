@@ -1,5 +1,13 @@
 {
 	"private": true,
+	"license": "MIT",
+  "scripts": {
+		"build": "yarn build-client && yarn build-database",
+		"build-database": "lerna run build --scope=client",
+		"build-client": "lerna run build --scope=bbsrc-database",
+		"build-docker": "docker build -t bbsrc .",
+		"start-docker": "docker run -p 80:80 bbsrc"
+	},
 	"devDependencies": {
 		"lerna": "^2.8.0"
 	},

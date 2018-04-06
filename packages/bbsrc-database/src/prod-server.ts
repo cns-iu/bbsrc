@@ -70,10 +70,6 @@ const formatError = (error) => {
 //
 // Serve other apps
 //
-
-// Client compiled project path
-app.use('/', express.static(path.join(__dirname, 'client')));
-
 const context = createServerContext(ADAPTER, DB_DUMP, DB_SQLITE);
 
 //
@@ -96,6 +92,9 @@ app.get('/healthz', function (req, res) {
 	// if you want, you should be able to restrict this to localhost (include ipv4 and ipv6)
   res.send('I am happy and healthy\n');
 });
+
+// Client compiled project path
+app.use('/', express.static('client'));
 
 // Start the GraphQL server and populate DB with seed data if empty
 const server = createServer(app);

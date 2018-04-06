@@ -36,9 +36,6 @@ module.exports = {
     ],
     "build/prod-server": [
       './src/prod-server.ts'
-    ],
-    "../docker/index": [
-      './src/prod-server.ts'
     ]
   },
 

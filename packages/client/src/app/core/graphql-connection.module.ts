@@ -36,7 +36,7 @@ export class GraphqlConnectionModule {
     }
     if (endpoint.startsWith('/')) {
       const url = new URL(endpoint, window.location.href);
-      url.protocol = url.protocol.replace('http', 'ws');
+      // url.protocol = url.protocol.replace('http', 'ws');
       endpoint = url.href;
     }
     if (endpoint.startsWith('ws:')) {

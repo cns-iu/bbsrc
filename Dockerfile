@@ -23,18 +23,18 @@ HEALTHCHECK CMD curl -fs http://localhost:$PORT/healthz || exit 1
 
 # install dependencies first, in a different location for easier app bind mounting for local development
 WORKDIR /opt
-COPY package.json package-lock.json* ./
+COPY packages/bbsrc-database/docker-package.json ./package.json
 RUN npm install && npm cache clean --force
 ENV PATH /opt/node_modules/.bin:$PATH
 
 # copy in our source code last, as it changes the most
 WORKDIR /opt/app
-COPY dist ./dist
-COPY index.js ./
-COPY . /opt/app
+COPY packages/client/dist ./client
+COPY packages/bbsrc-database/build/prod-server.js ./index.js
+COPY raw-data/db-dump.json ./
 
 # if you want to use npm start instead, then use `docker run --init in production`
 # so that signals are passed properly. Note the code in index.js is needed to catch Docker signals
 # using node here is still more graceful stopping then npm with --init afaik
 # I still can't come up with a good production way to run with npm and graceful shutdown
-CMD [ "node", "index.js" ]
+CMD [ "node", "--max-old-space-size=2048", "index.js" ]
