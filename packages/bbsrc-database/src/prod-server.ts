@@ -25,8 +25,8 @@ const DEFAULT_ENDPOINT_URL = '/graphql/';
 const ENDPOINT_URL = process.env.ENDPOINT_URL || DEFAULT_ENDPOINT_URL;
 
 const ADAPTER = 'websql';
-const DB_DUMP = path.join(__dirname, 'db-dump.json');
-const DB_SQLITE = path.join(__dirname, 'db/bbsrc');
+const DB_DUMP = 'db-dump.json';
+const DB_SQLITE = 'db/bbsrc';
 
 const app = express();
 

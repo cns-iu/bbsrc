@@ -6,7 +6,7 @@ RUN apt-get update && \
 	DEBIAN_FRONTEND=noninteractive apt-get -yq install sqlite3 && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN mkdir -p /opt/app
+RUN mkdir -p /opt/app/db
 
 # set our node environment, either development or production
 # defaults to production, compose overrides this to development on build and run
@@ -29,6 +29,8 @@ ENV PATH /opt/node_modules/.bin:$PATH
 
 # copy in our source code last, as it changes the most
 WORKDIR /opt/app
+COPY dist ./dist
+COPY index.js ./
 COPY . /opt/app
 
 # if you want to use npm start instead, then use `docker run --init in production`

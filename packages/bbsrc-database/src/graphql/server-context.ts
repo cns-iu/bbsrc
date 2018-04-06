@@ -20,6 +20,7 @@ async function importDBDump(database: BBSRCDatabase, dumpFile: string): Promise<
 }
 
 export function createServerContext(adapter = 'websql', dbDumpFile = DB_DUMP, sqliteFile = DB_SQLITE): GraphQLContext {
+  console.log(adapter, dbDumpFile, sqliteFile);
   const rxdbOptions: any = {};
   if (adapter === 'websql' && sqliteFile) {
     rxdbOptions['name'] = sqliteFile;
