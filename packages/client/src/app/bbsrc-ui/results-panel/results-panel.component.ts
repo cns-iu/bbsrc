@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  OnChanges,
+  SimpleChanges
+} from '@angular/core';
 import {
   trigger,
   state,
@@ -6,6 +12,8 @@ import {
   animate,
   transition
 } from '@angular/animations';
+
+import { Publication } from 'bbsrc-database';
 
 @Component({
   selector: 'bbsrc-results-panel',
@@ -36,13 +44,18 @@ import {
     ])
   ]
 })
-export class ResultsPanelComponent implements OnInit {
+export class ResultsPanelComponent implements OnInit, OnChanges {
   panelState = 'inactive';
   buttonState = 'inactive';
+  @Input() publications: Publication;
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+
   }
 
   togglePanel() {

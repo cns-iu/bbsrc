@@ -6,16 +6,24 @@
 
 <mat-drawer-container class="container" autosize>
   <mat-drawer #drawer class="sidenav" mode="side" [opened]="true">
-      <bbsrc-filter-ui (filterChange)="log($event)"></bbsrc-filter-ui>
+      <p class="sidebarTitle">Filters</p>
+      <hr>
+      <bbsrc-filter-ui (filterChange)="filter = $event"></bbsrc-filter-ui>
+      <br><br>
+      <p class="sidebarTitle">Legend</p>
+      <hr>
+      <science-map-color-legend></science-map-color-legend>
+      <science-map-size-legend></science-map-size-legend>
   </mat-drawer>
 
   <div class="sidenav-content">
-    <div  *ngIf="(filterToggled); else widemap">
-      <bbsrc-science-map [width]="narrowWidth" [height]="height" ></bbsrc-science-map>
-    </div>
-    <div #widemap>
+    <!-- <div  *ngIf="(filterToggled); else widemap"> -->
+    <bbsrc-science-map [width]="width" [height]="height" [filter]="filter">      
+    </bbsrc-science-map>
+    <!-- </div> -->
+    <!-- <div #widemap>
       <bbsrc-science-map [width]="wideWidth" [height]="height" ></bbsrc-science-map>
-    </div>
-    <bbsrc-results-panel></bbsrc-results-panel>
+    </div> -->
+    <bbsrc-results-panel [publications]="filteredPublications"></bbsrc-results-panel>
   </div>
 </mat-drawer-container>

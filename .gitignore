@@ -1,5 +1,6 @@
 raw-data
 db-dump.json
+.DS_Store
 
 # Logs
 logs

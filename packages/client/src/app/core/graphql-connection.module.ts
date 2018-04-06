@@ -24,7 +24,7 @@ import { environment } from './../../environments/environment';
 export class GraphqlConnectionModule {
   constructor(private apollo: Apollo, private httpLink: HttpLink) {
     const link = this.createLink(environment.graphqlEndpoint);
-    const dataIdFromObject = result => ''+Math.random(); // result.id;
+    const dataIdFromObject = result => result.id;
     const cache = new InMemoryCache({ dataIdFromObject });
 
     apollo.create({ link, cache });
