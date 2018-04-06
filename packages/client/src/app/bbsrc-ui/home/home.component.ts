@@ -1,8 +1,4 @@
-import {
-  Component,
-  OnInit,
-  ViewChild
-} from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 
 import { Filter } from 'bbsrc-database';
 
@@ -11,11 +7,9 @@ import { Filter } from 'bbsrc-database';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.sass']
 })
-export class HomeComponent implements OnInit {
-  @ViewChild('drawer') drawer: any;
+export class HomeComponent {
   filter: Partial<Filter> = {};
 
-  toggleOpen = true;
   narrowWidth = window.innerWidth - 380;
   wideWidth = window.innerWidth - 180;
   // height = window.innerHeight - 150;
@@ -23,11 +17,4 @@ export class HomeComponent implements OnInit {
   containerHeight = window.innerHeight - 150;
 
   constructor() { }
-
-  ngOnInit() { }
-
-  toggle() {
-    this.toggleOpen = !this.toggleOpen;
-    this.drawer.toggle();
-  }
 }

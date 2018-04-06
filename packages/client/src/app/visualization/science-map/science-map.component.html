@@ -3,5 +3,6 @@
   [subdisciplineIDField]="subdisciplineID"
   [data]="filteredSubdisciplines"
   [width]="width"
-  [height]="height">
+  [height]="height"
+  (nodeClicked)="nodeClicked.emit($event)">
 </dino-science-map>

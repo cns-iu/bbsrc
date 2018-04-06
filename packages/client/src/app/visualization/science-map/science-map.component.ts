@@ -1,8 +1,10 @@
 import {
   Component,
+  EventEmitter,
   OnInit,
   Input,
   OnChanges,
+  Output,
   SimpleChanges
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -23,6 +25,7 @@ export class ScienceMapComponent implements OnInit, OnChanges {
   @Input() width: number;
   @Input() height: number;
   @Input() filter: Partial<Filter> = {};
+  @Output() nodeClicked = new EventEmitter<any>();
   filteredSubdisciplines: SubdisciplineWeight[];
 
   subdisciplineSize: BoundField<string>;
