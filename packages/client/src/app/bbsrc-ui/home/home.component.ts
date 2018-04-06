@@ -1,11 +1,7 @@
 import {
   Component,
   OnInit,
-  ViewChild,
-  Input,
-  Output,
-  EventEmitter,
-  OnChanges
+  ViewChild
 } from '@angular/core';
 
 import { Filter } from 'bbsrc-database';
@@ -17,29 +13,21 @@ import { Filter } from 'bbsrc-database';
 })
 export class HomeComponent implements OnInit {
   @ViewChild('drawer') drawer: any;
-  @Output() filterToggled = new EventEmitter<any>();
-
   filter: Partial<Filter> = {};
 
   toggleOpen = true;
-  narrowWidth = 1000;
-  wideWidth = 1380;
-  width = window.innerWidth;
-  height = 730;
+  narrowWidth = window.innerWidth - 380;
+  wideWidth = window.innerWidth - 180;
+  // height = window.innerHeight - 150;
+  height = 730; // FIXME
+  containerHeight = window.innerHeight - 150;
 
   constructor() { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   toggle() {
     this.toggleOpen = !this.toggleOpen;
-    this.width = this.toggleOpen ? this.narrowWidth : this.wideWidth;
-    this.filterToggled.emit(this.toggleOpen);
     this.drawer.toggle();
-  }
-
-  log(data) {
-    console.log(data);
   }
 }

@@ -17,13 +17,8 @@
   </mat-drawer>
 
   <div class="sidenav-content">
-    <!-- <div  *ngIf="(filterToggled); else widemap"> -->
-    <bbsrc-science-map [width]="width" [height]="height" [filter]="filter">      
-    </bbsrc-science-map>
-    <!-- </div> -->
-    <!-- <div #widemap>
-      <bbsrc-science-map [width]="wideWidth" [height]="height" ></bbsrc-science-map>
-    </div> -->
-    <bbsrc-results-panel></bbsrc-results-panel>
+    <bbsrc-science-map *ngIf="toggleOpen" [width]="narrowWidth" [height]="height" [filter]="filter"> </bbsrc-science-map>
+    <bbsrc-science-map *ngIf="!toggleOpen" [width]="wideWidth" [height]="height" [filter]="filter"></bbsrc-science-map>
+    <bbsrc-results-panel [filter]="filter"></bbsrc-results-panel>
   </div>
 </mat-drawer-container>
