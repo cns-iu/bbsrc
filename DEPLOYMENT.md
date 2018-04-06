@@ -13,7 +13,7 @@ how it is deployed using Docker.
 
 ## Initial setup
 
-After installing the system requirements, run these commands:
+After installing the system requirements, run these commands (or `npm run setup`):
 
 ```
 cd /path/to/this/repository
