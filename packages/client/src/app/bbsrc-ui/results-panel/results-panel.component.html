@@ -1,16 +1,13 @@
-<button
-  mat-raised-button id="resultsPanelButton"
-  (click)="togglePanel()"
-  [@buttonState]="buttonState">
-    <span>Results</span>
-  </button>
-<mat-card class="resultsCard" [@panelState]="panelState">
-  <mat-card-header>
-    <mat-card-title>
-    </mat-card-title>
-  </mat-card-header>
+<div class="expansionPanel">
+  <mat-expansion-panel #panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Results
+      </mat-panel-title>
+      <mat-panel-description>
 
-  <mat-card-content>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
     <dino-datatable [fields]="fields" [data]="publications"></dino-datatable>
-  </mat-card-content>
-</mat-card>
+  </mat-expansion-panel>
+</div>

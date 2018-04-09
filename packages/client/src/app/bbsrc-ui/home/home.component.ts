@@ -10,11 +10,10 @@ import { Filter } from 'bbsrc-database';
 export class HomeComponent {
   filter: Partial<Filter> = {};
 
-  narrowWidth = window.innerWidth - 380;
+  narrowWidth = window.innerWidth - 340;
   wideWidth = window.innerWidth - 180;
-  // height = window.innerHeight - 150;
-  height = 730; // FIXME
+  height = window.innerHeight - 110;
   containerHeight = window.innerHeight - 150;
-
-  constructor() { }
+  drawerWidth = window.innerWidth - window.innerWidth / 8;
+  drawerHeight = window.innerHeight;
 }

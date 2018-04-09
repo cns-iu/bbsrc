@@ -1,25 +1,32 @@
 <mat-toolbar class="toolbar z-depth-1-half">
-  <mat-icon class="hamburger" (click)="drawer.toggle()">menu</mat-icon>
+  <mat-icon class="hamburger" (click)="sidenav.toggle()">menu</mat-icon>
   <img height="54px" src="/assets/logo.gif" title="Biotechnology and Biological Sciences Research Council">
   <img height="54px" style="position: absolute; right: 5px;" src="/assets/cns-logo.png" title="Cyberinfrastructure for Network Science Center">
 </mat-toolbar>
-
-<mat-drawer-container class="container" autosize>
-  <mat-drawer #drawer class="sidenav" mode="side" [opened]="true">
-      <p class="sidebarTitle">Filters</p>
-      <hr>
-      <bbsrc-filter-ui (filterChange)="filter = $event"></bbsrc-filter-ui>
-      <br><br>
-      <p class="sidebarTitle">Legend</p>
+<mat-sidenav-container>
+    <mat-sidenav #sidenav mode="side"
+      [opened] = "true"
+      class="sidenavContainer">
+        <p class="sidenavTitle">
+          Filters
+        </p>
+        <hr>
+      <bbsrc-filter-ui (filterChange)="filter = $event; filtersUpdating = true"></bbsrc-filter-ui>
+      <br><br><br>
+      <p class="sidenavTitle">Legend</p>
       <hr>
       <science-map-color-legend></science-map-color-legend>
       <bbsrc-size-legend [filter]="filter"></bbsrc-size-legend>
-  </mat-drawer>
-
-  <div class="sidenav-content">
-    <bbsrc-science-map [width]="narrowWidth" [height]="height" [filter]="filter" (nodeClicked)="results.showSubdiscipline($event.subd_id)"> </bbsrc-science-map>
-    <!-- <bbsrc-science-map *ngIf="drawer.opened" [width]="narrowWidth" [height]="height" [filter]="filter" (nodeClicked)="results.showSubdiscipline($event)"> </bbsrc-science-map>
-    <bbsrc-science-map *ngIf="!drawer.opened" [width]="wideWidth" [height]="height" [filter]="filter" (nodeClicked)="results.showSubdiscipline($event)"></bbsrc-science-map> -->
-    <bbsrc-results-panel [filter]="filter" #results></bbsrc-results-panel>
-  </div>
-</mat-drawer-container>
+    </mat-sidenav>
+  
+    <mat-sidenav-content>
+      <bbsrc-science-map 
+        [width]="narrowWidth"
+        [height]="height" 
+        [filter]="filter" 
+        (nodeClicked)="results.showSubdiscipline($event.subd_id)"
+        (filterUpdateComplete)="filtersUpdating = false"> 
+      </bbsrc-science-map>
+      <bbsrc-results-panel [filter]="filter" #results></bbsrc-results-panel>
+    </mat-sidenav-content>
+  </mat-sidenav-container>

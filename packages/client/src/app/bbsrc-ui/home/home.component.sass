@@ -7,30 +7,20 @@
   color: $white
   background-color: rgb(69,90,100)
 
-.container
-  width: 100%
-  height: 740px
-  background: white
-
-.sidenavcontent
-  display: flex
-  height: 100%
-  alignitems: center
-  justifycontent: center
-
-.sidenav
+.sidenavContainer
+  width: 340px
   padding: 20px
-  width: 260px
+  overflow-x: hidden
 
-#sidenavToggler
-  position: absolute
-  z-index: 10
-  margin-left: 0
+mat-sidenav-content
+  display: flex
+  flex-direction: column
+  overflow-y: hidden
+
+.sidenavTitle
+  margin-left: 40%
+  font-weight: bolder
 
 .hamburger
   cursor: pointer
   padding-right: 10px
-
-.sidebarTitle
-  margin-left: 30%
-  font-weight: bolder
