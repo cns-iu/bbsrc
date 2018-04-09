@@ -27,6 +27,7 @@ export class ScienceMapComponent implements OnInit, OnChanges {
   @Input() filter: Partial<Filter> = {};
   @Output() nodeClicked = new EventEmitter<any>();
   filteredSubdisciplines: SubdisciplineWeight[];
+  @Output() filterUpdateComplete = new EventEmitter<boolean>();
 
   subdisciplineSize: BoundField<string>;
   subdisciplineID: BoundField<number|string>;
@@ -42,7 +43,9 @@ export class ScienceMapComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     for (const propName in changes) {
       if (propName === 'filter' && this[propName]) {
-        this.dataService.fetchData(this.filter);
+        this.dataService.fetchData(this.filter).subscribe(
+          undefined, undefined, () => this.filterUpdateComplete.emit(true)
+        );
       }
     }
     this.dataService.filteredSubdisciplines.subscribe((subdisciplines) => {

@@ -9,6 +9,7 @@ import { Filter } from 'bbsrc-database';
 })
 export class HomeComponent {
   filter: Partial<Filter> = {};
+  filtersUpdating = false;
 
   narrowWidth = window.innerWidth - 380;
   wideWidth = window.innerWidth - 180;

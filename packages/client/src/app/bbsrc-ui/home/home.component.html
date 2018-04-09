@@ -6,9 +6,12 @@
 
 <mat-drawer-container class="container" autosize>
   <mat-drawer #drawer class="sidenav" mode="side" [opened]="true">
-      <p class="sidebarTitle">Filters</p>
+      <p class="sidebarTitle">
+        Filters
+        <mat-spinner *ngIf="filtersUpdating" [diameter]="18"></mat-spinner>
+      </p>
       <hr>
-      <bbsrc-filter-ui (filterChange)="filter = $event"></bbsrc-filter-ui>
+      <bbsrc-filter-ui (filterChange)="filter = $event; filtersUpdating = true"></bbsrc-filter-ui>
       <br><br>
       <p class="sidebarTitle">Legend</p>
       <hr>
@@ -17,7 +20,8 @@
   </mat-drawer>
 
   <div class="sidenav-content">
-    <bbsrc-science-map [width]="narrowWidth" [height]="height" [filter]="filter" (nodeClicked)="results.showSubdiscipline($event.subd_id)"> </bbsrc-science-map>
+    <bbsrc-science-map [width]="narrowWidth" [height]="height" [filter]="filter" (nodeClicked)="results.showSubdiscipline($event.subd_id)"
+        (filterUpdateComplete)="filtersUpdating = false"> </bbsrc-science-map>
     <!-- <bbsrc-science-map *ngIf="drawer.opened" [width]="narrowWidth" [height]="height" [filter]="filter" (nodeClicked)="results.showSubdiscipline($event)"> </bbsrc-science-map>
     <bbsrc-science-map *ngIf="!drawer.opened" [width]="wideWidth" [height]="height" [filter]="filter" (nodeClicked)="results.showSubdiscipline($event)"></bbsrc-science-map> -->
     <bbsrc-results-panel [filter]="filter" #results></bbsrc-results-panel>

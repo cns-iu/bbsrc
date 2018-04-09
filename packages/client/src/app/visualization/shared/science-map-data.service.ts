@@ -18,9 +18,11 @@ export class ScienceMapDataService {
       this.dataSubscription.unsubscribe();
     }
 
-    this.dataSubscription = this.databaseService.getSubdisciplines(filter).subscribe(
-      (subdisciplines) => this.filteredSubdisciplines.next(subdisciplines));
+    const subdiscs = this.databaseService.getSubdisciplines(filter);
+    this.dataSubscription = subdiscs.subscribe(
+      (subdisciplines) => this.filteredSubdisciplines.next(subdisciplines)
+    );
 
-    return this;
+    return subdiscs;
   }
 }
