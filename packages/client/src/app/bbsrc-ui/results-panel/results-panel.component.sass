@@ -4,7 +4,32 @@
   float: left
 
 .resultsCard
-  width: 640px
+  width: calc(100% - 60px)
   height: 400px
   margin-left: 10px
   top: 484px
+
+dino-datatable .mat-header-cell,
+dino-datatable .mat-cell
+  margin: 0 10px 0 10px
+
+dino-datatable .mat-column-Author
+  flex: .8
+
+dino-datatable .mat-column-Year
+  flex: .3
+
+dino-datatable .mat-column-Title
+  flex: 3
+
+dino-datatable .mat-column-PubMed-ID
+  flex: .5
+
+dino-datatable .mat-column-DOI
+  flex: 1.2
+
+dino-datatable .mat-column-GTR-ID
+  flex: .5
+
+dino-datatable .mat-column-Journal
+  flex: 1.3
