@@ -1,18 +1,28 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { trigger, state, style, animate, transition } from '@angular/animations';
+import {
+  Component, Input,
+  OnInit,
+  SimpleChanges, ViewEncapsulation, ViewChild
+} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { FieldV2 as Field, BoundField, Operator } from '@ngx-dino/core';
 import '@ngx-dino/core/src/operators/add/static/access';
+import '@ngx-dino/core/src/operators/add/static/map';
 
 import { BBSRCDatabaseService, Filter, Publication } from 'bbsrc-database';
 
-function simpleField(fieldName: string, label: string): BoundField<string> {
-  return new BoundField<string>(
-    new Field({id: fieldName, label}),
-    Operator.access<any, string>(fieldName)
-  );
+
+function simpleField(fieldName: string, label: string): BoundField<any> {
+  const op = Operator.access<any, string>(fieldName);
+  const field = new Field({
+    id: fieldName, label, initialOp: op, mapping: [
+      ['default', Operator.map((content) => ({type: 'text', content}))]
+    ]
+  });
+
+  return field.getBoundField('default');
 }
+
 
 @Component({
   selector: 'bbsrc-results-panel',
@@ -21,7 +31,7 @@ function simpleField(fieldName: string, label: string): BoundField<string> {
 })
 export class ResultsPanelComponent implements OnInit {
   @Input() fields: BoundField<string>[] = [
-    ['author', 'Author'], ['year', 'year'], ['title', 'Title'],
+    ['author', 'Author'], ['year', 'Year'], ['title', 'Title'],
     ['pmid', 'PubMed ID'], ['doi', 'DOI'], ['id', 'GTR ID'],
     ['journalName', 'Journal']
   ].map((s) => simpleField(s[0], s[1]));
@@ -35,7 +45,7 @@ export class ResultsPanelComponent implements OnInit {
 
   constructor(private dataService: BBSRCDatabaseService) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   public showSubdiscipline(subd_id: any) {
     this.subd_id = subd_id;

@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatIconModule,
     MatToolbarModule,
     MatCardModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatProgressSpinnerModule
   ],
   exports: [
     BrowserAnimationsModule,
@@ -29,7 +31,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatIconModule,
     MatToolbarModule,
     MatCardModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatProgressSpinnerModule
   ],
   declarations: []
 })
