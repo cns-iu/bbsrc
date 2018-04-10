@@ -35,6 +35,12 @@ export class ScienceMapComponent implements OnInit, OnChanges {
   constructor(private dataService: ScienceMapDataService) { }
 
   ngOnInit() {
+    this.filteredSubdisciplines = [];
+
+    this.dataService.filteredSubdisciplines.subscribe((subdisciplines) => {
+      this.filteredSubdisciplines = subdisciplines;
+    });
+
     // not user facing
     this.subdisciplineSize = subdisciplineSizeField.getBoundField('size');
     this.subdisciplineID = subdisciplineIDField.getBoundField('id');
@@ -48,8 +54,5 @@ export class ScienceMapComponent implements OnInit, OnChanges {
         );
       }
     }
-    this.dataService.filteredSubdisciplines.subscribe((subdisciplines) => {
-      this.filteredSubdisciplines = subdisciplines;
-    });
   }
 }
