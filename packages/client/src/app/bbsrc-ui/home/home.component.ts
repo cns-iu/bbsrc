@@ -12,9 +12,13 @@ export class HomeComponent {
   filtersUpdating = false;
 
   narrowWidth = window.innerWidth - 340;
-  wideWidth = window.innerWidth - 180;
+  wideWidth = window.innerWidth;
   height = window.innerHeight - 110;
   containerHeight = window.innerHeight - 150;
   drawerWidth = window.innerWidth - window.innerWidth / 8;
   drawerHeight = window.innerHeight;
+
+  constructor() { }
+
 }
+

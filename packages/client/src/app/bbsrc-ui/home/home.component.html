@@ -6,7 +6,8 @@
 <mat-sidenav-container>
     <mat-sidenav #sidenav mode="side"
       [opened] = "true"
-      class="sidenavContainer">
+      class="sidenavContainer"
+      (openedChange)="openState = $event">
         <p class="sidenavTitle">
           Filters
           <mat-spinner *ngIf="filtersUpdating" [diameter]="18"></mat-spinner>
@@ -21,13 +22,22 @@
     </mat-sidenav>
   
     <mat-sidenav-content>
-      <bbsrc-science-map 
-        [width]="narrowWidth"
+      <div>
+        <bbsrc-science-map *ngIf="openState"
+          [width]="narrowWidth"
+          [height]="height" 
+          [filter]="filter" 
+          (nodeClicked)="results.showSubdiscipline($event.subd_id)"
+          (filterUpdateComplete)="filtersUpdating = false"> 
+        </bbsrc-science-map>
+        <bbsrc-science-map *ngIf="!openState"
+        [width]="wideWidth"
         [height]="height" 
         [filter]="filter" 
         (nodeClicked)="results.showSubdiscipline($event.subd_id)"
         (filterUpdateComplete)="filtersUpdating = false"> 
       </bbsrc-science-map>
-      <bbsrc-results-panel [filter]="filter" #results></bbsrc-results-panel>
+    </div>  
+    <bbsrc-results-panel [filter]="filter" #results></bbsrc-results-panel>
     </mat-sidenav-content>
   </mat-sidenav-container>
