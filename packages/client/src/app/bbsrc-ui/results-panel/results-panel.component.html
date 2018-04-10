@@ -1,13 +1,11 @@
-<div class="expansionPanel">
-  <mat-expansion-panel #panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        Results
-      </mat-panel-title>
-      <mat-panel-description>
+<mat-expansion-panel #panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Results
+    </mat-panel-title>
+    <mat-panel-description>
 
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-    <dino-datatable [fields]="fields" [data]="publications"></dino-datatable>
-  </mat-expansion-panel>
-</div>
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <dino-datatable [fields]="fields" [data]="publications"></dino-datatable>
+</mat-expansion-panel>
