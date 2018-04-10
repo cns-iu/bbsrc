@@ -48057,30 +48057,30 @@ function readJSON(uri) {
 function importDBDump(database) {
     return __awaiter(this, void 0, void 0, function () {
         var _this = this;
-        var dump, db;
+        var db;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, readJSON(__WEBPACK_IMPORTED_MODULE_2__loader_options__["a" /* DB_DUMP_URI */])];
+                case 0: return [4 /*yield*/, database.get(function (db) { return __awaiter(_this, void 0, void 0, function () {
+                        var hasResults, dump;
+                        return __generator(this, function (_a) {
+                            switch (_a.label) {
+                                case 0: return [4 /*yield*/, db.publication.findOne().exec()];
+                                case 1:
+                                    hasResults = !!(_a.sent());
+                                    if (!!hasResults) return [3 /*break*/, 4];
+                                    console.log("Importing dump");
+                                    return [4 /*yield*/, readJSON(__WEBPACK_IMPORTED_MODULE_2__loader_options__["a" /* DB_DUMP_URI */])];
+                                case 2:
+                                    dump = _a.sent();
+                                    return [4 /*yield*/, db.importDump(dump)];
+                                case 3:
+                                    _a.sent();
+                                    _a.label = 4;
+                                case 4: return [2 /*return*/];
+                            }
+                        });
+                    }); })];
                 case 1:
-                    dump = _a.sent();
-                    return [4 /*yield*/, database.get(function (db) { return __awaiter(_this, void 0, void 0, function () {
-                            var hasResults;
-                            return __generator(this, function (_a) {
-                                switch (_a.label) {
-                                    case 0: return [4 /*yield*/, db.publication.findOne().exec()];
-                                    case 1:
-                                        hasResults = !!(_a.sent());
-                                        if (!!hasResults) return [3 /*break*/, 3];
-                                        console.log("Importing dump");
-                                        return [4 /*yield*/, db.importDump(dump)];
-                                    case 2:
-                                        _a.sent();
-                                        _a.label = 3;
-                                    case 3: return [2 /*return*/];
-                                }
-                            });
-                        }); })];
-                case 2:
                     db = _a.sent();
                     return [2 /*return*/, db];
             }

@@ -8,13 +8,12 @@ async function readJSON(uri: string): Promise<any> {
 }
 
 async function importDBDump(database: BBSRCDatabase): Promise<any> {
-  const dump = await readJSON(DB_DUMP_URI);
-
   const db = await database.get(async (db) => {
     const hasResults = !!(await db.publication.findOne().exec());
     if (!hasResults) {
       console.log("Importing dump");
-      await db.importDump(dump)
+      const dump = await readJSON(DB_DUMP_URI);
+      await db.importDump(dump);
     }
   });
   return db;
