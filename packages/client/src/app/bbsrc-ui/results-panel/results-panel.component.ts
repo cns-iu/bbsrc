@@ -27,7 +27,8 @@ function simpleField(fieldName: string, label: string): BoundField<any> {
 @Component({
   selector: 'bbsrc-results-panel',
   templateUrl: './results-panel.component.html',
-  styleUrls: ['./results-panel.component.sass']
+  styleUrls: ['./results-panel.component.sass'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ResultsPanelComponent implements OnInit {
   @Input() fields: BoundField<string>[] = [
@@ -43,14 +44,19 @@ export class ResultsPanelComponent implements OnInit {
 
   publications: Observable<any[]> = Observable.of([]);
 
+  description: string = undefined;
+
   constructor(private dataService: BBSRCDatabaseService) { }
 
   ngOnInit() { }
 
-  public showSubdiscipline(subd_id: any) {
-    this.subd_id = subd_id;
+  public showSubdiscipline(data: any) {
+    this.subd_id = data.subd_id;
+    this.description = `${data.disc_name} – ${data.subd_name}`;
 
-    const filter = Object.assign({}, this.filter, {subd_id: [subd_id], limit: 20});
+    const filter = Object.assign({}, this.filter, {
+      subd_id: [data.subd_id], limit: 20
+    });
     this.publications = this.dataService.getPublications(filter);
     this.panel.open();
   }

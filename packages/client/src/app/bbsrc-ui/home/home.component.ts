@@ -19,6 +19,4 @@ export class HomeComponent {
   drawerHeight = window.innerHeight;
 
   constructor() { }
-
 }
-
