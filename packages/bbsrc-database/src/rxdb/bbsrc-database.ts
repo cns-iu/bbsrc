@@ -23,13 +23,11 @@ export class BBSRCDatabase {
     'memory': MemoryAdapter
   };
 
-  constructor(private production?: boolean, private adapter: string = 'memory', private rxdbOptions: any = {}) {
-    this.setupPlugins();
-  }
+  constructor(private production?: boolean, private adapter: string = 'memory', private rxdbOptions: any = {}) { }
 
-  get(): Promise<RxBBSRCDatabase> {
+  get(initializer?: (db: RxBBSRCDatabase) => Promise<any>): Promise<RxBBSRCDatabase> {
     if (!BBSRCDatabase.dbPromise) {
-      BBSRCDatabase.dbPromise = this._create();
+      BBSRCDatabase.dbPromise = this._create(initializer);
     }
     return BBSRCDatabase.dbPromise;
   }
@@ -48,7 +46,9 @@ export class BBSRCDatabase {
     // Do nothing...
   }
 
-  private async _create(): Promise<RxBBSRCDatabase> {
+  private async _create(initializer?: (db: RxBBSRCDatabase) => Promise<any>): Promise<RxBBSRCDatabase> {
+    this.setupPlugins();
+
     this.log('DatabaseService: creating database');
     const db: RxBBSRCDatabase = await RxDB.create(Object.assign({
       name: 'bbsrc',
@@ -57,6 +57,9 @@ export class BBSRCDatabase {
     this.log('DatabaseService: creating collections');
     await Promise.all(this.collections.map(colData => db.collection(colData)));
     await this.initialize(db);
+    if (initializer) {
+      await initializer(db);
+    }
 
     return db;
   }

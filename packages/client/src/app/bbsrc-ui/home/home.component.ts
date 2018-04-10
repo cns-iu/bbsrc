@@ -10,6 +10,7 @@ import { Filter } from 'bbsrc-database';
 export class HomeComponent {
   filter: Partial<Filter> = {};
   filtersUpdating = false;
+  openState = true;
 
   narrowWidth = window.innerWidth - 340;
   wideWidth = window.innerWidth;

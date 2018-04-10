@@ -11,11 +11,13 @@ function readJSON(inputFile: string): any {
 async function importDBDump(database: BBSRCDatabase, dumpFile: string): Promise<any> {
   const dump = readJSON(dumpFile);
 
-  const db = await database.get();
-  const hasResults = !!(await db.publication.findOne().exec());
-  if (!hasResults) {
-    await db.importDump(dump);
-  }
+  const db = await database.get(async (db) => {
+    const hasResults = !!(await db.publication.findOne().exec());
+    if (!hasResults) {
+      console.log("Importing dump");
+      await db.importDump(dump)
+    }
+  });
   return db;
 }
 
@@ -26,6 +28,7 @@ export function createServerContext(adapter = 'websql', dbDumpFile = DB_DUMP, sq
     rxdbOptions['name'] = sqliteFile;
   }
   const database = new BBSRCDatabase(false, adapter, rxdbOptions);
+
   importDBDump(database, dbDumpFile).then(() => {
     console.log('DB Loaded');
   });
