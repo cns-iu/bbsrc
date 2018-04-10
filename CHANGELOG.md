@@ -2,7 +2,7 @@
 
 Changelog for the BBSRC project.
 
-## 0.0.1 - 2018-04-06
+## 0.0.1 - 2018-04-10
 ### Added
     - First release of the BBSRC project following Sprint 1!
     - Science Mapped BBSRC journal publications and integrated them

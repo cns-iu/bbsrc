@@ -47677,15 +47677,28 @@ function escapeStringRegExp(str) {
     }
     return str.replace(matchOperatorsRe, '\\$&');
 }
-function sumAgg(items, keyField, valueField) {
-    return items.reduce(function (acc, itemsInner) {
-        itemsInner.forEach(function (item) {
-            var key = item[keyField];
-            var weight = item[valueField];
-            acc[key] = (acc[key] || 0) + weight;
+function sumAgg(items, itemKeyField, keyField, valueField) {
+    return __awaiter(this, void 0, void 0, function () {
+        var acc, _i, items_1, innerItem, _a, _b, item, key, weight;
+        return __generator(this, function (_c) {
+            acc = {};
+            for (_i = 0, items_1 = items; _i < items_1.length; _i++) {
+                innerItem = items_1[_i];
+                for (_a = 0, _b = innerItem[itemKeyField]; _a < _b.length; _a++) {
+                    item = _b[_a];
+                    key = item[keyField];
+                    weight = item[valueField];
+                    if (acc.hasOwnProperty(key)) {
+                        acc[key] += weight;
+                    }
+                    else {
+                        acc[key] = weight;
+                    }
+                }
+            }
+            return [2 /*return*/, acc];
         });
-        return acc;
-    }, {});
+    });
 }
 function getPublications(database, filter) {
     if (filter === void 0) { filter = {}; }
@@ -47714,8 +47727,7 @@ function getPublications(database, filter) {
                             query = query.where('year').eq(filter.year.start);
                         }
                         else {
-                            query = query.where('year').gte(filter.year.start)
-                                .where('year').lte(filter.year.end);
+                            query = query.where('year').gte(filter.year.start).lte(filter.year.end);
                         }
                     }
                     if (filter.sessionYear) {
@@ -47723,8 +47735,7 @@ function getPublications(database, filter) {
                             query = query.where('grantYear').eq(filter.sessionYear.start);
                         }
                         else {
-                            query = query.where('grantYear').gte(filter.sessionYear.start)
-                                .where('grantYear').lte(filter.sessionYear.end);
+                            query = query.where('grantYear').gte(filter.sessionYear.start).lte(filter.sessionYear.end);
                         }
                     }
                     if (filter.researchClassification) {
@@ -47758,7 +47769,9 @@ function getSubdisciplines(database, filter) {
                 case 0: return [4 /*yield*/, getPublications(database, filter)];
                 case 1:
                     publications = _a.sent();
-                    weights = sumAgg(publications.map(function (item) { return item.subdisciplines; }), 'subd_id', 'weight');
+                    return [4 /*yield*/, sumAgg(publications, 'subdisciplines', 'subd_id', 'weight')];
+                case 2:
+                    weights = _a.sent();
                     return [2 /*return*/, Object.entries(weights).map(function (_a) {
                             var k = _a[0], v = _a[1];
                             return ({ subd_id: k, weight: v });
@@ -48043,24 +48056,33 @@ function readJSON(uri) {
 }
 function importDBDump(database) {
     return __awaiter(this, void 0, void 0, function () {
-        var dump, db, hasResults;
+        var _this = this;
+        var dump, db;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, readJSON(__WEBPACK_IMPORTED_MODULE_2__loader_options__["a" /* DB_DUMP_URI */])];
                 case 1:
                     dump = _a.sent();
-                    return [4 /*yield*/, database.get()];
+                    return [4 /*yield*/, database.get(function (db) { return __awaiter(_this, void 0, void 0, function () {
+                            var hasResults;
+                            return __generator(this, function (_a) {
+                                switch (_a.label) {
+                                    case 0: return [4 /*yield*/, db.publication.findOne().exec()];
+                                    case 1:
+                                        hasResults = !!(_a.sent());
+                                        if (!!hasResults) return [3 /*break*/, 3];
+                                        console.log("Importing dump");
+                                        return [4 /*yield*/, db.importDump(dump)];
+                                    case 2:
+                                        _a.sent();
+                                        _a.label = 3;
+                                    case 3: return [2 /*return*/];
+                                }
+                            });
+                        }); })];
                 case 2:
                     db = _a.sent();
-                    return [4 /*yield*/, db.publication.findOne().exec()];
-                case 3:
-                    hasResults = !!(_a.sent());
-                    if (!!hasResults) return [3 /*break*/, 5];
-                    return [4 /*yield*/, db.importDump(dump)];
-                case 4:
-                    _a.sent();
-                    _a.label = 5;
-                case 5: return [2 /*return*/, db];
+                    return [2 /*return*/, db];
             }
         });
     });
@@ -48145,11 +48167,10 @@ var BBSRCDatabase = (function () {
             'websql': __WEBPACK_IMPORTED_MODULE_4_pouchdb_adapter_node_websql__,
             'memory': __WEBPACK_IMPORTED_MODULE_5_pouchdb_adapter_memory__
         };
-        this.setupPlugins();
     }
-    BBSRCDatabase.prototype.get = function () {
+    BBSRCDatabase.prototype.get = function (initializer) {
         if (!BBSRCDatabase.dbPromise) {
-            BBSRCDatabase.dbPromise = this._create();
+            BBSRCDatabase.dbPromise = this._create(initializer);
         }
         return BBSRCDatabase.dbPromise;
     };
@@ -48185,12 +48206,13 @@ var BBSRCDatabase = (function () {
             });
         });
     };
-    BBSRCDatabase.prototype._create = function () {
+    BBSRCDatabase.prototype._create = function (initializer) {
         return __awaiter(this, void 0, void 0, function () {
             var db;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
+                        this.setupPlugins();
                         this.log('DatabaseService: creating database');
                         return [4 /*yield*/, __WEBPACK_IMPORTED_MODULE_0_rxdb__["a" /* default */].create(Object.assign({
                                 name: 'bbsrc',
@@ -48205,7 +48227,12 @@ var BBSRCDatabase = (function () {
                         return [4 /*yield*/, this.initialize(db)];
                     case 3:
                         _a.sent();
-                        return [2 /*return*/, db];
+                        if (!initializer) return [3 /*break*/, 5];
+                        return [4 /*yield*/, initializer(db)];
+                    case 4:
+                        _a.sent();
+                        _a.label = 5;
+                    case 5: return [2 /*return*/, db];
                 }
             });
         });

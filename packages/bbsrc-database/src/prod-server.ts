@@ -67,9 +67,6 @@ const formatError = (error) => {
   return formattedError;
 };
 
-//
-// Serve other apps
-//
 const context = createServerContext(ADAPTER, DB_DUMP, DB_SQLITE);
 
 //
@@ -80,11 +77,18 @@ const context = createServerContext(ADAPTER, DB_DUMP, DB_SQLITE);
 //
 // Load the schema and context for each GraphQL request.
 //
-app.use('/graphql', bodyParser.json(), graphqlExpress((request, response) => ({
-  schema,
-  context,
-  formatError,
-})));
+app.use('/graphql', bodyParser.json(), graphqlExpress((request, response) => {
+  return {
+    schema,
+    context,
+    formatError,
+    /*
+    debug: true,
+    tracing: true,
+    cacheControl: true
+    */
+  };
+}));
 
 app.get('/healthz', function (req, res) {
 	// do app logic here to determine if app is truly healthy
@@ -99,15 +103,6 @@ app.use('/', express.static('client'));
 // Start the GraphQL server and populate DB with seed data if empty
 const server = createServer(app);
 server.listen(PORT, () => {
-  new SubscriptionServer({
-    execute,
-    subscribe,
-    schema
-  }, {
-    server,
-    path: '/subscriptions',
-  });
-
   console.log('Webserver is ready');
 });
 

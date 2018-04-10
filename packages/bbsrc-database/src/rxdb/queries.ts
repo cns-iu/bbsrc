@@ -13,15 +13,20 @@ function escapeStringRegExp(str: string): string {
   return str.replace(matchOperatorsRe, '\\$&');
 }
 
-function sumAgg<T>(items: T[][], keyField: string, valueField: string): {[key: string]: number} {
-  return items.reduce((acc, itemsInner) => {
-    itemsInner.forEach((item) => {
+async function sumAgg<T>(items: T[], itemKeyField: string, keyField: string, valueField: string): Promise<{[key: string]: number}> {
+  const acc: any = {};
+  for (const innerItem of items) {
+    for (const item of innerItem[itemKeyField]) {
       const key = item[keyField];
       const weight = item[valueField];
-      acc[key] = (acc[key] || 0) + weight;
-    });
-    return acc;
-  }, {});
+      if (acc.hasOwnProperty(key)) {
+        acc[key] += weight;
+      } else {
+        acc[key] = weight;
+      }
+    }
+  }
+  return acc;
 }
 
 export async function getPublications(database: BBSRCDatabase, filter: Partial<Filter> = {}): Promise<RxPublicationDocument[]> {
@@ -44,16 +49,14 @@ export async function getPublications(database: BBSRCDatabase, filter: Partial<F
     if (filter.year.start === filter.year.end) {
       query = query.where('year').eq(filter.year.start);
     } else {
-      query = query.where('year').gte(filter.year.start)
-        .where('year').lte(filter.year.end);
+      query = query.where('year').gte(filter.year.start).lte(filter.year.end);
     }
   }
   if (filter.sessionYear) {
     if (filter.sessionYear.start === filter.sessionYear.end) {
       query = query.where('grantYear').eq(filter.sessionYear.start);
     } else {
-      query = query.where('grantYear').gte(filter.sessionYear.start)
-        .where('grantYear').lte(filter.sessionYear.end);
+      query = query.where('grantYear').gte(filter.sessionYear.start).lte(filter.sessionYear.end);
     }
   }
   if (filter.researchClassification) {
@@ -78,7 +81,7 @@ export async function getPublications(database: BBSRCDatabase, filter: Partial<F
 
 export async function getSubdisciplines(database: BBSRCDatabase, filter: Partial<Filter> = {}): Promise<SubdisciplineWeight[]> {
   const publications = await getPublications(database, filter);
-  const weights = sumAgg<SubdisciplineWeight>(publications.map((item) => item.subdisciplines), 'subd_id', 'weight');
+  const weights = await sumAgg<RxPublicationDocument>(publications, 'subdisciplines', 'subd_id', 'weight');
 
   return Object.entries(weights).map(([k, v]) => <SubdisciplineWeight>{subd_id: <number>(<any>k), weight: v});
 }
