@@ -12,7 +12,6 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { BoundField } from '@ngx-dino/core';
 import { Filter, SubdisciplineWeight } from 'bbsrc-database';
 
-import { subdisciplineSizeField, subdisciplineIDField } from '../shared/science-map-fields';
 import { ScienceMapDataService } from '../shared/science-map-data.service';
 
 @Component({
@@ -42,8 +41,8 @@ export class ScienceMapComponent implements OnInit, OnChanges {
     });
 
     // not user facing
-    this.subdisciplineSize = subdisciplineSizeField.getBoundField('size');
-    this.subdisciplineID = subdisciplineIDField.getBoundField('id');
+    this.subdisciplineSize = this.dataService.subdisciplineSize;
+    this.subdisciplineID = this.dataService.subdisciplineID;
   }
 
   ngOnChanges(changes: SimpleChanges) {

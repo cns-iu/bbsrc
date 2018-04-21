@@ -6,6 +6,8 @@ import {
   SimpleChanges
 } from '@angular/core';
 
+import { BoundField } from '@ngx-dino/core';
+
 import { Filter, SubdisciplineWeight } from 'bbsrc-database';
 import { ScienceMapDataService } from '../shared/science-map-data.service';
 
@@ -18,10 +20,14 @@ import { ScienceMapDataService } from '../shared/science-map-data.service';
 export class SizeLegendComponent implements OnInit, OnChanges {
   @Input() filter: Partial<Filter> = {};
   filteredSubdisciplines: SubdisciplineWeight[];
+  subdisciplineSize: BoundField<string>;
+
+  nodeSizeEncoding = 'Weighted Journal Score';
 
   constructor(private dataService: ScienceMapDataService) { }
 
   ngOnInit() {
+    this.subdisciplineSize = this.dataService.subdisciplineSize;
   }
 
   ngOnChanges(changes: SimpleChanges) {
