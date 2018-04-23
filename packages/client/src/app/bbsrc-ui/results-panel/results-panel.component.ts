@@ -104,6 +104,7 @@ export class ResultsPanelComponent implements OnInit {
       subd_id: [data.subd_id], limit: 20, sort: [{field: 'year', ascending: false}]
     });
 
+    this.numResults = -1;
     this.dataSubscription = this.dataService.getPublicationResults(filter)
       .subscribe((response) => {
         this.processedData.emit(response.results.map((p) => getters.map((g) => g(p))));
