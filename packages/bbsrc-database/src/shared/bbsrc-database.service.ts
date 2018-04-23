@@ -20,6 +20,7 @@ export const GET_PUBLICATIONS = gql`
         author
         year
         title
+        grantId
         pmid
         doi
         pmcid
