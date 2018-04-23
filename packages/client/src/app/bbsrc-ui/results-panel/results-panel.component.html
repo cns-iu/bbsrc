@@ -9,13 +9,13 @@
   </mat-expansion-panel-header>
 
   <div class="table">
-    <mat-table [dataSource]="processedData">
+    <mat-table [dataSource]="dataSource">
       <ng-container matColumnDef="author">
         <mat-header-cell *matHeaderCellDef>
           {{authorField?.field.label}}
         </mat-header-cell>
         <mat-cell *matCellDef="let data">
-          {{data[0]}}
+          {{data.author}}
         </mat-cell>
       </ng-container>
 
@@ -24,7 +24,7 @@
           {{yearField?.field.label}}
         </mat-header-cell>
         <mat-cell *matCellDef="let data">
-          {{data[1] || '–'}}
+          {{data.year || '–'}}
         </mat-cell>
       </ng-container>
 
@@ -33,7 +33,7 @@
           {{titleField?.field.label}}
         </mat-header-cell>
         <mat-cell *matCellDef="let data">
-          {{data[2]}}
+          {{data.title}}
         </mat-cell>
       </ng-container>
 
@@ -42,15 +42,15 @@
           {{linkField?.field.label}}
         </mat-header-cell>
         <mat-cell *matCellDef="let data">
-          <a *ngIf="data[3].pmid" [attr.href]="pubMedHref(data[3].pmid)" target="_blank">
+          <a *ngIf="data.link.pmid" [attr.href]="pubMedHref(data.link.pmid)" target="_blank">
             PubMed
           </a>
 
-          <a *ngIf="data[3].doi" [attr.href]="doiHref(data[3].doi)" target="_blank">
+          <a *ngIf="data.link.doi" [attr.href]="doiHref(data.link.doi)" target="_blank">
             DOI
           </a>
 
-          <a *ngIf="data[3].gtr" [attr.href]="gtrHref(data[3].gtr)" target="_blank">
+          <a *ngIf="data.link.gtr" [attr.href]="gtrHref(data.link.gtr)" target="_blank">
             GTR
           </a>
         </mat-cell>
@@ -61,7 +61,7 @@
           {{journalField?.field.label}}
         </mat-header-cell>
         <mat-cell *matCellDef="let data">
-          {{data[4]}}
+          {{data.journal}}
         </mat-cell>
       </ng-container>
 

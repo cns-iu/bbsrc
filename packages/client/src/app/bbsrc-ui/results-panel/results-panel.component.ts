@@ -3,6 +3,8 @@ import {
   OnInit,
   SimpleChanges, ViewEncapsulation, EventEmitter
 } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
+
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -75,7 +77,7 @@ export class ResultsPanelComponent implements OnInit {
 
   description: string;
   dataSubscription: Subscription;
-  processedData = new EventEmitter<any[][]>();
+  dataSource = new MatTableDataSource();
 
   constructor(private dataService: BBSRCDatabaseService) {
     this.authorField = makeTextField('Author', 'author');
@@ -95,17 +97,21 @@ export class ResultsPanelComponent implements OnInit {
     this.subd_id = data.subd_id;
     this.description = `${data.disc_name} – ${data.subd_name}`;
 
-    const getters = [
-      this.authorField, this.yearField, this.titleField,
-      this.linkField, this.journalField
-    ].map((f) => f.operator.getter);
+    const extractor = Operator.combine({
+      author: this.authorField.operator,
+      year: this.yearField.operator,
+      title: this.titleField.operator,
+      link: this.linkField.operator,
+      journal: this.journalField.operator
+    });
     const filter = Object.assign({}, this.filter, {
       subd_id: [data.subd_id], limit: 20
     });
 
     this.dataSubscription = this.dataService.getPublications(filter)
       .subscribe((pubs) => {
-        this.processedData.emit(pubs.map((p) => getters.map((g) => g(p))));
+        const processedData = pubs.map((p) => extractor.get(p));
+        this.dataSource.data = processedData;
       });
 
     this.panel.open();
