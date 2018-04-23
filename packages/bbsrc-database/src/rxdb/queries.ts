@@ -2,6 +2,7 @@ import { BBSRCDatabase } from '../rxdb/bbsrc-database';
 import { Filter } from '../shared/filter';
 import { Publication } from '../shared/publication';
 import { SubdisciplineWeight } from '../shared/subdiscipline-weight';
+import { QueryResults } from '../shared/query-results';
 import { RxPublicationDocument } from './rxdb-types';
 
 // FROM: https://github.com/sindresorhus/escape-string-regexp/
@@ -29,7 +30,7 @@ async function sumAgg<T>(items: T[], itemKeyField: string, keyField: string, val
   return acc;
 }
 
-export async function getPublications(database: BBSRCDatabase, filter: Partial<Filter> = {}): Promise<RxPublicationDocument[]> {
+export async function getPublications(database: BBSRCDatabase, filter: Partial<Filter> = {}): Promise<QueryResults<RxPublicationDocument>> {
   const db = await database.get();
 
   let query = db.publication.find();
@@ -67,31 +68,39 @@ export async function getPublications(database: BBSRCDatabase, filter: Partial<F
     query = query.where('fulltext').regex(regexp);
   }
 
-  if (filter.sort) {
-    const sort = filter.sort.map((s) => (s.ascending ? '' : '-') + s.field ).join(' ');
-    query = query.sort(sort);
+  let results = await query.exec();
+  const totalCount = results.length;
+  if (filter.sort && filter.sort.length > 0) {
+    const field = filter.sort[0].field;
+    const ascending = filter.sort[0].ascending === true;
+    if (ascending) {
+      results.sort((a,b) => a[field] - b[field]);
+    } else {
+      results.sort((a,b) => b[field] - a[field]);
+    }
   }
   if (filter.limit && filter.limit > 0) {
-    query = query.limit(filter.limit);
+    results = results.slice(0, filter.limit);
   }
 
-  const results: RxPublicationDocument[] = await query.exec();
-  return results || [];
+  return { results, pageInfo: { totalCount } };
 }
 
-export async function getSubdisciplines(database: BBSRCDatabase, filter: Partial<Filter> = {}): Promise<SubdisciplineWeight[]> {
+export async function getSubdisciplines(database: BBSRCDatabase, filter: Partial<Filter> = {}): Promise<QueryResults<SubdisciplineWeight>> {
   const publications = await getPublications(database, filter);
-  const weights = await sumAgg<RxPublicationDocument>(publications, 'subdisciplines', 'subd_id', 'weight');
+  const weights = await sumAgg<RxPublicationDocument>(publications.results, 'subdisciplines', 'subd_id', 'weight');
 
-  return Object.entries(weights).map(([k, v]) => <SubdisciplineWeight>{subd_id: <number>(<any>k), weight: v});
+  const results = Object.entries(weights).map(([k, v]) => <SubdisciplineWeight>{subd_id: <number>(<any>k), weight: v});
+  const totalCount = results.length;
+  return { results, pageInfo: { totalCount } };
 }
 
-export async function getDistinct(database: BBSRCDatabase, fieldName: string, filter: Partial<Filter> = {}): Promise<string[]> {
+export async function getDistinct(database: BBSRCDatabase, fieldName: string, filter: Partial<Filter> = {}): Promise<QueryResults<string>> {
   // TODO: make this more efficient.
 
-  const publications = await getPublications(database, filter);
+  const publications = (await getPublications(database, filter)).results;
   const values: any = {};
-  const distinct = [];
+  const results = [];
   publications.forEach((pub) => {
     let val = pub.get(fieldName);
     if (!(typeof val === 'string' || val instanceof String)) {
@@ -99,10 +108,12 @@ export async function getDistinct(database: BBSRCDatabase, fieldName: string, fi
     }
     if (!values.hasOwnProperty(val)) {
       values[val] = 1;
-      distinct.push(val);
+      results.push(val);
     } else {
       values[val]++;
     }
   });
-  return distinct;
+
+  const totalCount = results.length;
+  return { results, pageInfo: { totalCount } };
 }

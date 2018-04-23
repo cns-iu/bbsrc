@@ -77,6 +77,7 @@ export class ResultsPanelComponent implements OnInit {
 
   description: string;
   dataSubscription: Subscription;
+  numResults: number;
   dataSource = new MatTableDataSource();
 
   constructor(private dataService: BBSRCDatabaseService) {
@@ -105,12 +106,14 @@ export class ResultsPanelComponent implements OnInit {
       journal: this.journalField.operator
     });
     const filter = Object.assign({}, this.filter, {
-      subd_id: [data.subd_id], limit: 20
+      subd_id: [data.subd_id], limit: 20, sort: [{field: 'year', ascending: false}]
     });
 
-    this.dataSubscription = this.dataService.getPublications(filter)
-      .subscribe((pubs) => {
-        const processedData = pubs.map((p) => extractor.get(p));
+    this.numResults = -1;
+    this.dataSubscription = this.dataService.getPublicationResults(filter)
+      .subscribe((response) => {
+        const processedData = response.results.map((p) => extractor.get(p));
+        this.numResults = response.pageInfo.totalCount;
         this.dataSource.data = processedData;
       });
 

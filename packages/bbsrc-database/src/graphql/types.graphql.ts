@@ -31,9 +31,15 @@ input YearRange {
   end: Int!
 }
 
+input Sort {
+  field: String!
+  ascending: Boolean
+}
+
 input Filter {
   limit: Int
   subd_id: [Int!]
+  sort: [Sort!]
   year: YearRange
 
   fulltext: [String!]
