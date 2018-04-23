@@ -55,7 +55,7 @@ export class ResultsPanelComponent implements OnInit {
     this.description = `${data.disc_name} – ${data.subd_name}`;
 
     const filter = Object.assign({}, this.filter, {
-      subd_id: [data.subd_id], limit: 20
+      subd_id: [data.subd_id], limit: 20, sort: [{field: 'year', ascending: false}]
     });
     this.publications = this.dataService.getPublications(filter);
     this.panel.open();

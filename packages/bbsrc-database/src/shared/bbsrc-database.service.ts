@@ -8,20 +8,26 @@ import { Apollo } from 'apollo-angular';
 import { Filter } from '../shared/filter';
 import { Publication } from '../shared/publication';
 import { SubdisciplineWeight } from '../shared/subdiscipline-weight';
+import { QueryResults } from '../shared/query-results';
 
 export const GET_PUBLICATIONS = gql`
   query (
     $filter: Filter!
   ) {
     getPublications(filter: $filter) {
-      id
-      author
-      year
-      title
-      pmid
-      doi
-      pmcid
-      journalName
+      results {
+        id
+        author
+        year
+        title
+        pmid
+        doi
+        pmcid
+        journalName
+      }
+      pageInfo {
+        totalCount
+      }
     }
   }
 `;
@@ -31,8 +37,10 @@ export const GET_SUBDISCIPLINES = gql`
     $filter: Filter!
   ) {
     getSubdisciplines(filter: $filter) {
-      subd_id
-      weight
+      results {
+        subd_id
+        weight
+      }
     }
   }
 `;
@@ -42,7 +50,9 @@ export const GET_DISTINCT = gql`
     $fieldName: String!,
     $filter: Filter!
   ) {
-    getDistinct(fieldName: $fieldName, filter: $filter)
+    getDistinct(fieldName: $fieldName, filter: $filter) {
+      results
+    }
   }
 `;
 
@@ -50,24 +60,28 @@ export const GET_DISTINCT = gql`
 export class BBSRCDatabaseService {
   constructor(private apollo: Apollo) { }
 
-  getPublications(filter: Partial<Filter> = {}): Observable<Publication[]> {
+  getPublicationResults(filter: Partial<Filter> = {}): Observable<QueryResults<Publication>> {
     return this.apollo.query<Publication[]>({
       query: GET_PUBLICATIONS,
       variables: { filter }
     }).map((result) => result.data['getPublications']);
   }
 
+  getPublications(filter: Partial<Filter> = {}): Observable<Publication[]> {
+    return this.getPublicationResults(filter).map(r => r.results);
+  }
+
   getSubdisciplines(filter: Partial<Filter> = {}): Observable<SubdisciplineWeight[]> {
     return this.apollo.query<SubdisciplineWeight[]>({
       query: GET_SUBDISCIPLINES,
       variables: { filter }
-    }).map((result) => result.data['getSubdisciplines']);
+    }).map((result) => result.data['getSubdisciplines']['results']);
   }
 
   getDistinct(fieldName: string, filter: Partial<Filter> = {}): Observable<string[]> {
     return this.apollo.query<string[]>({
       query: GET_DISTINCT,
       variables: { fieldName, filter }
-    }).map((result) => result.data['getDistinct']);
+    }).map((result) => result.data['getDistinct']['results']);
   }
 }

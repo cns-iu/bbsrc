@@ -3,9 +3,14 @@ import { RxDocument } from 'rxdb';
 import RxDBValidateModule from 'rxdb/plugins/validate';
 import RxDBSchemaCheckModule from 'rxdb/plugins/schema-check';
 
+import * as leveldown from 'leveldown';
+import * as rocksdb from 'rocksdb';
+
 import * as IDBAdapter from 'pouchdb-adapter-idb';
 import * as WebSQLAdapter from 'pouchdb-adapter-node-websql';
 import * as MemoryAdapter from 'pouchdb-adapter-memory';
+import * as LevelDBAdapter from 'pouchdb-adapter-leveldb';
+
 
 import { RxBBSRCDatabase } from './rxdb-types.d';
 import { PublicationSchema } from './publication.schema';
@@ -20,8 +25,15 @@ export class BBSRCDatabase {
   adapters: any = {
     'idb': IDBAdapter,
     'websql': WebSQLAdapter,
-    'memory': MemoryAdapter
+    'memory': MemoryAdapter,
+    'leveldown': LevelDBAdapter,
+    'rocksdb': LevelDBAdapter
   };
+
+  adapterMapper: any = {
+    'leveldown': leveldown
+    'rocksdb': rocksdb
+  }
 
   constructor(private production?: boolean, private adapter: string = 'memory', private rxdbOptions: any = {}) { }
 
@@ -49,10 +61,12 @@ export class BBSRCDatabase {
   private async _create(initializer?: (db: RxBBSRCDatabase) => Promise<any>): Promise<RxBBSRCDatabase> {
     this.setupPlugins();
 
+    const adapter = this.adapterMapper[this.adapter] || this.adapter;
+
     this.log('DatabaseService: creating database');
     const db: RxBBSRCDatabase = await RxDB.create(Object.assign({
       name: 'bbsrc',
-      adapter: this.adapter
+      adapter
     }, this.rxdbOptions));
     this.log('DatabaseService: creating collections');
     await Promise.all(this.collections.map(colData => db.collection(colData)));
