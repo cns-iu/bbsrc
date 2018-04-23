@@ -76,6 +76,7 @@ export class ResultsPanelComponent implements OnInit {
   description: string;
   dataSubscription: Subscription;
   processedData = new EventEmitter<any[][]>();
+  numResults: Number;
 
   constructor(private dataService: BBSRCDatabaseService) {
     this.authorField = makeTextField('Author', 'author');
@@ -103,9 +104,10 @@ export class ResultsPanelComponent implements OnInit {
       subd_id: [data.subd_id], limit: 20, sort: [{field: 'year', ascending: false}]
     });
 
-    this.dataSubscription = this.dataService.getPublications(filter)
-      .subscribe((pubs) => {
-        this.processedData.emit(pubs.map((p) => getters.map((g) => g(p))));
+    this.dataSubscription = this.dataService.getPublicationResults(filter)
+      .subscribe((response) => {
+        this.processedData.emit(response.results.map((p) => getters.map((g) => g(p))));
+        this.numResults = response.pageInfo.totalCount;
       });
 
     this.panel.open();

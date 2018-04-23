@@ -71,10 +71,6 @@ export async function getPublications(database: BBSRCDatabase, filter: Partial<F
   let results = await query.exec();
   const totalCount = results.length;
   if (filter.sort && filter.sort.length > 0) {
-    // const sort: any = {}; filter.sort.forEach((s) => sort[s.field] = s.ascending ? 'asc' : 'desc');
-    // const sort = filter.sort.map((s) => (s.ascending ? '' : '-') + s.field ).join(' ');
-    // query = query.sort(sort);
-
     const field = filter.sort[0].field;
     const ascending = filter.sort[0].ascending === true;
     if (ascending) {
@@ -82,13 +78,9 @@ export async function getPublications(database: BBSRCDatabase, filter: Partial<F
     } else {
       results.sort((a,b) => b[field] - a[field]);
     }
-    
-    if (filter.limit && filter.limit > 0) {
-      results = results.slice(0, filter.limit);
-    }
-  } else if (filter.limit && filter.limit > 0) {
-    query = query.limit(filter.limit);
-    results = await query.exec();
+  }
+  if (filter.limit && filter.limit > 0) {
+    results = results.slice(0, filter.limit);
   }
 
   return { results, pageInfo: { totalCount } };

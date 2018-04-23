@@ -1,7 +1,7 @@
 <mat-expansion-panel #panel>
   <mat-expansion-panel-header>
     <mat-panel-title>
-      {{(processedData | async)?.length}} Results
+      {{ numResults | number }} Results
     </mat-panel-title>
     <mat-panel-description>
       {{description}}
