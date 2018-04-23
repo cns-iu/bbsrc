@@ -115,23 +115,23 @@ export class FilterUiComponent implements OnInit {
   onTextSearchChange = debounce(function (
     this: FilterUiComponent, text: string
   ): void {
-    this.updateFilter({fulltext: text !== '' ? [text] : []});
+    this.updateFilter({fulltext: text !== '' ? [text] : undefined});
   }, FilterUiComponent.typingWaitTime);
 
   onInstitutionChange = debounce(function (
     this: FilterUiComponent, inst: string
   ): void {
     if (inst === '' || this.institutions.includes(inst)) {
-      this.updateFilter({institution: inst !== '' ? [inst] : []});
+      this.updateFilter({institution: inst !== '' ? [inst] : undefined});
     }
   }, FilterUiComponent.typingWaitTime);
 
   onResearchClassChange({value}: {value: string | undefined}): void {
-    this.updateFilter({researchClassification: value ? [value] : []});
+    this.updateFilter({researchClassification: value ? [value] : undefined});
   }
 
   onMechanismChange({value}: {value: string | undefined}): void {
-    this.updateFilter({mechanism: value ? [value] : []});
+    this.updateFilter({mechanism: value ? [value] : undefined});
   }
 
   onYearChange([start, end]) {
