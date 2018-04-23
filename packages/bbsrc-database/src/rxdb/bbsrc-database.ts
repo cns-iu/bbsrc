@@ -31,7 +31,7 @@ export class BBSRCDatabase {
   };
 
   adapterMapper: any = {
-    'leveldown': leveldown
+    'leveldown': leveldown,
     'rocksdb': rocksdb
   }
 
