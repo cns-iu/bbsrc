@@ -21,7 +21,8 @@ export const GET_PUBLICATIONS = gql`
       pmid
       doi
       pmcid
-      journalName
+      journalName,
+      grantId
     }
   }
 `;

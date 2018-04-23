@@ -9,27 +9,29 @@ mat-expansion-panel
   height: calc(35% - 3px)
   top: 65%
 
-dino-datatable .mat-header-cell,
-dino-datatable .mat-cell
-  margin: 0 10px 0 10px
+.table
+  overflow: auto
+  max-height: calc(300px - 64px)
 
-dino-datatable .mat-column-Author
-  flex: .8
+  .mat-header-cell,
+  .mat-cell
+    margin: 0 10px 0 10px
 
-dino-datatable .mat-column-Year
-  flex: .3
+  .mat-column-author
+    flex: .8
 
-dino-datatable .mat-column-Title
-  flex: 3
+  .mat-column-year
+    flex: .3
+    min-width: 36px
 
-dino-datatable .mat-column-PubMed-ID
-  flex: .5
+  .mat-column-title
+    flex: 3
 
-dino-datatable .mat-column-DOI
-  flex: 1.2
+  .mat-column-link
+    flex: .5
+    display: flex
+    flex-direction: column
+    min-width: 72px
 
-dino-datatable .mat-column-GTR-ID
-  flex: .5
-
-dino-datatable .mat-column-Journal
-  flex: 1.3
+  .mat-column-journal
+    flex: 1.3
