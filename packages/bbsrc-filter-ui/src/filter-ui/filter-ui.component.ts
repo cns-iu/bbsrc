@@ -1,5 +1,5 @@
 import {
-  Component, Output,
+  Component, Output, ViewChild,
   OnInit, OnChanges,
   EventEmitter, SimpleChanges,
   ViewEncapsulation
@@ -7,12 +7,12 @@ import {
 import { FormControl } from '@angular/forms';
 
 import { Observable } from 'rxjs/Observable';
-import { map, startWith } from 'rxjs/operators';
 import 'rxjs/add/observable/concat';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/map';
 
 import { assign, clone, debounce } from 'lodash';
+import { NouisliderComponent } from 'ng2-nouislider';
 
 import { Filter, BBSRCDatabaseService } from 'bbsrc-database';
 
@@ -77,6 +77,7 @@ export class FilterUiComponent implements OnInit {
     return c;
   }).sort(({label: a}, {label: b}) => (a < b ? -1 : (b < a ? 1 : 0)));
 
+  @ViewChild(NouisliderComponent) yearSlider: NouisliderComponent;
   yearSliderConfig: any = {
     start: [1999, 2016],
     margin: 0,
@@ -94,10 +95,26 @@ export class FilterUiComponent implements OnInit {
     }
   };
 
+
   @Output() filterChange = new EventEmitter<Partial<Filter>>();
 
 
-  constructor(private service: BBSRCDatabaseService) { }
+  constructor(private service: BBSRCDatabaseService) {
+    service.getDistinct('year').map((years: string[]) => {
+      const sortedYears = years.map(Number)
+        .filter((year) => year !== 0)
+        .sort((y1, y2) => y1 - y2);
+      return [sortedYears[0], sortedYears[sortedYears.length - 1]];
+    }).subscribe(([min, max]) => {
+      const config = {start: [min, max], range: {min, max}};
+
+      if (this.yearSlider && this.yearSlider.slider) {
+        setTimeout(() => this.yearSlider.slider.updateOptions(config));
+      } else {
+        Object.assign(this.yearSliderConfig, config);
+      }
+    });
+  }
 
   ngOnInit() {
     const institutions = this.service.getDistinct('grantInstitution')
