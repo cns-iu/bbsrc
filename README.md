@@ -6,6 +6,9 @@
 # Checkout this branch:
 git clone https://github.com/cns-iu/bbsrc.git -b production
 
+# Go into the build
+cd bbsrc
+
 # Install dependencies:
 npm install
 
