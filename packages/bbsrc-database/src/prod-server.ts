@@ -24,9 +24,9 @@ const PORT = process.env.PORT || 8080;
 const DEFAULT_ENDPOINT_URL = '/graphql/';
 const ENDPOINT_URL = process.env.ENDPOINT_URL || DEFAULT_ENDPOINT_URL;
 
-const ADAPTER = 'websql';
-const DB_DUMP = 'db-dump.json';
-const DB_SQLITE = 'db/bbsrc';
+const ADAPTER = process.env.ADAPTER || 'websql';
+const DB_DUMP = process.env.DB_DUMP || 'db-dump.json';
+const DB_SQLITE = process.env.DB_SQLITE || 'db/bbsrc';
 
 const app = express();
 
@@ -103,7 +103,7 @@ app.use('/', express.static('client'));
 // Start the GraphQL server and populate DB with seed data if empty
 const server = createServer(app);
 server.listen(PORT, () => {
-  console.log('Webserver is ready');
+  console.log(`Webserver is ready on port ${PORT}`);
 });
 
 //
