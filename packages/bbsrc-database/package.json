@@ -13,7 +13,7 @@
     "build-offline-tools": "webpack --config webpack.offline.config.js",
     "build-database": "yarn build-offline-tools && yarn read-raw-data && yarn create-database && rm -rf ../../raw-data/db && yarn import-database && yarn import-database",
     "read-raw-data": "node build/read-raw-data",
-    "create-database": "node build/create-database",
+    "create-database": "node build/create-database --max-old-space-size=8192",
     "import-database": "mkdir -p ../../raw-data/db && node build/import-database"
   },
   "private": true,
@@ -77,6 +77,7 @@
     "@types/pouchdb-adapter-localstorage": "^6.1.2",
     "@types/pouchdb-adapter-memory": "^6.1.2",
     "@types/pouchdb-adapter-websql": "^6.1.2",
+    "bfj": "^6.1.0",
     "codelyzer": "^4.0.1",
     "jasmine-core": "~2.6.2",
     "jasmine-spec-reporter": "~4.1.0",

@@ -20,7 +20,7 @@ const MULTIDISCIPLINARY = -2;
 async function sumAgg<T>(items: T[], itemKeyField: string, keyField: string, valueField: string): Promise<{[key: string]: number}> {
   const acc: any = {};
   for (const innerItem of items) {
-    for (const item of innerItem[itemKeyField]) {
+    for (const item of (innerItem[itemKeyField] || [])) {
       const key = item[keyField];
       const weight = item[valueField];
       if (acc.hasOwnProperty(key)) {

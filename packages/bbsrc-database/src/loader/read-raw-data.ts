@@ -43,7 +43,7 @@ function n(field: string): Operator<any, number> {
 }
 function fulltext(...fields: string[]): Operator<any, string> {
   return Operator.combine(fields.map((f) => a(f)))
-    .map(v => v.filter(s => !!s).join(' ').replace(/\s+/g, ' ').toLowerCase());
+    .map(v => v.filter(s => !!s).join(' ').replace(/\s+/g, ' ').toLowerCase().trim());
 }
 
 const CLASS_FIELDS = [
@@ -149,11 +149,11 @@ const pubsDBProcessor = Operator.combine({
   'grantYear': a('grant.session_year'),
   'grantInstitution': a('grant.institution'),
   'grantMechanism': a('grant.mechanism'),
-  'fulltext': fulltext('title', 'grant.title', 'grant.technical_summary')
+  'fulltext': fulltext('title', 'grant.title') //, 'grant.technical_summary')
 });
 
 const mappedPubs = pubs.filter((pub) => pub.subdisciplines && pub.subdisciplines.length > 0);
-writeJSON(DB_JSON, mappedPubs.map(pubsDBProcessor.getter));
+writeJSON(DB_JSON, pubs.map(pubsDBProcessor.getter));
 // writeJSONArray(DB_JSON, mappedPubs, pubsDBProcessor);
 
 // console.log(grants.length);
