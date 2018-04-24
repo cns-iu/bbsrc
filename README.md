@@ -16,7 +16,7 @@ cp /path/to/db-dump.json .
 npm run clean
 
 # Set the port for the server to use:
-npm run clean
+export PORT=8080
 
 # Start the server:
 npm start
