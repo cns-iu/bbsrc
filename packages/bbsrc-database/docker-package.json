@@ -4,7 +4,8 @@
   "license": "MIT",
   "main": "index.js",
   "scripts": {
-    "start": "node --max-old-space-size=8192 index.js"
+    "start": "node --max-old-space-size=8192 index.js",
+    "clean": "rimraf db/bbsrc-* && mkdir db"
   },
   "private": true,
   "dependencies": {
@@ -53,6 +54,7 @@
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
     "protractor": "~5.1.2",
+    "rimraf": "^2.6.2",
     "ts-node": "~3.2.0",
     "tslint": "~5.7.0",
     "typescript": "~2.4.2",

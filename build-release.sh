@@ -7,7 +7,7 @@ yarn build
 
 rm -rf dist
 mkdir -p dist/db
-touch dist/db/.keep
+touch dist/db/.gitkeep
 
 cp packages/bbsrc-database/docker-package.json ./dist/package.json
 cp -r packages/client/dist ./dist/client
@@ -21,11 +21,4 @@ pushd dist
   rm -rf node_modules
 popd
 
-zip -r release.zip dist
-mv release.zip dist
-
-echo "Steps to run the release: "
-echo "> cd ./dist"
-echo "> export PORT=8080"
-echo "> npm install"
-echo "> npm start"
+cp -r dist/* ../bbsrc-release/
