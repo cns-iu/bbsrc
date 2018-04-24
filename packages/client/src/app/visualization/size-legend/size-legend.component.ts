@@ -33,7 +33,10 @@ export class SizeLegendComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     for (const propName in changes) {
       if (propName === 'filter' && this[propName]) {
-        this.dataService.fetchData(this.filter);
+        const filter = Object.assign({}, this.filter, {
+          showMultidisciplinary: true, showUnmapped: true
+        });
+        this.dataService.fetchData(filter);
       }
     }
     this.dataService.filteredSubdisciplines.subscribe((subdisciplines) => {

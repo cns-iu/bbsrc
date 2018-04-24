@@ -8,7 +8,7 @@ import { Filter } from 'bbsrc-database';
   styleUrls: ['./home.component.sass']
 })
 export class HomeComponent {
-  filter: Partial<Filter> = {showMultidisciplinary: true, showUnmapped: true};
+  filter: Partial<Filter> = {};
   filtersUpdating = false;
   openState = true;
 

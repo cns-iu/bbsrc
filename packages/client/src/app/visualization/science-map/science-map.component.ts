@@ -48,7 +48,10 @@ export class ScienceMapComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
       if ('filter' in changes && this.filter) {
-        this.dataService.fetchData(this.filter).subscribe(
+        const filter = Object.assign({}, this.filter, {
+          showMultidisciplinary: true, showUnmapped: true
+        });
+        this.dataService.fetchData(filter).subscribe(
           undefined, undefined, () => this.filterUpdateComplete.emit(true)
         );
       }
