@@ -27,6 +27,7 @@
           [width]="narrowWidth"
           [height]="height"
           [filter]="filter"
+          [nodeSizeRange]="scienceMapNodeSizeRange"
           (nodeClicked)="results.showSubdiscipline($event)"
           (filterUpdateComplete)="filtersUpdating = false">
         </bbsrc-science-map>
@@ -34,6 +35,7 @@
         [width]="wideWidth"
         [height]="height"
         [filter]="filter"
+        [nodeSizeRange]="scienceMapNodeSizeRange"
         (nodeClicked)="results.showSubdiscipline($event)"
         (filterUpdateComplete)="filtersUpdating = false">
       </bbsrc-science-map>
