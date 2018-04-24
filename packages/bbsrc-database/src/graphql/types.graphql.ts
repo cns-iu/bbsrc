@@ -39,6 +39,8 @@ input Sort {
 input Filter {
   limit: Int
   subd_id: [Int!]
+  showMultidisciplinary: Boolean
+  showUnmapped: Boolean
   sort: [Sort!]
   year: YearRange
 
