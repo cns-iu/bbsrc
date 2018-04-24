@@ -19,7 +19,7 @@ export class HomeComponent {
   drawerWidth = window.innerWidth - window.innerWidth / 8;
   drawerHeight = window.innerHeight;
 
-  scienceMapNodeSizeRange = [1, 15];
+  scienceMapNodeSizeRange = [2, 18];
 
   constructor() { }
 }

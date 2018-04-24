@@ -40,7 +40,7 @@ export const PublicationSchema: any = {
     },
     'journalId': {
       'type': 'number',
-      'default': '',
+      'default': -1,
       'index': true
     },
     'subdisciplines': {
