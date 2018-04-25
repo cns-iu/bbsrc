@@ -1,13 +1,16 @@
-<mat-expansion-panel #panel>
+<mat-expansion-panel [disabled]="true" #panel>
   <mat-expansion-panel-header>
     <mat-panel-title>
       <mat-spinner *ngIf="numResults === -1" [diameter]="18"></mat-spinner>
-      <span *ngIf="numResults >= 0">
+      <span *ngIf="numResults >= 0 && !panel.disabled">
         {{ numResults | number }} Results
       </span>
     </mat-panel-title>
-    <mat-panel-description>
+    <mat-panel-description *ngIf="!panel.disabled">
       {{description}}
+    </mat-panel-description>
+    <mat-panel-description *ngIf="panel.disabled">
+      Click on a subdiscipline to show related publications.
     </mat-panel-description>
   </mat-expansion-panel-header>
 

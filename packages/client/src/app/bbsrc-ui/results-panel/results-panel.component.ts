@@ -1,7 +1,7 @@
 import {
   Component, Input, ViewChild,
   OnInit,
-  SimpleChanges, ViewEncapsulation, EventEmitter
+  OnChanges, SimpleChanges, ViewEncapsulation, EventEmitter
 } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 
@@ -61,7 +61,7 @@ function makeLinkField(
   styleUrls: ['./results-panel.component.sass'],
   encapsulation: ViewEncapsulation.None
 })
-export class ResultsPanelComponent implements OnInit {
+export class ResultsPanelComponent implements OnInit, OnChanges {
   @Input() filter: Partial<Filter>;
   @Input() subd_id = 0;
 
@@ -79,6 +79,7 @@ export class ResultsPanelComponent implements OnInit {
   dataSubscription: Subscription;
   numResults: number;
   dataSource = new MatTableDataSource();
+  selectedNode: any;
 
   constructor(private dataService: BBSRCDatabaseService) {
     this.authorField = makeTextField('Author', 'author');
@@ -90,7 +91,17 @@ export class ResultsPanelComponent implements OnInit {
 
   ngOnInit() { }
 
-  public showSubdiscipline(data: any): void {
+  ngOnChanges(changes: SimpleChanges) {
+    if (('filter' in changes) && this.selectedNode) {
+      this.showSubdiscipline(this.selectedNode, false);
+    }
+  }
+
+  public showSubdiscipline(data: any, activatePanel = true): void {
+
+    this.selectedNode = data;
+    this.panel.disabled = false;
+
     if (this.dataSubscription) {
       this.dataSubscription.unsubscribe();
     }
@@ -117,7 +128,9 @@ export class ResultsPanelComponent implements OnInit {
         this.dataSource.data = processedData;
       });
 
-    this.panel.open();
+    if (activatePanel) {
+      this.panel.open();
+    }
   }
 
   pubMedHref(pmid: string): string {
