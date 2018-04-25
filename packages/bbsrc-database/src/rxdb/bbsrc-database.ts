@@ -3,15 +3,13 @@ import { RxDocument } from 'rxdb';
 import RxDBValidateModule from 'rxdb/plugins/validate';
 import RxDBSchemaCheckModule from 'rxdb/plugins/schema-check';
 
-// Commenting out as we don't use it at this time.
-// import * as leveldown from 'leveldown';
+import * as leveldown from 'leveldown';
 // import * as rocksdb from 'rocksdb';
 
 import * as IDBAdapter from 'pouchdb-adapter-idb';
 import * as WebSQLAdapter from 'pouchdb-adapter-node-websql';
 import * as MemoryAdapter from 'pouchdb-adapter-memory';
-// import * as LevelDBAdapter from 'pouchdb-adapter-leveldb';
-
+import * as LevelDBAdapter from 'pouchdb-adapter-leveldb';
 
 import { RxBBSRCDatabase } from './rxdb-types.d';
 import { PublicationSchema } from './publication.schema';
@@ -27,12 +25,12 @@ export class BBSRCDatabase {
     'idb': IDBAdapter,
     'websql': WebSQLAdapter,
     'memory': MemoryAdapter,
-    // 'leveldown': LevelDBAdapter,
+    'leveldown': LevelDBAdapter,
     // 'rocksdb': LevelDBAdapter
   };
 
   adapterMapper: any = {
-    // 'leveldown': leveldown,
+    'leveldown': leveldown,
     // 'rocksdb': rocksdb
   }
 

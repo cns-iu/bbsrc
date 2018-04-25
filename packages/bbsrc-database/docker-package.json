@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node --max-old-space-size=8192 index.js",
-    "clean": "rimraf db/bbsrc-* && mkdir db"
+    "clean": "rimraf db/bbsrc-* && mkdir -p db"
   },
   "private": true,
   "dependencies": {
@@ -27,6 +27,7 @@
     "path": "^0.12.7",
     "pouchdb-adapter-http": "^6.4.1",
     "pouchdb-adapter-idb": "^6.4.3",
+    "pouchdb-adapter-leveldb": "^6.4.3",
     "pouchdb-adapter-localstorage": "^6.4.1",
     "pouchdb-adapter-memory": "^6.4.3",
     "pouchdb-adapter-node-websql": "^6.4.3",

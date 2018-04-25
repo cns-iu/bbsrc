@@ -21,7 +21,7 @@ async function importDBDump(database: BBSRCDatabase, dumpFile: string): Promise<
   return db;
 }
 
-export function createServerContext(adapter = 'websql', dbDumpFile = DB_DUMP, sqliteFile = DB_SQLITE): GraphQLContext {
+export function createServerContext(adapter = 'leveldown', dbDumpFile = DB_DUMP, sqliteFile = DB_SQLITE): GraphQLContext {
   console.log(adapter, dbDumpFile, sqliteFile);
   const rxdbOptions: any = {};
   if (['websql', 'leveldown', 'rocksdb'].indexOf(adapter) !== -1 && sqliteFile) {
