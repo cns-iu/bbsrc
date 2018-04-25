@@ -22,7 +22,7 @@ export class SizeLegendComponent implements OnInit, OnChanges {
   filteredSubdisciplines: SubdisciplineWeight[];
   subdisciplineSize: BoundField<string>;
 
-  nodeSizeEncoding = 'Weighted Journal Score';
+  nodeSizeEncoding = '# Journal Publications in Subdiscipline';
 
   constructor(private dataService: ScienceMapDataService) { }
 
