@@ -149,7 +149,7 @@ const pubsDBProcessor = Operator.combine({
   'grantYear': a('grant.session_year'),
   'grantInstitution': a('grant.institution'),
   'grantMechanism': a('grant.mechanism'),
-  'fulltext': fulltext('title', 'grant.title') //, 'grant.technical_summary')
+  'fulltext': fulltext('title', 'grant.title', 'grant.technical_summary')
 });
 
 const mappedPubs = pubs.filter((pub) => pub.subdisciplines && pub.subdisciplines.length > 0);

@@ -13,8 +13,8 @@
     "build-offline-tools": "webpack --config webpack.offline.config.js",
     "build-database": "yarn build-offline-tools && yarn read-raw-data && yarn create-database && rm -rf ../../raw-data/db && yarn import-database && yarn import-database",
     "read-raw-data": "node build/read-raw-data",
-    "create-database": "node build/create-database --max-old-space-size=8192",
-    "import-database": "mkdir -p ../../raw-data/db && node build/import-database"
+    "create-database": "node --max-old-space-size=8192 build/create-database",
+    "import-database": "mkdir -p ../../raw-data/db && node --max-old-space-size=8192 build/import-database"
   },
   "private": true,
   "ngPackage": {
