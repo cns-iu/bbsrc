@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 74);
+/******/ 	return __webpack_require__(__webpack_require__.s = 77);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -104,13 +104,17 @@ var DB_DUMP_URI = '/assets/db-dump.json';
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxdb_plugins_validate___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxdb_plugins_validate__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxdb_plugins_schema_check__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxdb_plugins_schema_check___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxdb_plugins_schema_check__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_pouchdb_adapter_idb__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_pouchdb_adapter_idb___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_pouchdb_adapter_idb__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_pouchdb_adapter_node_websql__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_pouchdb_adapter_node_websql___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_pouchdb_adapter_node_websql__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_pouchdb_adapter_memory__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_pouchdb_adapter_memory___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_pouchdb_adapter_memory__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__publication_schema__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_leveldown__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_leveldown___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_leveldown__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_pouchdb_adapter_idb__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_pouchdb_adapter_idb___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_pouchdb_adapter_idb__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_pouchdb_adapter_node_websql__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_pouchdb_adapter_node_websql___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_pouchdb_adapter_node_websql__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_pouchdb_adapter_memory__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_pouchdb_adapter_memory___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_pouchdb_adapter_memory__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_pouchdb_adapter_leveldb__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_pouchdb_adapter_leveldb___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_pouchdb_adapter_leveldb__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__publication_schema__ = __webpack_require__(15);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -149,9 +153,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 
 
 
-// Commenting out as we don't use it at this time.
-// import * as leveldown from 'leveldown';
+
 // import * as rocksdb from 'rocksdb';
+
 
 
 
@@ -164,14 +168,17 @@ var BBSRCDatabase = (function () {
         this.adapter = adapter;
         this.rxdbOptions = rxdbOptions;
         this.collections = [
-            { name: 'publication', schema: __WEBPACK_IMPORTED_MODULE_6__publication_schema__["a" /* PublicationSchema */] }
+            { name: 'publication', schema: __WEBPACK_IMPORTED_MODULE_8__publication_schema__["a" /* PublicationSchema */] }
         ];
         this.adapters = {
-            'idb': __WEBPACK_IMPORTED_MODULE_3_pouchdb_adapter_idb__,
-            'websql': __WEBPACK_IMPORTED_MODULE_4_pouchdb_adapter_node_websql__,
-            'memory': __WEBPACK_IMPORTED_MODULE_5_pouchdb_adapter_memory__
+            'idb': __WEBPACK_IMPORTED_MODULE_4_pouchdb_adapter_idb__,
+            'websql': __WEBPACK_IMPORTED_MODULE_5_pouchdb_adapter_node_websql__,
+            'memory': __WEBPACK_IMPORTED_MODULE_6_pouchdb_adapter_memory__,
+            'leveldown': __WEBPACK_IMPORTED_MODULE_7_pouchdb_adapter_leveldb__
         };
-        this.adapterMapper = {};
+        this.adapterMapper = {
+            'leveldown': __WEBPACK_IMPORTED_MODULE_3_leveldown__
+        };
     }
     BBSRCDatabase.prototype.get = function (initializer) {
         if (!BBSRCDatabase.dbPromise) {
@@ -252,7 +259,7 @@ var BBSRCDatabase = (function () {
         __WEBPACK_IMPORTED_MODULE_0_rxdb___default.a.plugin(this.adapters[this.adapter]);
         // Always add the memory adapter
         if (this.adapter !== 'memory') {
-            __WEBPACK_IMPORTED_MODULE_0_rxdb___default.a.plugin(__WEBPACK_IMPORTED_MODULE_5_pouchdb_adapter_memory__);
+            __WEBPACK_IMPORTED_MODULE_0_rxdb___default.a.plugin(__WEBPACK_IMPORTED_MODULE_6_pouchdb_adapter_memory__);
         }
         __WEBPACK_IMPORTED_MODULE_0_rxdb___default.a.QueryChangeDetector.enable(true);
         if (!this.production) {
@@ -292,22 +299,34 @@ module.exports = require("rxdb/plugins/schema-check");
 /* 10 */
 /***/ (function(module, exports) {
 
-module.exports = require("pouchdb-adapter-idb");
+module.exports = require("leveldown");
 
 /***/ }),
 /* 11 */
 /***/ (function(module, exports) {
 
-module.exports = require("pouchdb-adapter-node-websql");
+module.exports = require("pouchdb-adapter-idb");
 
 /***/ }),
 /* 12 */
 /***/ (function(module, exports) {
 
-module.exports = require("pouchdb-adapter-memory");
+module.exports = require("pouchdb-adapter-node-websql");
 
 /***/ }),
 /* 13 */
+/***/ (function(module, exports) {
+
+module.exports = require("pouchdb-adapter-memory");
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports) {
+
+module.exports = require("pouchdb-adapter-leveldb");
+
+/***/ }),
+/* 15 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -354,7 +373,7 @@ var PublicationSchema = {
         },
         'journalId': {
             'type': 'number',
-            'default': '',
+            'default': -1,
             'index': true
         },
         'subdisciplines': {
@@ -411,8 +430,6 @@ var PublicationSchema = {
 
 
 /***/ }),
-/* 14 */,
-/* 15 */,
 /* 16 */,
 /* 17 */,
 /* 18 */,
@@ -420,51 +437,53 @@ var PublicationSchema = {
 /* 20 */,
 /* 21 */,
 /* 22 */,
-/* 23 */
+/* 23 */,
+/* 24 */,
+/* 25 */
 /***/ (function(module, exports) {
 
 module.exports = require("express");
 
 /***/ }),
-/* 24 */
+/* 26 */
 /***/ (function(module, exports) {
 
 module.exports = require("graphql-server-express");
 
 /***/ }),
-/* 25 */
+/* 27 */
 /***/ (function(module, exports) {
 
 module.exports = require("body-parser");
 
 /***/ }),
-/* 26 */
+/* 28 */
 /***/ (function(module, exports) {
 
 module.exports = require("http");
 
 /***/ }),
-/* 27 */
+/* 29 */
 /***/ (function(module, exports) {
 
 module.exports = require("graphql");
 
 /***/ }),
-/* 28 */
+/* 30 */
 /***/ (function(module, exports) {
 
 module.exports = require("apollo-errors");
 
 /***/ }),
-/* 29 */
+/* 31 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return schema; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_graphql_tools__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_graphql_tools__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_graphql_tools___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_graphql_tools__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__schema_definition__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__resolvers__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__schema_definition__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__resolvers__ = __webpack_require__(35);
 
 
 
@@ -472,38 +491,38 @@ var schema = Object(__WEBPACK_IMPORTED_MODULE_0_graphql_tools__["makeExecutableS
 
 
 /***/ }),
-/* 30 */
+/* 32 */
 /***/ (function(module, exports) {
 
 module.exports = require("graphql-tools");
-
-/***/ }),
-/* 31 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return schemaDef; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__types_graphql__ = __webpack_require__(32);
-
-var schemaDef = "\nscalar Date\n\n" + __WEBPACK_IMPORTED_MODULE_0__types_graphql__["a" /* TypesSchema */] + "\n\ntype PageInfo {\n  totalCount: Int\n}\n\ntype PublicationQuery {\n  results: [Publication!]\n  pageInfo: PageInfo\n}\n\ntype SubdisciplineQuery {\n  results: [SubdisciplineWeight!]\n  pageInfo: PageInfo\n}\n\ntype GetDistinctQuery {\n  results: [String]\n  pageInfo: PageInfo\n}\n\ntype Query {\n  getPublications(filter: Filter): PublicationQuery\n  getSubdisciplines(filter: Filter): SubdisciplineQuery\n  getDistinct(fieldName: String, filter: Filter): GetDistinctQuery\n}\n\nschema {\n  query: Query\n}\n";
-
-
-/***/ }),
-/* 32 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TypesSchema; });
-var TypesSchema = "\ntype SubdisciplineWeight {\n  subd_id: ID!\n  weight: Float\n}\n\ntype Publication {\n  id: ID!\n  title: String\n  author: String\n  year: Int\n  pmid: String\n  doi: String\n  pmcid: String\n\n  journalName: String\n  journalId: Int\n  subdisciplines: [SubdisciplineWeight]\n\n  grantId: String\n  grantTitle: String\n  grantClasses: [String!]\n  grantYear: Int\n  grantInstitution: String\n  grantMechanism: String\n  fulltext: String\n}\n\ninput YearRange {\n  start: Int!\n  end: Int!\n}\n\ninput Sort {\n  field: String!\n  ascending: Boolean\n}\n\ninput Filter {\n  limit: Int\n  subd_id: [Int!]\n  sort: [Sort!]\n  year: YearRange\n\n  fulltext: [String!]\n  researchClassification: [String!]\n  sessionYear: YearRange\n  institution: [String!]\n  mechanism: [String!]\n  journalName: [String!]\n}\n";
-
 
 /***/ }),
 /* 33 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return schemaDef; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__types_graphql__ = __webpack_require__(34);
+
+var schemaDef = "\nscalar Date\n\n" + __WEBPACK_IMPORTED_MODULE_0__types_graphql__["a" /* TypesSchema */] + "\n\ntype PageInfo {\n  totalCount: Int\n}\n\ntype PublicationQuery {\n  results: [Publication!]\n  pageInfo: PageInfo\n}\n\ntype SubdisciplineQuery {\n  results: [SubdisciplineWeight!]\n  pageInfo: PageInfo\n}\n\ntype GetDistinctQuery {\n  results: [String]\n  pageInfo: PageInfo\n}\n\ntype Query {\n  getPublications(filter: Filter): PublicationQuery\n  getSubdisciplines(filter: Filter): SubdisciplineQuery\n  getDistinct(fieldName: String, filter: Filter): GetDistinctQuery\n}\n\nschema {\n  query: Query\n}\n";
+
+
+/***/ }),
+/* 34 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TypesSchema; });
+var TypesSchema = "\ntype SubdisciplineWeight {\n  subd_id: ID!\n  weight: Float\n}\n\ntype Publication {\n  id: ID!\n  title: String\n  author: String\n  year: Int\n  pmid: String\n  doi: String\n  pmcid: String\n\n  journalName: String\n  journalId: Int\n  subdisciplines: [SubdisciplineWeight]\n\n  grantId: String\n  grantTitle: String\n  grantClasses: [String!]\n  grantYear: Int\n  grantInstitution: String\n  grantMechanism: String\n  fulltext: String\n}\n\ninput YearRange {\n  start: Int!\n  end: Int!\n}\n\ninput Sort {\n  field: String!\n  ascending: Boolean\n}\n\ninput Filter {\n  limit: Int\n  subd_id: [Int!]\n  showMultidisciplinary: Boolean\n  showUnmapped: Boolean\n  sort: [Sort!]\n  year: YearRange\n\n  fulltext: [String!]\n  researchClassification: [String!]\n  sessionYear: YearRange\n  institution: [String!]\n  mechanism: [String!]\n  journalName: [String!]\n}\n";
+
+
+/***/ }),
+/* 35 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return resolvers; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__rxdb_queries__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__rxdb_queries__ = __webpack_require__(36);
 
 var resolvers = {
     Query: {
@@ -521,7 +540,7 @@ var resolvers = {
 
 
 /***/ }),
-/* 34 */
+/* 36 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -571,6 +590,8 @@ function escapeStringRegExp(str) {
     }
     return str.replace(matchOperatorsRe, '\\$&');
 }
+var UNMAPPED = -1;
+var MULTIDISCIPLINARY = -2;
 function sumAgg(items, itemKeyField, keyField, valueField) {
     return __awaiter(this, void 0, void 0, function () {
         var acc, _i, items_1, innerItem, _a, _b, item, key, weight;
@@ -578,7 +599,7 @@ function sumAgg(items, itemKeyField, keyField, valueField) {
             acc = {};
             for (_i = 0, items_1 = items; _i < items_1.length; _i++) {
                 innerItem = items_1[_i];
-                for (_a = 0, _b = innerItem[itemKeyField]; _a < _b.length; _a++) {
+                for (_a = 0, _b = (innerItem[itemKeyField] || []); _a < _b.length; _a++) {
                     item = _b[_a];
                     key = item[keyField];
                     weight = item[valueField];
@@ -597,15 +618,23 @@ function sumAgg(items, itemKeyField, keyField, valueField) {
 function getPublications(database, filter) {
     if (filter === void 0) { filter = {}; }
     return __awaiter(this, void 0, void 0, function () {
-        var db, query, regexp, results, totalCount, field_1, ascending;
+        var db, query, subdIdMatch, regexp, results, totalCount, field_1, ascending;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, database.get()];
                 case 1:
                     db = _a.sent();
                     query = db.publication.find();
-                    if (filter.subd_id) {
-                        query = query.where('subdisciplines').elemMatch({ 'subd_id': { '$in': filter.subd_id } });
+                    if (filter.subd_id && filter.subd_id.indexOf(UNMAPPED) === -1) {
+                        subdIdMatch = {
+                            '$or': [
+                                { 'subd_id': { '$in': filter.subd_id } }
+                            ]
+                        };
+                        if (filter.subd_id.indexOf(MULTIDISCIPLINARY) !== -1) {
+                            subdIdMatch['$or'].push({ 'weight': { '$lt': 1 } });
+                        }
+                        query = query.where('subdisciplines').elemMatch(subdIdMatch);
                     }
                     if (filter.journalName) {
                         query = query.where('journalName')["in"](filter.journalName);
@@ -642,6 +671,10 @@ function getPublications(database, filter) {
                     return [4 /*yield*/, query.exec()];
                 case 2:
                     results = _a.sent();
+                    // Must do this after loading the results into memory. There is probably a better way to do this.
+                    if (filter.subd_id && filter.subd_id.indexOf(UNMAPPED) !== -1) {
+                        results = results.filter(function (p) { return !p.subdisciplines || p.subdisciplines.length === 0 || p.subdisciplines.filter(function (s) { return filter.subd_id.indexOf(s.subd_id) !== -1; }).length > 0; });
+                    }
                     totalCount = results.length;
                     if (filter.sort && filter.sort.length > 0) {
                         field_1 = filter.sort[0].field;
@@ -669,8 +702,18 @@ function getSubdisciplines(database, filter) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, getPublications(database, filter)];
                 case 1:
-                    publications = _a.sent();
-                    return [4 /*yield*/, sumAgg(publications.results, 'subdisciplines', 'subd_id', 'weight')];
+                    publications = (_a.sent()).results.map(function (pub) {
+                        if (filter.showUnmapped && (!pub.subdisciplines || pub.subdisciplines.length === 0)) {
+                            return { 'subdisciplines': [{ subd_id: UNMAPPED, weight: 1 }] };
+                        }
+                        else if (filter.showMultidisciplinary && pub.subdisciplines && pub.subdisciplines.length > 1) {
+                            return { 'subdisciplines': [{ subd_id: MULTIDISCIPLINARY, weight: 1 }] };
+                        }
+                        else {
+                            return pub;
+                        }
+                    });
+                    return [4 /*yield*/, sumAgg(publications, 'subdisciplines', 'subd_id', 'weight')];
                 case 2:
                     weights = _a.sent();
                     results = Object.entries(weights).map(function (_a) {
@@ -716,13 +759,13 @@ function getDistinct(database, fieldName, filter) {
 
 
 /***/ }),
-/* 35 */
+/* 37 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = createServerContext;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__rxdb_bbsrc_database__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__context__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__context__ = __webpack_require__(38);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__loader_options__ = __webpack_require__(4);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -799,7 +842,7 @@ function importDBDump(database, dumpFile) {
     });
 }
 function createServerContext(adapter, dbDumpFile, sqliteFile) {
-    if (adapter === void 0) { adapter = 'websql'; }
+    if (adapter === void 0) { adapter = 'leveldown'; }
     if (dbDumpFile === void 0) { dbDumpFile = __WEBPACK_IMPORTED_MODULE_2__loader_options__["a" /* DB_DUMP */]; }
     if (sqliteFile === void 0) { sqliteFile = __WEBPACK_IMPORTED_MODULE_2__loader_options__["c" /* DB_SQLITE */]; }
     console.log(adapter, dbDumpFile, sqliteFile);
@@ -817,7 +860,7 @@ function createServerContext(adapter, dbDumpFile, sqliteFile) {
 
 
 /***/ }),
-/* 36 */
+/* 38 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -837,8 +880,6 @@ var GraphQLContext = (function () {
 
 
 /***/ }),
-/* 37 */,
-/* 38 */,
 /* 39 */,
 /* 40 */,
 /* 41 */,
@@ -874,34 +915,37 @@ var GraphQLContext = (function () {
 /* 71 */,
 /* 72 */,
 /* 73 */,
-/* 74 */
+/* 74 */,
+/* 75 */,
+/* 76 */,
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(75);
+module.exports = __webpack_require__(78);
 
 
 /***/ }),
-/* 75 */
+/* 78 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_express__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_express__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_express___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_express__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_morgan__ = __webpack_require__(76);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_morgan__ = __webpack_require__(79);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_morgan___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_morgan__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_graphql_server_express__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_graphql_server_express__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_graphql_server_express___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_graphql_server_express__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_body_parser__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_body_parser__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_body_parser___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_body_parser__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_http__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_http__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_http___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_http__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_graphql__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_graphql__ = __webpack_require__(29);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_graphql___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_graphql__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_apollo_errors__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_apollo_errors__ = __webpack_require__(30);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_apollo_errors___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_apollo_errors__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__graphql_schema__ = __webpack_require__(29);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__graphql_server_context__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__graphql_schema__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__graphql_server_context__ = __webpack_require__(37);
 /* eslint-disable global-require,no-console,no-new */
 
 
@@ -1019,7 +1063,7 @@ function shutdown() {
 
 
 /***/ }),
-/* 76 */
+/* 79 */
 /***/ (function(module, exports) {
 
 module.exports = require("morgan");
