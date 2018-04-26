@@ -3,6 +3,8 @@
 BBSRC can be deployed in multiple ways, but for our purposes we will describe
 how it is deployed using Docker.
 
+See the [Production Branch](https://github.com/cns-iu/bbsrc/blob/production/README.md) for another way to deploy.
+
 ## System Requirements
 
     - node
