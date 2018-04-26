@@ -23,7 +23,7 @@ import { ScienceMapDataService } from '../shared/science-map-data.service';
 export class ScienceMapComponent implements OnInit, OnChanges {
   @Input() width: number;
   @Input() height: number;
-  @Input() filter: Partial<Filter> = {showMultidisciplinary: true, showUnmapped: true};
+  @Input() filter: Partial<Filter> = {};
   @Input() nodeSizeRange = [2, 18];
   @Output() nodeClicked = new EventEmitter<any>();
   filteredSubdisciplines: SubdisciplineWeight[];

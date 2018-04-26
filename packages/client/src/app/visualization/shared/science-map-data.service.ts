@@ -23,7 +23,7 @@ export class ScienceMapDataService {
     this.subdisciplineID = subdisciplineIDField.getBoundField('id');
   }
 
-  fetchData(filter: Partial<Filter> = {showMultidisciplinary: true, showUnmapped: true}) {
+  fetchData(filter: Partial<Filter> = {}) {
     if (this.dataSubscription) {
       this.dataSubscription.unsubscribe();
     }
