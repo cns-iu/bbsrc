@@ -10,7 +10,7 @@ function readJSON(inputFile: string): any {
 const dump = readJSON(DB_DUMP);
 
 async function importDBDump(): Promise<any> {
-  const database = new BBSRCDatabase(false, 'websql', {name: DB_SQLITE});
+  const database = new BBSRCDatabase(false, 'leveldown', {name: DB_SQLITE});
   const db = await database.get();
   const hasResults = !!(await db.publication.findOne().exec());
   if (!hasResults) {
