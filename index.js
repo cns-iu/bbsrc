@@ -78,13 +78,15 @@ module.exports = require("fs");
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return GRANTS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return PUBS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return PUBS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return JOURNAL_ISSN_MAPPING; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return DB_JSON; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DB_DUMP; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return DB_SQLITE; });
 /* unused harmony export DB_DUMP_URI */
 var GRANTS = '../../raw-data/grants.xlsx';
 var PUBS = '../../raw-data/publications.xlsx';
+var JOURNAL_ISSN_MAPPING = '../../raw-data/20180205-ISSNs for BBSRC Publications.xlsx';
 var DB_JSON = '../../raw-data/database.json';
 var DB_DUMP = '../../raw-data/db-dump.json';
 var DB_SQLITE = '../../raw-data/db/bbsrc-sqlite.db';
@@ -963,7 +965,7 @@ var PORT = process.env.PORT || 8080;
 // because containers don't have that issue :)
 var DEFAULT_ENDPOINT_URL = '/graphql/';
 var ENDPOINT_URL = process.env.ENDPOINT_URL || DEFAULT_ENDPOINT_URL;
-var ADAPTER = process.env.ADAPTER || 'websql';
+var ADAPTER = process.env.ADAPTER || 'leveldown';
 var DB_DUMP = process.env.DB_DUMP || 'db-dump.json';
 var DB_SQLITE = process.env.DB_SQLITE || 'db/bbsrc';
 var app = __WEBPACK_IMPORTED_MODULE_0_express___default()();
