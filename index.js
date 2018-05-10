@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 77);
+/******/ 	return __webpack_require__(__webpack_require__.s = 70);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -89,34 +89,26 @@ var PUBS = '../../raw-data/publications.xlsx';
 var JOURNAL_ISSN_MAPPING = '../../raw-data/20180205-ISSNs for BBSRC Publications.xlsx';
 var DB_JSON = '../../raw-data/database.json';
 var DB_DUMP = '../../raw-data/db-dump.json';
-var DB_SQLITE = '../../raw-data/db/bbsrc-sqlite.db';
+var DB_SQLITE = '../../raw-data/db/';
 var DB_DUMP_URI = '/assets/db-dump.json';
 
 
 /***/ }),
-/* 5 */,
-/* 6 */
+/* 5 */
+/***/ (function(module, exports) {
+
+module.exports = require("nano-sql");
+
+/***/ }),
+/* 6 */,
+/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BBSRCDatabase; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rxdb__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rxdb___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_rxdb__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxdb_plugins_validate__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxdb_plugins_validate___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxdb_plugins_validate__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxdb_plugins_schema_check__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxdb_plugins_schema_check___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxdb_plugins_schema_check__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_leveldown__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_leveldown___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_leveldown__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_pouchdb_adapter_idb__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_pouchdb_adapter_idb___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_pouchdb_adapter_idb__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_pouchdb_adapter_node_websql__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_pouchdb_adapter_node_websql___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_pouchdb_adapter_node_websql__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_pouchdb_adapter_memory__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_pouchdb_adapter_memory___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_pouchdb_adapter_memory__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_pouchdb_adapter_leveldb__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_pouchdb_adapter_leveldb___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_pouchdb_adapter_leveldb__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__publication_schema__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_nano_sql__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_nano_sql___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_nano_sql__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__publication_model__ = __webpack_require__(8);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -154,33 +146,16 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 
 
-
-
-// import * as rocksdb from 'rocksdb';
-
-
-
-
-
 var BBSRCDatabase = (function () {
-    function BBSRCDatabase(production, adapter, rxdbOptions) {
-        if (adapter === void 0) { adapter = 'memory'; }
-        if (rxdbOptions === void 0) { rxdbOptions = {}; }
+    function BBSRCDatabase(production, adapter, nSQLOptions) {
+        if (adapter === void 0) { adapter = 'PERM'; }
+        if (nSQLOptions === void 0) { nSQLOptions = {}; }
         this.production = production;
         this.adapter = adapter;
-        this.rxdbOptions = rxdbOptions;
+        this.nSQLOptions = nSQLOptions;
         this.collections = [
-            { name: 'publication', schema: __WEBPACK_IMPORTED_MODULE_8__publication_schema__["a" /* PublicationSchema */] }
+            { name: 'publication', schema: __WEBPACK_IMPORTED_MODULE_1__publication_model__["a" /* PublicationModel */] }
         ];
-        this.adapters = {
-            'idb': __WEBPACK_IMPORTED_MODULE_4_pouchdb_adapter_idb__,
-            'websql': __WEBPACK_IMPORTED_MODULE_5_pouchdb_adapter_node_websql__,
-            'memory': __WEBPACK_IMPORTED_MODULE_6_pouchdb_adapter_memory__,
-            'leveldown': __WEBPACK_IMPORTED_MODULE_7_pouchdb_adapter_leveldb__
-        };
-        this.adapterMapper = {
-            'leveldown': __WEBPACK_IMPORTED_MODULE_3_leveldown__
-        };
     }
     BBSRCDatabase.prototype.get = function (initializer) {
         if (!BBSRCDatabase.dbPromise) {
@@ -196,19 +171,40 @@ var BBSRCDatabase = (function () {
                     case 0: return [4 /*yield*/, this.get()];
                     case 1:
                         db = _a.sent();
-                        coll = db[collection];
-                        return [4 /*yield*/, coll.find().limit(1).exec()];
+                        coll = db.table(collection);
+                        return [4 /*yield*/, this.collectionCount(collection)];
                     case 2:
-                        if (!((_a.sent()).length === 0)) return [3 /*break*/, 4];
-                        return [4 /*yield*/, Promise.all(data.map(function (item) { return coll.insert(item); }))];
+                        if (!((_a.sent()) === 0)) return [3 /*break*/, 4];
+                        return [4 /*yield*/, coll.loadJS(collection, data)];
                     case 3:
                         _a.sent();
                         _a.label = 4;
-                    case 4: return [4 /*yield*/, coll.find().exec()];
+                    case 4: return [4 /*yield*/, this.collectionCount(collection)];
                     case 5:
-                        results = (_a.sent()).length;
+                        results = _a.sent();
                         this.log(collection + ": " + results);
                         return [2 /*return*/];
+                }
+            });
+        });
+    };
+    BBSRCDatabase.prototype.collectionCount = function (collection, db) {
+        return __awaiter(this, void 0, void 0, function () {
+            var query, results;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!!db) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.get()];
+                    case 1:
+                        db = _a.sent();
+                        _a.label = 2;
+                    case 2:
+                        query = db.table(collection).query('select', ['COUNT(*) AS total']);
+                        return [4 /*yield*/, query.exec()];
+                    case 3:
+                        results = (_a.sent())[0];
+                        return [2 /*return*/, results['total'] || results['COUNT(*) AS total'] || 0];
                 }
             });
         });
@@ -222,51 +218,42 @@ var BBSRCDatabase = (function () {
     };
     BBSRCDatabase.prototype._create = function (initializer) {
         return __awaiter(this, void 0, void 0, function () {
-            var adapter, db;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var config, db, _i, _a, collection;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
-                        this.setupPlugins();
-                        adapter = this.adapterMapper[this.adapter] || this.adapter;
+                        config = Object.assign({
+                            mode: this.adapter
+                        }, this.nSQLOptions);
                         this.log('DatabaseService: creating database');
-                        return [4 /*yield*/, __WEBPACK_IMPORTED_MODULE_0_rxdb___default.a.create(Object.assign({
-                                name: 'bbsrc',
-                                adapter: adapter
-                            }, this.rxdbOptions))];
-                    case 1:
-                        db = _a.sent();
                         this.log('DatabaseService: creating collections');
-                        return [4 /*yield*/, Promise.all(this.collections.map(function (colData) { return db.collection(colData); }))];
+                        db = null;
+                        _i = 0, _a = this.collections;
+                        _b.label = 1;
+                    case 1:
+                        if (!(_i < _a.length)) return [3 /*break*/, 4];
+                        collection = _a[_i];
+                        db = Object(__WEBPACK_IMPORTED_MODULE_0_nano_sql__["nSQL"])(collection.name).model(collection.schema).config(config);
+                        return [4 /*yield*/, db.connect()];
                     case 2:
-                        _a.sent();
-                        return [4 /*yield*/, this.initialize(db)];
+                        _b.sent();
+                        this[collection.name] = db;
+                        _b.label = 3;
                     case 3:
-                        _a.sent();
-                        if (!initializer) return [3 /*break*/, 5];
+                        _i++;
+                        return [3 /*break*/, 1];
+                    case 4: return [4 /*yield*/, this.initialize(db)];
+                    case 5:
+                        _b.sent();
+                        if (!initializer) return [3 /*break*/, 7];
                         return [4 /*yield*/, initializer(db)];
-                    case 4:
-                        _a.sent();
-                        _a.label = 5;
-                    case 5: return [2 /*return*/, db];
+                    case 6:
+                        _b.sent();
+                        _b.label = 7;
+                    case 7: return [2 /*return*/, db];
                 }
             });
         });
-    };
-    BBSRCDatabase.prototype.setupPlugins = function () {
-        if (!this.production) {
-            // schema-checks should be used in dev-mode only
-            __WEBPACK_IMPORTED_MODULE_0_rxdb___default.a.plugin(__WEBPACK_IMPORTED_MODULE_2_rxdb_plugins_schema_check___default.a);
-        }
-        __WEBPACK_IMPORTED_MODULE_0_rxdb___default.a.plugin(__WEBPACK_IMPORTED_MODULE_1_rxdb_plugins_validate___default.a);
-        __WEBPACK_IMPORTED_MODULE_0_rxdb___default.a.plugin(this.adapters[this.adapter]);
-        // Always add the memory adapter
-        if (this.adapter !== 'memory') {
-            __WEBPACK_IMPORTED_MODULE_0_rxdb___default.a.plugin(__WEBPACK_IMPORTED_MODULE_6_pouchdb_adapter_memory__);
-        }
-        __WEBPACK_IMPORTED_MODULE_0_rxdb___default.a.QueryChangeDetector.enable(true);
-        if (!this.production) {
-            __WEBPACK_IMPORTED_MODULE_0_rxdb___default.a.QueryChangeDetector.enableDebugging();
-        }
     };
     BBSRCDatabase.prototype.log = function (message) {
         if (!this.production) {
@@ -280,212 +267,87 @@ var BBSRCDatabase = (function () {
 
 
 /***/ }),
-/* 7 */
-/***/ (function(module, exports) {
-
-module.exports = require("rxdb");
-
-/***/ }),
 /* 8 */
-/***/ (function(module, exports) {
-
-module.exports = require("rxdb/plugins/validate");
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports) {
-
-module.exports = require("rxdb/plugins/schema-check");
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports) {
-
-module.exports = require("leveldown");
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports) {
-
-module.exports = require("pouchdb-adapter-idb");
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports) {
-
-module.exports = require("pouchdb-adapter-node-websql");
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports) {
-
-module.exports = require("pouchdb-adapter-memory");
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports) {
-
-module.exports = require("pouchdb-adapter-leveldb");
-
-/***/ }),
-/* 15 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PublicationSchema; });
-var PublicationSchema = {
-    'title': 'publication schema',
-    'description': 'describes a bbsrc publication',
-    'version': 0,
-    'disableKeyCompression': true,
-    'properties': {
-        'id': {
-            'type': 'string',
-            'primary': true
-        },
-        'title': {
-            'type': 'string',
-            'default': ''
-        },
-        'author': {
-            'type': 'string',
-            'default': ''
-        },
-        'year': {
-            'type': 'number',
-            'default': 0,
-            'index': true
-        },
-        'pmid': {
-            'type': 'string',
-            'default': ''
-        },
-        'doi': {
-            'type': 'string',
-            'default': ''
-        },
-        'pmcid': {
-            'type': 'string',
-            'default': ''
-        },
-        'journalName': {
-            'type': 'string',
-            'default': '',
-            'index': true
-        },
-        'journalId': {
-            'type': 'number',
-            'default': -1,
-            'index': true
-        },
-        'subdisciplines': {
-            'type': 'array',
-            'uniqueItems': true,
-            'item': {
-                'type': 'object',
-                'properties': {
-                    'subd_id': {
-                        'type': 'number'
-                    },
-                    'weight': {
-                        'type': 'number'
-                    }
-                }
-            }
-        },
-        'grantId': {
-            'type': 'string',
-            'default': ''
-        },
-        'grantTitle': {
-            'type': 'string',
-            'default': ''
-        },
-        'grantClasses': {
-            'type': 'array',
-            'uniqueItems': true,
-            'item': {
-                'type': 'string'
-            }
-        },
-        'grantYear': {
-            'type': 'number',
-            'default': 0,
-            'index': true
-        },
-        'grantInstitution': {
-            'type': 'string',
-            'default': '',
-            'index': true
-        },
-        'grantMechanism': {
-            'type': 'string',
-            'default': '',
-            'index': true
-        },
-        'fulltext': {
-            'type': 'string',
-            'default': ''
-        }
-    }
-};
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PublicationModel; });
+var PublicationModel = [
+    { key: 'id', type: 'string', props: ['pk'] },
+    { key: 'title', type: 'string' },
+    { key: 'author', type: 'string' },
+    { key: 'year', type: 'int' },
+    { key: 'pmid', type: 'string' },
+    { key: 'doi', type: 'string' },
+    { key: 'pmcid', type: 'string' },
+    { key: 'journalName', type: 'string' },
+    { key: 'journalId', type: 'int' },
+    { key: 'subdisciplines', type: 'array' },
+    { key: 'grantId', type: 'string' },
+    { key: 'grantTitle', type: 'string' },
+    { key: 'grantClasses', type: 'array' },
+    { key: 'grantYear', type: 'int' },
+    { key: 'grantInstitution', type: 'string' },
+    { key: 'grantMechanism', type: 'string' },
+    { key: 'fulltext', type: 'string' }
+];
 
 
 /***/ }),
+/* 9 */,
+/* 10 */,
+/* 11 */,
+/* 12 */,
+/* 13 */,
+/* 14 */,
+/* 15 */,
 /* 16 */,
 /* 17 */,
-/* 18 */,
-/* 19 */,
-/* 20 */,
-/* 21 */,
-/* 22 */,
-/* 23 */,
-/* 24 */,
-/* 25 */
+/* 18 */
 /***/ (function(module, exports) {
 
 module.exports = require("express");
 
 /***/ }),
-/* 26 */
+/* 19 */
 /***/ (function(module, exports) {
 
 module.exports = require("graphql-server-express");
 
 /***/ }),
-/* 27 */
+/* 20 */
 /***/ (function(module, exports) {
 
 module.exports = require("body-parser");
 
 /***/ }),
-/* 28 */
+/* 21 */
 /***/ (function(module, exports) {
 
 module.exports = require("http");
 
 /***/ }),
-/* 29 */
+/* 22 */
 /***/ (function(module, exports) {
 
 module.exports = require("graphql");
 
 /***/ }),
-/* 30 */
+/* 23 */
 /***/ (function(module, exports) {
 
 module.exports = require("apollo-errors");
 
 /***/ }),
-/* 31 */
+/* 24 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return schema; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_graphql_tools__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_graphql_tools__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_graphql_tools___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_graphql_tools__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__schema_definition__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__resolvers__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__schema_definition__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__resolvers__ = __webpack_require__(28);
 
 
 
@@ -493,24 +355,24 @@ var schema = Object(__WEBPACK_IMPORTED_MODULE_0_graphql_tools__["makeExecutableS
 
 
 /***/ }),
-/* 32 */
+/* 25 */
 /***/ (function(module, exports) {
 
 module.exports = require("graphql-tools");
 
 /***/ }),
-/* 33 */
+/* 26 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return schemaDef; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__types_graphql__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__types_graphql__ = __webpack_require__(27);
 
 var schemaDef = "\nscalar Date\n\n" + __WEBPACK_IMPORTED_MODULE_0__types_graphql__["a" /* TypesSchema */] + "\n\ntype PageInfo {\n  totalCount: Int\n}\n\ntype PublicationQuery {\n  results: [Publication!]\n  pageInfo: PageInfo\n}\n\ntype SubdisciplineQuery {\n  results: [SubdisciplineWeight!]\n  pageInfo: PageInfo\n}\n\ntype GetDistinctQuery {\n  results: [String]\n  pageInfo: PageInfo\n}\n\ntype Query {\n  getPublications(filter: Filter): PublicationQuery\n  getSubdisciplines(filter: Filter): SubdisciplineQuery\n  getDistinct(fieldName: String, filter: Filter): GetDistinctQuery\n}\n\nschema {\n  query: Query\n}\n";
 
 
 /***/ }),
-/* 34 */
+/* 27 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -519,36 +381,38 @@ var TypesSchema = "\ntype SubdisciplineWeight {\n  subd_id: ID!\n  weight: Float
 
 
 /***/ }),
-/* 35 */
+/* 28 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return resolvers; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__rxdb_queries__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__nsql_queries__ = __webpack_require__(29);
 
 var resolvers = {
     Query: {
         'getPublications': function (obj, args, context, info) {
-            return Object(__WEBPACK_IMPORTED_MODULE_0__rxdb_queries__["b" /* getPublications */])(context.database, args.filter);
+            return Object(__WEBPACK_IMPORTED_MODULE_0__nsql_queries__["b" /* getPublications */])(context.database, args.filter);
         },
         'getSubdisciplines': function (obj, args, context, info) {
-            return Object(__WEBPACK_IMPORTED_MODULE_0__rxdb_queries__["c" /* getSubdisciplines */])(context.database, args.filter);
+            return Object(__WEBPACK_IMPORTED_MODULE_0__nsql_queries__["c" /* getSubdisciplines */])(context.database, args.filter);
         },
         'getDistinct': function (obj, args, context, info) {
-            return Object(__WEBPACK_IMPORTED_MODULE_0__rxdb_queries__["a" /* getDistinct */])(context.database, args.fieldName, args.filter);
+            return Object(__WEBPACK_IMPORTED_MODULE_0__nsql_queries__["a" /* getDistinct */])(context.database, args.fieldName, args.filter);
         }
     }
 };
 
 
 /***/ }),
-/* 36 */
+/* 29 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["b"] = getPublications;
 /* harmony export (immutable) */ __webpack_exports__["c"] = getSubdisciplines;
 /* harmony export (immutable) */ __webpack_exports__["a"] = getDistinct;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_nano_sql__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_nano_sql___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_nano_sql__);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -584,6 +448,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+
 // FROM: https://github.com/sindresorhus/escape-string-regexp/
 var matchOperatorsRe = /[|\\{}()[\]^$+*?.]/g;
 function escapeStringRegExp(str) {
@@ -617,81 +482,152 @@ function sumAgg(items, itemKeyField, keyField, valueField) {
         });
     });
 }
-function getPublications(database, filter) {
+function queryPublications(database, filter, selectArgs) {
     if (filter === void 0) { filter = {}; }
     return __awaiter(this, void 0, void 0, function () {
-        var db, query, subdIdMatch, regexp, results, totalCount, field_1, ascending;
+        var db, query, where, inOrEq, regexp, field, ascending, order, subd_ids, isMultiDisc_1, isUnmapped_1, subd_idMap_1, results;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, database.get()];
                 case 1:
                     db = _a.sent();
-                    query = db.publication.find();
-                    if (filter.subd_id && filter.subd_id.indexOf(UNMAPPED) === -1) {
-                        subdIdMatch = {
-                            '$or': [
-                                { 'subd_id': { '$in': filter.subd_id } }
-                            ]
-                        };
-                        if (filter.subd_id.indexOf(MULTIDISCIPLINARY) !== -1) {
-                            subdIdMatch['$or'].push({ 'weight': { '$lt': 1 } });
-                        }
-                        query = query.where('subdisciplines').elemMatch(subdIdMatch);
+                    query = db.table('publication').query("select", selectArgs);
+                    if (filter.subd_id && filter.subd_id.length > 0) {
+                        query = db.table('publication').query("select");
                     }
-                    if (filter.journalName) {
-                        query = query.where('journalName')["in"](filter.journalName);
-                    }
-                    if (filter.mechanism) {
-                        query = query.where('grantMechanism')["in"](filter.mechanism);
-                    }
-                    if (filter.institution) {
-                        query = query.where('grantInstitution')["in"](filter.institution);
-                    }
-                    if (filter.year) {
-                        if (filter.year.start === filter.year.end) {
-                            query = query.where('year').eq(filter.year.start);
+                    where = [];
+                    inOrEq = function (field, filter) {
+                        if (filter.length === 1) {
+                            return [field, '=', filter[0]];
                         }
                         else {
-                            query = query.where('year').gte(filter.year.start).lte(filter.year.end);
+                            return [field, 'IN', filter];
+                        }
+                    };
+                    if (filter.journalName) {
+                        if (where.length > 0) {
+                            where.push('AND');
+                        }
+                        where.push(inOrEq('journalName', filter.journalName));
+                    }
+                    if (filter.mechanism) {
+                        if (where.length > 0) {
+                            where.push('AND');
+                        }
+                        where.push(inOrEq('grantMechanism', filter.mechanism));
+                    }
+                    if (filter.institution) {
+                        if (where.length > 0) {
+                            where.push('AND');
+                        }
+                        where.push(inOrEq('grantInstitution', filter.institution));
+                    }
+                    if (filter.year) {
+                        if (where.length > 0) {
+                            where.push('AND');
+                        }
+                        if (filter.year.start === filter.year.end) {
+                            where.push(['year', '=', filter.year.start]);
+                        }
+                        else {
+                            where.push(['year', '>=', filter.year.start]);
+                            where.push('AND');
+                            where.push(['year', '<=', filter.year.end]);
+                            // where.push(['year','BETWEEN',[filter.year.start, filter.year.end]]);
                         }
                     }
                     if (filter.sessionYear) {
+                        if (where.length > 0) {
+                            where.push('AND');
+                        }
                         if (filter.sessionYear.start === filter.sessionYear.end) {
-                            query = query.where('grantYear').eq(filter.sessionYear.start);
+                            where.push(['grantYear', '=', filter.sessionYear.start]);
                         }
                         else {
-                            query = query.where('grantYear').gte(filter.sessionYear.start).lte(filter.sessionYear.end);
+                            where.push(['grantYear', '>=', filter.sessionYear.start]);
+                            where.push('AND');
+                            where.push(['grantYear', '<=', filter.sessionYear.end]);
+                            // where.push(['grantYear','BETWEEN',[filter.sessionYear.start, filter.sessionYear.end]]);
                         }
                     }
                     if (filter.researchClassification) {
-                        query = query.where('grantClasses').elemMatch({ '$in': filter.researchClassification });
+                        if (where.length > 0) {
+                            where.push('AND');
+                        }
+                        where.push(['grantClasses', 'INTERSECT', filter.researchClassification]);
                     }
                     if (filter.fulltext) {
-                        regexp = new RegExp(filter.fulltext.map(function (text) { return escapeStringRegExp(text); }).join('|'), 'i');
-                        query = query.where('fulltext').regex(regexp);
+                        if (where.length > 0) {
+                            where.push('AND');
+                        }
+                        regexp = filter.fulltext.map(function (text) { return escapeStringRegExp(text); }).join('|').toLowerCase();
+                        where.push(['fulltext', 'REGEX', regexp]);
                     }
+                    if (where.length > 0) {
+                        query = query.where(where.length === 1 ? where[0] : where);
+                    }
+                    if (filter.sort && filter.sort.length > 0) {
+                        field = filter.sort[0].field;
+                        ascending = filter.sort[0].ascending === true;
+                        order = {};
+                        order[field] = ascending === true ? 'asc' : 'desc';
+                        query = query.orderBy(order);
+                    }
+                    if (!(filter.subd_id && filter.subd_id.length > 0)) return [3 /*break*/, 3];
+                    subd_ids = filter.subd_id || [];
+                    isMultiDisc_1 = subd_ids.indexOf(MULTIDISCIPLINARY) !== -1;
+                    isUnmapped_1 = subd_ids.indexOf(UNMAPPED) !== -1;
+                    subd_idMap_1 = {};
+                    subd_ids.forEach(function (s) { return subd_idMap_1[s] = true; });
                     return [4 /*yield*/, query.exec()];
                 case 2:
                     results = _a.sent();
-                    // Must do this after loading the results into memory. There is probably a better way to do this.
-                    if (filter.subd_id && filter.subd_id.indexOf(UNMAPPED) !== -1) {
-                        results = results.filter(function (p) { return !p.subdisciplines || p.subdisciplines.length === 0 || p.subdisciplines.filter(function (s) { return filter.subd_id.indexOf(s.subd_id) !== -1; }).length > 0; });
-                    }
-                    totalCount = results.length;
-                    if (filter.sort && filter.sort.length > 0) {
-                        field_1 = filter.sort[0].field;
-                        ascending = filter.sort[0].ascending === true;
-                        if (ascending) {
-                            results.sort(function (a, b) { return a[field_1] - b[field_1]; });
+                    results = results.filter(function (row) {
+                        var subdisciplines = row.subdisciplines || [];
+                        if (isMultiDisc_1 && subdisciplines.length > 1) {
+                            return true;
+                        }
+                        else if (isUnmapped_1 && subdisciplines.length == 0) {
+                            return true;
                         }
                         else {
-                            results.sort(function (a, b) { return b[field_1] - a[field_1]; });
+                            return subdisciplines.some(function (s) { return subd_idMap_1[s.subd_id]; });
                         }
-                    }
+                    });
                     if (filter.limit && filter.limit > 0) {
                         results = results.slice(0, filter.limit);
                     }
-                    return [2 /*return*/, { results: results, pageInfo: { totalCount: totalCount } }];
+                    query = Object(__WEBPACK_IMPORTED_MODULE_0_nano_sql__["nSQL"])(results).query('select', selectArgs);
+                    return [3 /*break*/, 4];
+                case 3:
+                    if (filter.limit && filter.limit > 0) {
+                        query = query.limit(filter.limit);
+                    }
+                    _a.label = 4;
+                case 4: return [4 /*yield*/, query.exec()];
+                case 5: return [2 /*return*/, (_a.sent())];
+            }
+        });
+    });
+}
+function getPublications(database, filter) {
+    if (filter === void 0) { filter = {}; }
+    return __awaiter(this, void 0, void 0, function () {
+        var results, totalCount, totalCountResults;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, queryPublications(database, filter)];
+                case 1:
+                    results = _a.sent();
+                    totalCount = results.length;
+                    if (!(filter.limit && filter.limit > 0)) return [3 /*break*/, 3];
+                    filter = Object.assign({}, filter, { limit: 0 });
+                    return [4 /*yield*/, queryPublications(database, filter, ['COUNT(*) AS total'])];
+                case 2:
+                    totalCountResults = (_a.sent())[0];
+                    totalCount = totalCountResults['total'] || totalCountResults['COUNT(*) AS total'] || 0;
+                    _a.label = 3;
+                case 3: return [2 /*return*/, { results: results, pageInfo: { totalCount: totalCount } }];
             }
         });
     });
@@ -702,9 +638,9 @@ function getSubdisciplines(database, filter) {
         var publications, weights, results, totalCount;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, getPublications(database, filter)];
+                case 0: return [4 /*yield*/, queryPublications(database, filter, ['subdisciplines'])];
                 case 1:
-                    publications = (_a.sent()).results.map(function (pub) {
+                    publications = (_a.sent()).map(function (pub) {
                         if (filter.showUnmapped && (!pub.subdisciplines || pub.subdisciplines.length === 0)) {
                             return { 'subdisciplines': [{ subd_id: UNMAPPED, weight: 1 }] };
                         }
@@ -734,13 +670,13 @@ function getDistinct(database, fieldName, filter) {
         var publications, values, results, totalCount;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, getPublications(database, filter)];
+                case 0: return [4 /*yield*/, queryPublications(database, filter, [fieldName])];
                 case 1:
-                    publications = (_a.sent()).results;
+                    publications = (_a.sent());
                     values = {};
                     results = [];
                     publications.forEach(function (pub) {
-                        var val = pub.get(fieldName);
+                        var val = pub[fieldName];
                         if (!(typeof val === 'string' || val instanceof String)) {
                             val = JSON.stringify(val);
                         }
@@ -761,13 +697,13 @@ function getDistinct(database, fieldName, filter) {
 
 
 /***/ }),
-/* 37 */
+/* 30 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = createServerContext;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__rxdb_bbsrc_database__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__context__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__nsql_bbsrc_database__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__context__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__loader_options__ = __webpack_require__(4);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -823,12 +759,11 @@ function importDBDump(database, dumpFile) {
                             var hasResults;
                             return __generator(this, function (_a) {
                                 switch (_a.label) {
-                                    case 0: return [4 /*yield*/, db.publication.findOne().exec()];
+                                    case 0: return [4 /*yield*/, database.collectionCount('publication', db)];
                                     case 1:
                                         hasResults = !!(_a.sent());
                                         if (!!hasResults) return [3 /*break*/, 3];
-                                        console.log("Importing dump");
-                                        return [4 /*yield*/, db.importDump(dump)];
+                                        return [4 /*yield*/, db.rawImport(dump)];
                                     case 2:
                                         _a.sent();
                                         _a.label = 3;
@@ -844,25 +779,24 @@ function importDBDump(database, dumpFile) {
     });
 }
 function createServerContext(adapter, dbDumpFile, sqliteFile) {
-    if (adapter === void 0) { adapter = 'leveldown'; }
+    if (adapter === void 0) { adapter = 'PERM'; }
     if (dbDumpFile === void 0) { dbDumpFile = __WEBPACK_IMPORTED_MODULE_2__loader_options__["a" /* DB_DUMP */]; }
     if (sqliteFile === void 0) { sqliteFile = __WEBPACK_IMPORTED_MODULE_2__loader_options__["c" /* DB_SQLITE */]; }
     console.log(adapter, dbDumpFile, sqliteFile);
-    var rxdbOptions = {};
-    if (['websql', 'leveldown', 'rocksdb'].indexOf(adapter) !== -1 && sqliteFile) {
-        rxdbOptions['name'] = sqliteFile;
+    var options = {};
+    if (['PERM'].indexOf(adapter) !== -1 && sqliteFile) {
+        options['dbPath'] = sqliteFile;
     }
-    var database = new __WEBPACK_IMPORTED_MODULE_0__rxdb_bbsrc_database__["a" /* BBSRCDatabase */](false, adapter, rxdbOptions);
+    var database = new __WEBPACK_IMPORTED_MODULE_0__nsql_bbsrc_database__["a" /* BBSRCDatabase */](false, adapter, options);
     importDBDump(database, dbDumpFile).then(function () {
         console.log('DB Loaded');
     });
     return new __WEBPACK_IMPORTED_MODULE_1__context__["a" /* GraphQLContext */](database);
 }
-// export const context = createServerContext();
 
 
 /***/ }),
-/* 38 */
+/* 31 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -882,6 +816,13 @@ var GraphQLContext = (function () {
 
 
 /***/ }),
+/* 32 */,
+/* 33 */,
+/* 34 */,
+/* 35 */,
+/* 36 */,
+/* 37 */,
+/* 38 */,
 /* 39 */,
 /* 40 */,
 /* 41 */,
@@ -913,41 +854,34 @@ var GraphQLContext = (function () {
 /* 67 */,
 /* 68 */,
 /* 69 */,
-/* 70 */,
-/* 71 */,
-/* 72 */,
-/* 73 */,
-/* 74 */,
-/* 75 */,
-/* 76 */,
-/* 77 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(78);
+module.exports = __webpack_require__(71);
 
 
 /***/ }),
-/* 78 */
+/* 71 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_express__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_express__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_express___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_express__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_morgan__ = __webpack_require__(79);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_morgan__ = __webpack_require__(72);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_morgan___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_morgan__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_graphql_server_express__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_graphql_server_express__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_graphql_server_express___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_graphql_server_express__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_body_parser__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_body_parser__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_body_parser___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_body_parser__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_http__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_http__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_http___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_http__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_graphql__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_graphql__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_graphql___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_graphql__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_apollo_errors__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_apollo_errors__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_apollo_errors___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_apollo_errors__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__graphql_schema__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__graphql_server_context__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__graphql_schema__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__graphql_server_context__ = __webpack_require__(30);
 /* eslint-disable global-require,no-console,no-new */
 
 
@@ -965,9 +899,9 @@ var PORT = process.env.PORT || 8080;
 // because containers don't have that issue :)
 var DEFAULT_ENDPOINT_URL = '/graphql/';
 var ENDPOINT_URL = process.env.ENDPOINT_URL || DEFAULT_ENDPOINT_URL;
-var ADAPTER = process.env.ADAPTER || 'leveldown';
+var ADAPTER = process.env.ADAPTER || 'PERM';
 var DB_DUMP = process.env.DB_DUMP || 'db-dump.json';
-var DB_SQLITE = process.env.DB_SQLITE || 'db/bbsrc';
+var DB_SQLITE = process.env.DB_SQLITE || 'db';
 var app = __WEBPACK_IMPORTED_MODULE_0_express___default()();
 app.use(__WEBPACK_IMPORTED_MODULE_1_morgan___default()('common'));
 //
@@ -1065,7 +999,7 @@ function shutdown() {
 
 
 /***/ }),
-/* 79 */
+/* 72 */
 /***/ (function(module, exports) {
 
 module.exports = require("morgan");

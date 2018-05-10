@@ -1,7 +1,7 @@
 raw-data
 db-dump.json
 .DS_Store
-db/bbsrc-*/
+db/*/
 
 # Logs
 logs
