@@ -1,6 +1,6 @@
 import { pubsub } from './subscriptions';
 
-import { getPublications, getSubdisciplines, getDistinct } from '../rxdb/queries';
+import { getPublications, getSubdisciplines, getDistinct } from '../nsql/queries';
 
 export const resolvers: any = {
   Query: {

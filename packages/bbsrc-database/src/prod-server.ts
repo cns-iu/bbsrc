@@ -24,9 +24,9 @@ const PORT = process.env.PORT || 8080;
 const DEFAULT_ENDPOINT_URL = '/graphql/';
 const ENDPOINT_URL = process.env.ENDPOINT_URL || DEFAULT_ENDPOINT_URL;
 
-const ADAPTER = process.env.ADAPTER || 'leveldown';
+const ADAPTER = process.env.ADAPTER || 'PERM';
 const DB_DUMP = process.env.DB_DUMP || 'db-dump.json';
-const DB_SQLITE = process.env.DB_SQLITE || 'db/bbsrc';
+const DB_SQLITE = process.env.DB_SQLITE || 'db';
 
 const app = express();
 

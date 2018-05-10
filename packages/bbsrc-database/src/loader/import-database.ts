@@ -1,5 +1,5 @@
 const fs = require('fs');
-import { BBSRCDatabase } from '../rxdb/bbsrc-database';
+import { BBSRCDatabase } from '../nsql/bbsrc-database';
 
 import { DB_DUMP, DB_SQLITE } from './options';
 
@@ -9,12 +9,12 @@ function readJSON(inputFile: string): any {
 
 const dump = readJSON(DB_DUMP);
 
-async function importDBDump(): Promise<any> {
-  const database = new BBSRCDatabase(false, 'leveldown', {name: DB_SQLITE});
+async function importDBDump(adapter: string = 'PERM'): Promise<any> {
+  const database = new BBSRCDatabase(false, adapter, {dbPath: DB_SQLITE});
   const db = await database.get();
-  const hasResults = !!(await db.publication.findOne().exec());
+  const hasResults = !!(await database.collectionCount('publication'))
   if (!hasResults) {
-    await db.importDump(dump);
+    await db.rawImport(dump);
   }
   return db;
 }
