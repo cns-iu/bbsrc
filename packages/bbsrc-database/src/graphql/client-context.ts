@@ -1,4 +1,4 @@
-import { BBSRCDatabase } from '../rxdb/bbsrc-database';
+import { BBSRCDatabase } from '../nsql/bbsrc-database';
 import { GraphQLContext } from './context';
 
 import { DB_DUMP_URI } from '../loader/options';
@@ -9,11 +9,11 @@ async function readJSON(uri: string): Promise<any> {
 
 async function importDBDump(database: BBSRCDatabase): Promise<any> {
   const db = await database.get(async (db) => {
-    const hasResults = !!(await db.publication.findOne().exec());
+    const hasResults = !!(await database.collectionCount('publication'))
     if (!hasResults) {
-      console.log("Importing dump");
+      console.log(`Loading dump from ${DB_DUMP_URI}`);
       const dump = await readJSON(DB_DUMP_URI);
-      await db.importDump(dump);
+      await db.rawImport(dump);
     }
   });
   return db;

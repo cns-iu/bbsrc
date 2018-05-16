@@ -1,5 +1,5 @@
 const fs = require('fs');
-import { BBSRCDatabase } from '../rxdb/bbsrc-database';
+import { BBSRCDatabase } from '../nsql/bbsrc-database';
 import { GraphQLContext } from './context';
 
 import { DB_DUMP, DB_SQLITE } from '../loader/options';
@@ -12,27 +12,24 @@ async function importDBDump(database: BBSRCDatabase, dumpFile: string): Promise<
   const dump = readJSON(dumpFile);
 
   const db = await database.get(async (db) => {
-    const hasResults = !!(await db.publication.findOne().exec());
+    const hasResults = !!(await database.collectionCount('publication', db));
     if (!hasResults) {
-      console.log("Importing dump");
-      await db.importDump(dump)
+      await db.rawImport(dump);
     }
   });
   return db;
 }
 
-export function createServerContext(adapter = 'leveldown', dbDumpFile = DB_DUMP, sqliteFile = DB_SQLITE): GraphQLContext {
+export function createServerContext(adapter = 'PERM', dbDumpFile = DB_DUMP, sqliteFile = DB_SQLITE): GraphQLContext {
   console.log(adapter, dbDumpFile, sqliteFile);
-  const rxdbOptions: any = {};
-  if (['websql', 'leveldown', 'rocksdb'].indexOf(adapter) !== -1 && sqliteFile) {
-    rxdbOptions['name'] = sqliteFile;
+  const options: any = {};
+  if (['PERM'].indexOf(adapter) !== -1 && sqliteFile) {
+    options['dbPath'] = sqliteFile;
   }
-  const database = new BBSRCDatabase(false, adapter, rxdbOptions);
+  const database = new BBSRCDatabase(false, adapter, options);
 
   importDBDump(database, dbDumpFile).then(() => {
     console.log('DB Loaded');
   });
   return new GraphQLContext(database);
 }
-
-// export const context = createServerContext();

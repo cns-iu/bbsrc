@@ -107,7 +107,7 @@ export class FilterUiComponent implements OnInit {
 
 
   constructor(private service: BBSRCDatabaseService) {
-    service.getDistinct('year').map((years: string[]) => {
+    service.getDistinct('grantYear').map((years: string[]) => {
       const sortedYears = years.map(Number)
         .filter((year) => year !== 0)
         .sort((y1, y2) => y1 - y2);

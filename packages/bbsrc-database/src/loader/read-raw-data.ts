@@ -2,11 +2,11 @@ const fs = require('fs');
 
 import * as XLSX from 'xlsx';
 import { Operator } from '@ngx-dino/core/operators';
-import { journalLookup, disciplineLookup } from './science-mapper';
+import { issnLookup, journalLookup, disciplineLookup, normalizeJournalName } from './science-mapper';
 
-import { GRANTS, PUBS, DB_JSON } from './options';
+import { GRANTS, PUBS, JOURNAL_ISSN_MAPPING, DB_JSON } from './options';
 
-function readXLS(inputFile: string, sheetName?: string): any[] {
+function readXLS(inputFile: string, sheetName?: string | number): any[] {
   const wb = XLSX.readFile(inputFile);
   sheetName = sheetName || wb.SheetNames[0];
   const ws = wb.Sheets[sheetName];
@@ -88,6 +88,12 @@ let grants: any[] = readXLS(GRANTS).map(grantsProcessor.getter);
 let grantsMap: any = {};
 grants.forEach((grant) => { grantsMap[grant.id] = grant; });
 
+const journMapProcessor = Operator.combine({
+  'journalName': a('Journal'),
+  'issn': a('ISSN')
+});
+const journMappings = readXLS(JOURNAL_ISSN_MAPPING, 'ISSN (All)').map(journMapProcessor.getter);
+
 const pubsProcessor = Operator.combine({
   'id': Operator.autoId(),
   'grant_id': a('File Reference'),
@@ -110,43 +116,73 @@ const pubs: any[] = readXLS(PUBS).map(pubsProcessor.getter);
 grants = null;
 grantsMap = null;
 
+let badJournals: any = {};
 let journal2weights: any = {};
 let journal2journ_id: any = {};
+let journal2issn: any = {};
+
+journMappings.forEach((journ: any) => {
+  const journal = journ.journalName;
+  if (!journal2journ_id.hasOwnProperty(journal)) {
+    const isbn = (journ.issn || '').trim().split(/\s+/g).map(s => issnLookup.access('id').get(s)).filter(s => !!s);
+    if (isbn.length > 0) {
+      const normJourn = normalizeJournalName(journal);
+      const journ_id = journal2journ_id[normJourn] = isbn[0];
+      journal2weights[journ_id] = disciplineLookup.get(journ_id);
+      journal2issn[journ_id] = journ.issn;
+    }
+  }
+});
+
 pubs.forEach((pub) => {
   const journal = pub.journal_name;
-  if (!journal2journ_id.hasOwnProperty(journal)) {
-    pub.journ_id = journal2journ_id[journal] = journalLookup.access('id').get(journal);
+  const normJourn = normalizeJournalName(journal);
+  if (!journal2journ_id.hasOwnProperty(normJourn)) {
+    pub.journ_id = journal2journ_id[normJourn] = journalLookup.access('id').get(journal);
     if (pub.journ_id) {
       journal2weights[pub.journ_id] = disciplineLookup.get(pub.journ_id);
     } else {
       pub.journ_id = undefined;
     }
   } else {
-    pub.journ_id = journal2journ_id[journal];
+    pub.journ_id = journal2journ_id[normJourn];
   }
+  if (!pub.journ_id) {
+    badJournals[`${pub.journal_name}`] = (badJournals[`${pub.journal_name}`] || 0) + 1;
+  }
+  pub.issn = journal2issn[pub.journ_id] || undefined;
   pub.subdisciplines = journal2weights[pub.journ_id] || undefined;
 });
 
 journal2journ_id = null;
 journal2weights = null;
+journal2issn = null;
+
+const WRITE_BAD_JOURNALS = true;
+if (WRITE_BAD_JOURNALS) {
+  badJournals = Object.entries(badJournals);
+  badJournals.sort((a,b) => b[1] - a[1]);
+  fs.writeFileSync('/tmp/bad.csv', badJournals.map(t => `"${t[0]}", ${t[1]}`).join('\n'), 'utf8');
+}
 
 const pubsDBProcessor = Operator.combine({
   'id': a('id'),
   'title': a('title'),
   'author': a('author'),
-  'year': n('year'),
+  'year': a('year').map((y) => NumberOrUndefined(y) || 2002),
   'pmid': a('pmid'),
   'doi': a('doi'),
   'pmcid': a('pmcid'),
 
   'journalName': a('journal_name'),
+  // 'journalIssn': a('issn'),
   'journalId': a('journ_id'),
   'subdisciplines': a('subdisciplines'),
 
   'grantId': a('grant_id'),
   'grantTitle': a('grant.title'),
   'grantClasses': a('grant.research_classification'),
-  'grantYear': a('grant.session_year'),
+  'grantYear': a('grant.session_year').map((y) => NumberOrUndefined(y) || 1998),
   'grantInstitution': a('grant.institution'),
   'grantMechanism': a('grant.mechanism'),
   'fulltext': fulltext('title', 'grant.title') //, 'grant.technical_summary')
@@ -155,6 +191,8 @@ const pubsDBProcessor = Operator.combine({
 const mappedPubs = pubs.filter((pub) => pub.subdisciplines && pub.subdisciplines.length > 0);
 writeJSON(DB_JSON, pubs.map(pubsDBProcessor.getter));
 // writeJSONArray(DB_JSON, mappedPubs, pubsDBProcessor);
+
+console.log(mappedPubs.length, pubs.length, pubs.length - mappedPubs.length, mappedPubs.length / pubs.length * 100);
 
 // console.log(grants.length);
 // console.log(JSON.stringify(grants[0]));

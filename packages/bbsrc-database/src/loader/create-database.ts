@@ -1,7 +1,7 @@
 const fs = require('fs');
 const bfj = require('bfj');
 
-import { BBSRCDatabase } from '../rxdb/bbsrc-database';
+import { BBSRCDatabase } from '../nsql/bbsrc-database';
 
 import { DB_JSON, DB_DUMP, DB_SQLITE } from './options';
 
@@ -19,18 +19,15 @@ async function createDBDump(): Promise<any> {
   let publications = readJSON(DB_JSON);
   console.log(publications.length);
 
-  const database = new BBSRCDatabase(false, 'memory');
-  // const database = new BBSRCDatabase(false, 'websql', {name: DB_SQLITE});
+  const database = new BBSRCDatabase(false, 'TEMP');
   const db = await database.get();
 
+  console.log('Populating database');
   await database.initializeCollection('publication', publications);
   publications = null;
 
   console.log('Dumping Database');
-  const dump = await db.dump();
-  console.log('Dumped Database');
-  // await db.remove();
-  // console.log('Destroyed Database');
+  const dump = await db.rawDump();
 
   return dump;
 }
