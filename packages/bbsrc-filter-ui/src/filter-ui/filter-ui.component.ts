@@ -7,6 +7,7 @@ import {
 import { FormControl } from '@angular/forms';
 
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/observable/concat';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/map';
@@ -33,9 +34,15 @@ export class FilterUiComponent implements OnInit {
   static typingWaitTime = 400;
 
   private filter: Partial<Filter> = {};
+  private nResults = 0;
+  private resultSubscription: Subscription;
+
+  textSearchControl = new FormControl();
+  institutionControl = new FormControl();
+  researchControl = new FormControl();
+  mechanismControl = new FormControl();
 
   institutions: string[] = [];
-  institutionControl = new FormControl();
   filteredInstitutions: Observable<string[]>;
 
   mechanisms: string[] = [
@@ -108,10 +115,9 @@ export class FilterUiComponent implements OnInit {
     }).subscribe(([min, max]) => {
       const config = {start: [min, max], range: {min, max}};
 
+      Object.assign(this.yearSliderConfig, config);
       if (this.yearSlider && this.yearSlider.slider) {
         setTimeout(() => this.yearSlider.slider.updateOptions(config));
-      } else {
-        Object.assign(this.yearSliderConfig, config);
       }
     });
   }
@@ -128,6 +134,29 @@ export class FilterUiComponent implements OnInit {
       })
     );
   }
+
+
+  get hasFilter(): boolean {
+    return !Object.values(this.filter).every((v) => v === undefined);
+  }
+
+
+  clear(): void {
+    this.textSearchControl.reset('');
+    this.institutionControl.reset('');
+    this.researchControl.reset('');
+    this.mechanismControl.reset('');
+    this.yearSlider.slider.set(this.yearSliderConfig.start);
+
+    this.filter = {};
+    if (this.resultSubscription) {
+      this.resultSubscription.unsubscribe();
+      this.resultSubscription = undefined;
+    }
+
+    this.filterChange.emit({});
+  }
+
 
   onTextSearchChange = debounce(function (
     this: FilterUiComponent, text: string
@@ -157,11 +186,21 @@ export class FilterUiComponent implements OnInit {
 
   private filterOptions(value: string, options: string[]): string[] {
     value = value.toLowerCase();
-    return options.filter((op) => op.toLowerCase().indexOf(value) === 0);
+    return options.filter((op) => op.toLowerCase().indexOf(value) !== -1);
   }
 
   private updateFilter(change: Partial<Filter>): void {
     assign(this.filter, change);
+    this.updateNumResults();
     this.filterChange.emit(clone(this.filter));
+  }
+
+  private updateNumResults(): void {
+    const filter = assign({}, this.filter, {limit: 1});
+    if (this.resultSubscription) {
+      this.resultSubscription.unsubscribe();
+    }
+    this.resultSubscription = this.service.getPublicationResults(filter)
+      .subscribe((result) => (this.nResults = result.pageInfo.totalCount));
   }
 }
