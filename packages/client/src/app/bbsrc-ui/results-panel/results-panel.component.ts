@@ -70,10 +70,11 @@ export class ResultsPanelComponent implements OnInit, OnChanges {
   authorField: BoundField<string>;
   yearField: BoundField<number>;
   titleField: BoundField<string>;
-  linkField: BoundField<any>; // Fix type
+  awardField: BoundField<any>;
+  linkField: BoundField<any>;
   journalField: BoundField<string>;
 
-  displayedColumns = ['author', 'year', 'title', 'link', 'journal'];
+  displayedColumns = ['author', 'year', 'title', 'award', 'link', 'journal'];
 
   description: string;
   dataSubscription: Subscription;
@@ -82,9 +83,10 @@ export class ResultsPanelComponent implements OnInit, OnChanges {
   selectedNode: any;
 
   constructor(private dataService: BBSRCDatabaseService) {
-    this.authorField = makeTextField('Author', 'author');
+    this.authorField = makeTextField('First Author', 'author');
     this.yearField = makeNumberField('Year', 'year');
     this.titleField = makeTextField('Title', 'title');
+    this.awardField = makeLinkField('Award', '', '', 'grantId');
     this.linkField = makeLinkField('Links', 'pmid', 'doi', 'grantId');
     this.journalField = makeTextField('Journal', 'journalName');
   }

@@ -1,29 +1,57 @@
 <div class="bbsrc-filter-ui form-container">
   <mat-form-field>
-    <input matInput type="search" placeholder="Text Search" ngModel (ngModelChange)="onTextSearchChange($event)" />
+    <input matInput type="search" placeholder="Text Search"
+        [formControl]="textSearchControl"
+        ngModel (ngModelChange)="onTextSearchChange($event)" />
   </mat-form-field>
 
   <mat-form-field>
-    <input type="text" placeholder="Institution" matInput [formControl]="institutionControl" [matAutocomplete]="institutionAuto" (ngModelChange)="onInstitutionChange($event)">
+    <input matInput type="text" placeholder="Institution"
+        [formControl]="institutionControl" [matAutocomplete]="institutionAuto"
+        (ngModelChange)="onInstitutionChange($event)" />
     <mat-autocomplete #institutionAuto="matAutocomplete">
-      <mat-option *ngFor="let inst of filteredInstitutions | async" [value]="inst">{{inst}}</mat-option>
+      <mat-option *ngFor="let inst of filteredInstitutions | async"
+          [value]="inst">
+        {{inst}}
+      </mat-option>
     </mat-autocomplete>
   </mat-form-field>
 
   <mat-form-field>
-    <mat-select placeholder="Research Classification" (selectionChange)="onResearchClassChange($event)">
+    <mat-select placeholder="Research Classification"
+        (selectionChange)="onResearchClassChange($event)"
+        [formControl]="researchControl">
       <mat-option></mat-option>
-      <mat-option *ngFor="let cls of researchClasses" [value]="cls.acronym">{{cls.label}}</mat-option>
+      <mat-option *ngFor="let cls of researchClasses" [value]="cls.acronym">
+        {{cls.label}}
+      </mat-option>
     </mat-select>
   </mat-form-field>
 
   <mat-form-field>
-    <mat-select placeholder="Mechanism" (selectionChange)="onMechanismChange($event)">
+    <mat-select placeholder="Mechanism"
+        (selectionChange)="onMechanismChange($event)"
+        [formControl]="mechanismControl">
       <mat-option></mat-option>
-      <mat-option *ngFor="let mec of mechanisms" [value]="mec">{{mec}}</mat-option>
+      <mat-option *ngFor="let mec of mechanisms" [value]="mec">
+        {{mec}}
+      </mat-option>
     </mat-select>
   </mat-form-field>
 
-  <span class="session-year-label mat-form-field">Session Year</span>
-  <nouislider [config]="yearSliderConfig" (change)="onYearChange($event)"></nouislider>
+  <div style="padding-bottom: 25px">
+    <span class="session-year-label mat-form-field">Session Year</span>
+    <nouislider [config]="yearSliderConfig" (change)="onYearChange($event)">
+    </nouislider>
+  </div>
+  <hr style="width: 100%">
+
+  <div class="results-pane">
+    <div class="results-label mat-form-field">
+      {{nResults | number}} Publications
+    </div>
+    <button mat-raised-button [disabled]="!hasFilter" (click)="clear()">
+      Reset
+    </button>
+  </div>
 </div>
