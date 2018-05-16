@@ -40,6 +40,17 @@
         </mat-cell>
       </ng-container>
 
+      <ng-container matColumnDef="award">
+        <mat-header-cell *matHeaderCellDef>
+          {{awardField?.field.label}}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let data">
+          <a href="" *ngIf="data.link.gtr" [attr.href]="gtrHref(data.link.gtr)" target="_blank">
+            {{data.link.gtr}}
+          </a>
+        </mat-cell>
+      </ng-container>
+
       <ng-container matColumnDef="link">
         <mat-header-cell *matHeaderCellDef>
           {{linkField?.field.label}}

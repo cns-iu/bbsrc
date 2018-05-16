@@ -186,7 +186,7 @@ export class FilterUiComponent implements OnInit {
 
   private filterOptions(value: string, options: string[]): string[] {
     value = value.toLowerCase();
-    return options.filter((op) => op.toLowerCase().indexOf(value) === 0);
+    return options.filter((op) => op.toLowerCase().indexOf(value) !== -1);
   }
 
   private updateFilter(change: Partial<Filter>): void {
