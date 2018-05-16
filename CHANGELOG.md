@@ -2,6 +2,16 @@
 
 Changelog for the BBSRC project.
 
+## 0.0.3 - 2018-05-16
+### Added
+    - Added Reset Button in Filter UI
+    - Showing Total Results for the whole result set in/near Filter UI
+    - Added Award Column that displays award # (with link to GTR) in results pane
+    - Renamed Author -> First Author in results pane
+    - Made the Science Map labels a little more legible
+    - Auto-complete institution typing matches substrings (it was matching from start of string)
+    - Updated the [production](https://github.com/cns-iu/bbsrc/tree/production) build
+
 ## 0.0.2 - 2018-04-25
 ### Added
     - Second release of the BBSRC project following Sprint 2
