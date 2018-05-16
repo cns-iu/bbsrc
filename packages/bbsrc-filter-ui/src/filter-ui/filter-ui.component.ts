@@ -34,7 +34,7 @@ export class FilterUiComponent implements OnInit {
   static typingWaitTime = 400;
 
   private filter: Partial<Filter> = {};
-  private nResults = 0;
+  nResults = 0;
   private resultSubscription: Subscription;
 
   textSearchControl = new FormControl();
