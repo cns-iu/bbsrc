@@ -4,7 +4,7 @@ import * as XLSX from 'xlsx';
 import { Operator } from '@ngx-dino/core/operators';
 import { issnLookup, journalLookup, disciplineLookup, normalizeJournalName } from './science-mapper';
 
-import { GRANTS, PUBS, JOURNAL_ISSN_MAPPING, DB_JSON } from './options';
+import { GRANTS, PUBS, JOURNAL_ISSN_MAPPING, DB_JSON, JOURNAL_MAPPING_SUPPLEMENT } from './options';
 
 function readXLS(inputFile: string, sheetName?: string | number): any[] {
   const wb = XLSX.readFile(inputFile);
@@ -94,6 +94,12 @@ const journMapProcessor = Operator.combine({
 });
 const journMappings = readXLS(JOURNAL_ISSN_MAPPING, 'ISSN (All)').map(journMapProcessor.getter);
 
+const journMapProcessor2 = Operator.combine({
+  'journalName': a('Journal Name'),
+  'journ_id': a('Journal ID')
+});
+const journMappings2 = readXLS(JOURNAL_MAPPING_SUPPLEMENT).map(journMapProcessor2.getter).filter(j => j.journalName !== 'undefined');
+
 const pubsProcessor = Operator.combine({
   'id': Operator.autoId(),
   'grant_id': a('File Reference'),
@@ -132,6 +138,10 @@ journMappings.forEach((journ: any) => {
       journal2issn[journ_id] = journ.issn;
     }
   }
+});
+
+journMappings2.forEach((journ: any) => {
+  journal2journ_id[normalizeJournalName(journ.journalName)] = journ.journ_id;
 });
 
 pubs.forEach((pub) => {

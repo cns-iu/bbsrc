@@ -34317,6 +34317,7 @@ var GraphQLContext = (function () {
 /* unused harmony export GRANTS */
 /* unused harmony export PUBS */
 /* unused harmony export JOURNAL_ISSN_MAPPING */
+/* unused harmony export JOURNAL_MAPPING_SUPPLEMENT */
 /* unused harmony export DB_JSON */
 /* unused harmony export DB_DUMP */
 /* unused harmony export DB_SQLITE */
@@ -34324,6 +34325,7 @@ var GraphQLContext = (function () {
 var GRANTS = '../../raw-data/grants.xlsx';
 var PUBS = '../../raw-data/publications.xlsx';
 var JOURNAL_ISSN_MAPPING = '../../raw-data/20180205-ISSNs for BBSRC Publications.xlsx';
+var JOURNAL_MAPPING_SUPPLEMENT = '../../raw-data/20180523-BBSRC Journal Information Additional Mapping.xlsx';
 var DB_JSON = '../../raw-data/database.json';
 var DB_DUMP = '../../raw-data/db-dump.json';
 var DB_SQLITE = '../../raw-data/db/';
