@@ -30,10 +30,6 @@ export class ScienceMapDataService {
 
     const subdiscs = this.databaseService.getSubdisciplines(filter);
     this.dataSubscription = subdiscs.subscribe((subdisciplines) => {
-        // FIXME: sciencemap doesn't like having zero results...
-        if (subdisciplines.length === 0) {
-          subdisciplines = [{subd_id: -1, weight: 0}];
-        }
         this.filteredSubdisciplines.next(subdisciplines);
       }
     );
