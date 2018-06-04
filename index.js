@@ -78,8 +78,9 @@ module.exports = require("fs");
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return GRANTS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return PUBS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return PUBS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return JOURNAL_ISSN_MAPPING; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return JOURNAL_MAPPING_SUPPLEMENT; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return DB_JSON; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DB_DUMP; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return DB_SQLITE; });
@@ -87,6 +88,7 @@ module.exports = require("fs");
 var GRANTS = '../../raw-data/grants.xlsx';
 var PUBS = '../../raw-data/publications.xlsx';
 var JOURNAL_ISSN_MAPPING = '../../raw-data/20180205-ISSNs for BBSRC Publications.xlsx';
+var JOURNAL_MAPPING_SUPPLEMENT = '../../raw-data/20180523-BBSRC Journal Information Additional Mapping.xlsx';
 var DB_JSON = '../../raw-data/database.json';
 var DB_DUMP = '../../raw-data/db-dump.json';
 var DB_SQLITE = '../../raw-data/db/';
@@ -600,6 +602,7 @@ function queryPublications(database, filter, selectArgs) {
                     query = Object(__WEBPACK_IMPORTED_MODULE_0_nano_sql__["nSQL"])(results).query('select', selectArgs);
                     return [3 /*break*/, 4];
                 case 3:
+                    // FIXME: Limit seems to not work in certain circumstances
                     if (filter.limit && filter.limit > 0) {
                         query = query.limit(filter.limit);
                     }
@@ -613,7 +616,7 @@ function queryPublications(database, filter, selectArgs) {
 function getPublications(database, filter) {
     if (filter === void 0) { filter = {}; }
     return __awaiter(this, void 0, void 0, function () {
-        var results, totalCount, totalCountResults;
+        var results, totalCount;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, queryPublications(database, filter)];
@@ -621,11 +624,11 @@ function getPublications(database, filter) {
                     results = _a.sent();
                     totalCount = results.length;
                     if (!(filter.limit && filter.limit > 0)) return [3 /*break*/, 3];
+                    results = results.slice(0, filter.limit);
                     filter = Object.assign({}, filter, { limit: 0 });
-                    return [4 /*yield*/, queryPublications(database, filter, ['COUNT(*) AS total'])];
+                    return [4 /*yield*/, queryPublications(database, filter, ['id'])];
                 case 2:
-                    totalCountResults = (_a.sent())[0];
-                    totalCount = totalCountResults['total'] || totalCountResults['COUNT(*) AS total'] || 0;
+                    totalCount = (_a.sent()).length;
                     _a.label = 3;
                 case 3: return [2 /*return*/, { results: results, pageInfo: { totalCount: totalCount } }];
             }
