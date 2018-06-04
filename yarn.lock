@@ -457,6 +457,12 @@ abstract-leveldown@~4.0.0:
   dependencies:
     xtend "~4.0.0"
 
+abstract-leveldown@~5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/abstract-leveldown/-/abstract-leveldown-5.0.0.tgz#f7128e1f86ccabf7d2893077ce5d06d798e386c6"
+  dependencies:
+    xtend "~4.0.0"
+
 accepts@1.3.3:
   version "1.3.3"
   resolved "https://registry.yarnpkg.com/accepts/-/accepts-1.3.3.tgz#c3ca7434938648c3e0d9c1e328dd68b622c284ca"
@@ -3685,7 +3691,7 @@ express@4.16.2:
     utils-merge "1.0.1"
     vary "~1.1.2"
 
-express@^4.14.1, express@^4.16.2:
+express@^4.14.1, express@^4.16.2, express@^4.16.3:
   version "4.16.3"
   resolved "https://registry.yarnpkg.com/express/-/express-4.16.3.tgz#6af8a502350db3246ecc4becf6b5a34d22f7ed53"
   dependencies:
@@ -5821,15 +5827,15 @@ level-iterator-stream@~2.0.0:
     readable-stream "^2.0.5"
     xtend "^4.0.0"
 
-leveldown@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/leveldown/-/leveldown-3.0.0.tgz#a42ef5d4029f88ba538ed8da3e6c34c5b008ddd7"
+leveldown@^4.0.0:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/leveldown/-/leveldown-4.0.1.tgz#7bc3df93c9fa574feb39ce45a0c4073aa948cfef"
   dependencies:
-    abstract-leveldown "~4.0.0"
+    abstract-leveldown "~5.0.0"
     bindings "~1.3.0"
     fast-future "~1.0.2"
-    nan "~2.8.0"
-    prebuild-install "^2.1.0"
+    nan "~2.10.0"
+    prebuild-install "^4.0.0"
 
 levelup@^2.0.2:
   version "2.0.2"
@@ -5879,9 +5885,9 @@ license-webpack-plugin@^1.0.0:
   dependencies:
     ejs "^2.5.7"
 
-lie-ts@^3.8.0:
-  version "3.8.0"
-  resolved "https://registry.yarnpkg.com/lie-ts/-/lie-ts-3.8.0.tgz#2e1880f8d4e391020d9fce648a281ba5714daa54"
+lie-ts@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/lie-ts/-/lie-ts-4.0.0.tgz#6bb342fbf6962ea3dfe6dcc5ab90d768113e4e41"
 
 lie@3.0.4:
   version "3.0.4"
@@ -6498,26 +6504,23 @@ nan-x@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/nan-x/-/nan-x-1.0.2.tgz#5f34e9d3115242486219eee3c8bc49fd2425b19a"
 
-nan@^2.10.0, nan@^2.3.0, nan@^2.4.0:
+nan@^2.10.0, nan@^2.3.0, nan@^2.4.0, nan@~2.10.0:
   version "2.10.0"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.10.0.tgz#96d0cd610ebd58d4b4de9cc0c6828cda99c7548f"
 
-nan@~2.8.0:
-  version "2.8.0"
-  resolved "https://registry.yarnpkg.com/nan/-/nan-2.8.0.tgz#ed715f3fe9de02b57a5e6252d90a96675e1f085a"
-
-nano-sql@^1.5.4:
-  version "1.5.4"
-  resolved "https://registry.yarnpkg.com/nano-sql/-/nano-sql-1.5.4.tgz#5a5044ef04a6de771dc1944119d0ea0dbae1e3a4"
+nano-sql@^1.6.3:
+  version "1.6.3"
+  resolved "https://registry.yarnpkg.com/nano-sql/-/nano-sql-1.6.3.tgz#df51671b829f3d10aa385804cb6645a15ca18e81"
   dependencies:
     fuzzysearch "^1.0.3"
     int64-buffer "^0.1.10"
-    leveldown "^3.0.0"
+    leveldown "^4.0.0"
     levelup "^2.0.2"
     levenshtein-edit-distance "^2.0.2"
-    lie-ts "^3.8.0"
+    lie-ts "^4.0.0"
     metaphone "^1.0.3"
     prefix-trie-ts "0.0.4"
+    queue "^4.4.2"
     really-small-events "^1.1.0"
     stemmer "^1.0.2"
 
@@ -7697,9 +7700,9 @@ pouchdb-wrappers@4.0.0:
   dependencies:
     promise-nodify "^1.0.2"
 
-prebuild-install@^2.1.0:
-  version "2.5.3"
-  resolved "https://registry.yarnpkg.com/prebuild-install/-/prebuild-install-2.5.3.tgz#9f65f242782d370296353710e9bc843490c19f69"
+prebuild-install@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/prebuild-install/-/prebuild-install-4.0.0.tgz#206ce8106ce5efa4b6cf062fc8a0a7d93c17f3a8"
   dependencies:
     detect-libc "^1.0.3"
     expand-template "^1.0.2"
@@ -7923,6 +7926,12 @@ querystringify@0.0.x:
 querystringify@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-1.0.0.tgz#6286242112c5b712fa654e526652bf6a13ff05cb"
+
+queue@^4.4.2:
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/queue/-/queue-4.4.2.tgz#5a9733d9a8b8bd1b36e934bc9c55ab89b28e29c7"
+  dependencies:
+    inherits "~2.0.0"
 
 quick-lru@^1.0.0:
   version "1.1.0"

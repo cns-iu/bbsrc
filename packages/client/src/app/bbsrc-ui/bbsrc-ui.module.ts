@@ -11,6 +11,7 @@ import { DinoDatatableModule } from '@ngx-dino/datatable';
 
 import { HomeComponent } from './home/home.component';
 import { ResultsPanelComponent } from './results-panel/results-panel.component';
+import { HelpPopupComponent } from './help-popup/help-popup.component';
 
 @NgModule({
   imports: [
@@ -26,6 +27,9 @@ import { ResultsPanelComponent } from './results-panel/results-panel.component';
     HomeComponent,
     ResultsPanelComponent
   ],
-  declarations: [HomeComponent, ResultsPanelComponent]
+  entryComponents: [
+    HelpPopupComponent
+  ],
+  declarations: [HomeComponent, ResultsPanelComponent, HelpPopupComponent]
 })
 export class BbsrcUIModule { }

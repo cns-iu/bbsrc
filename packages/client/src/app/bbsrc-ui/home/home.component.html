@@ -8,6 +8,7 @@
       [opened] = "true"
       class="sidenavContainer"
       (openedChange)="openState = $event">
+        <mat-icon class="scienceMapHelp" (click)="openHelp()" title="About this Map">help</mat-icon>
         <p class="sidenavTitle">
           Filters
           <mat-spinner *ngIf="filtersUpdating" [diameter]="18"></mat-spinner>

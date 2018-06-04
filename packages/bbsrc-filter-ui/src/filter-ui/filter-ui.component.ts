@@ -86,12 +86,12 @@ export class FilterUiComponent implements OnInit {
 
   @ViewChild(NouisliderComponent) yearSlider: NouisliderComponent;
   yearSliderConfig: any = {
-    start: [1999, 2016],
+    start: [1998, 2016],
     margin: 0,
     padding: [0, 0],
     step: 1,
     range: {
-      min: [1999],
+      min: [1998],
       max: [2016]
     },
     connect: [false, true, false],

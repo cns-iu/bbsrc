@@ -129,6 +129,7 @@ async function queryPublications(database: BBSRCDatabase, filter: Partial<Filter
     }
     query = nSQL(results).query('select', selectArgs);
   } else {
+    // FIXME: Limit seems to not work in certain circumstances
     if (filter.limit && filter.limit > 0) {
       query = query.limit(filter.limit);
     }
@@ -137,12 +138,12 @@ async function queryPublications(database: BBSRCDatabase, filter: Partial<Filter
 }
 
 export async function getPublications(database: BBSRCDatabase, filter: Partial<Filter> = {}): Promise<QueryResults<Publication>> {
-  const results = await queryPublications(database, filter);
+  let results = await queryPublications(database, filter);
   let totalCount = results.length;
   if (filter.limit && filter.limit > 0) {
+    results = results.slice(0, filter.limit);
     filter = Object.assign({}, filter, {limit: 0});
-    const totalCountResults = (await queryPublications(database, filter, ['COUNT(*) AS total']))[0];
-    totalCount = totalCountResults['total'] || totalCountResults['COUNT(*) AS total'] || 0;
+    totalCount = (await queryPublications(database, filter, ['id'])).length;
   }
   return { results, pageInfo: { totalCount } };
 }

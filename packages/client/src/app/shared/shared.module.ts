@@ -4,6 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
@@ -18,6 +19,7 @@ import { MatTableModule } from '@angular/material/table';
     CommonModule,
     MatSidenavModule,
     MatButtonModule,
+    MatDialogModule,
     MatIconModule,
     MatToolbarModule,
     MatCardModule,
@@ -30,6 +32,7 @@ import { MatTableModule } from '@angular/material/table';
     CommonModule,
     MatSidenavModule,
     MatButtonModule,
+    MatDialogModule,
     MatIconModule,
     MatToolbarModule,
     MatCardModule,

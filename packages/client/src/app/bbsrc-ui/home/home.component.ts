@@ -1,6 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Filter } from 'bbsrc-database';
+
+import { HelpPopupComponent } from '../help-popup/help-popup.component';
 
 @Component({
   selector: 'bbsrc-home',
@@ -21,5 +24,9 @@ export class HomeComponent {
 
   scienceMapNodeSizeRange = [2, 18];
 
-  constructor() { }
+  constructor(private dialog: MatDialog) { }
+
+  openHelp() {
+    const dialogRef = this.dialog.open(HelpPopupComponent);
+  }
 }
