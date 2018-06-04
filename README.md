@@ -6,4 +6,4 @@
 
 See the [ChangeLog](CHANGELOG.md) for the latest devopments.
 
-See the [Deployment Instructions](DEPLOYMENT.md) for building and deployment instructions.
+See the [Production Branch](https://github.com/cns-iu/bbsrc/blob/production/README.md) for building and deployment instructions.

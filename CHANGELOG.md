@@ -2,6 +2,13 @@
 
 Changelog for the BBSRC project.
 
+## 0.0.4 - 2018-06-04
+    - Renamed the 'Multidisciplinary' Discipline to 'Crosscutting'
+    - Added additional mappings for journal to improve accuracy up to 94%
+    - Added some help documentation
+    - Fixed some bugs that caused mechanism, session year, and other queries to fail
+    - Improved server performance and memory utilization
+
 ## 0.0.3 - 2018-05-16
 ### Added
     - Added Reset Button in Filter UI
