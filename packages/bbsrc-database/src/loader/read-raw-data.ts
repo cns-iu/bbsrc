@@ -92,22 +92,28 @@ const journMapProcessor = Operator.combine({
   'journalName': a('Journal'),
   'issn': a('ISSN')
 });
-const journMappings = readXLS(JOURNAL_ISSN_MAPPING, 'ISSN (All)').map(journMapProcessor.getter);
+let journMappings: any[] = [];
+if (fs.existsSync(JOURNAL_ISSN_MAPPING)) {
+  journMappings = readXLS(JOURNAL_ISSN_MAPPING, 'ISSN (All)').map(journMapProcessor.getter);
+}
 
 const journMapProcessor2 = Operator.combine({
   'journalName': a('Journal Name'),
   'journ_id': a('Journal ID')
 });
-const journMappings2 = readXLS(JOURNAL_MAPPING_SUPPLEMENT).map(journMapProcessor2.getter).filter(j => j.journalName !== 'undefined');
+let journMappings2: any[] = [];
+if (fs.existsSync(JOURNAL_MAPPING_SUPPLEMENT)) {
+  journMappings2 = readXLS(JOURNAL_MAPPING_SUPPLEMENT).map(journMapProcessor2.getter).filter(j => j.journalName !== 'undefined');
+}
 
 const pubsProcessor = Operator.combine({
   'id': Operator.autoId(),
-  'grant_id': a('File Reference'),
-  'grant': a('File Reference').lookup(grantsMap),
+  'grant_id': a('GrantReference'),
+  'grant': a('GrantReference').lookup(grantsMap),
   'type': a('Type'),
   'pmid': a('PMID'),
   'author': a('Author'),
-  'title': a('Publication title'),
+  'title': a('Publication'),
   'journal_name': a('Journal'),
   'volume': a('Volume'),
   'issue': a('Issue'),

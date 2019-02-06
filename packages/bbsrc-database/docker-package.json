@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node --max-old-space-size=8192 index.js",
-    "clean": "rimraf db/bbsrc-* && mkdir -p db"
+    "clean": "rimraf db && mkdir -p db && touch db/.gitkeep"
   },
   "private": true,
   "dependencies": {
