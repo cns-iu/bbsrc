@@ -55,7 +55,7 @@ const getClassifications = Operator.map((item: any): string[] => {
   const classes = [];
   for (const c of CLASS_FIELDS) {
     const value = item[c] || null;
-    if (value && value !== '-' && !value.endsWith('X')) {
+    if (value === 'Y') {
       classes.push(c === 'EGX' ? 'EG' : c);
     }
   }

@@ -119,7 +119,7 @@ export class ResultsPanelComponent implements OnInit, OnChanges {
       journal: this.journalField.operator
     });
     const filter = Object.assign({}, this.filter, {
-      subd_id: [data.subd_id], limit: 20, sort: [{field: 'year', ascending: false}]
+      subd_id: [data.subd_id], limit: 50, sort: [{field: 'year', ascending: false}]
     });
 
     this.numResults = -1;
@@ -144,6 +144,10 @@ export class ResultsPanelComponent implements OnInit, OnChanges {
   }
 
   gtrHref(gtr: string): string {
+    return 'https://gtr.ukri.org/projects?ref=' + gtr.replace('/', '%2f');
+  }
+
+  bbsrcHref(gtr: string): string {
     return 'https://bbsrc.ukri.org/research/grants-search/AwardDetails/?FundingReference=' + gtr.replace('/', '%2f');
   }
 }

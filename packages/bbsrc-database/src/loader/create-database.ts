@@ -10,9 +10,9 @@ function readJSON(inputFile: string): any {
 }
 
 async function writeJSON(outputFile: string, obj: any): Promise<any> {
-  // fs.writeFileSync(outputFile, JSON.stringify(obj, null, 2), 'utf8');
-  // return true;
-  return bfj.write(outputFile, obj);
+  fs.writeFileSync(outputFile, JSON.stringify(obj, null, 2), 'utf8');
+  return true;
+  // return bfj.write(outputFile, obj);
 }
 
 async function createDBDump(): Promise<any> {

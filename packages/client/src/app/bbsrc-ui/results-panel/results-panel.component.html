@@ -48,7 +48,7 @@
           {{awardField?.field.label}}
         </mat-header-cell>
         <mat-cell *matCellDef="let data">
-          <a href="" *ngIf="data.link.gtr" [attr.href]="gtrHref(data.link.gtr)" target="_blank">
+          <a href="" *ngIf="data.link.gtr" [attr.href]="bbsrcHref(data.link.gtr)" target="_blank">
             {{data.link.gtr}}
           </a>
         </mat-cell>
